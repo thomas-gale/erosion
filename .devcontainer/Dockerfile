@@ -22,6 +22,7 @@ RUN sudo apt-get update \
         unzip curl wget git \
         build-essential gdb \
         libtinfo-dev clang-8 \
+        clang-format clang-tidy valgrind \
         python3-dev python3-pip \
     #
     # cmake

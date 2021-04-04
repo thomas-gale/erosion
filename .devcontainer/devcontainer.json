@@ -13,9 +13,12 @@
 	
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
+		"twxs.cmake",
+		"ms-vscode.cmake-tools",
+		"ms-vscode.cpptools",
+		"xaver.clang-format",
 		"esbenp.prettier-vscode",
 		"dbaeumer.vscode-eslint",
-		"ms-azuretools.vscode-docker",
 		"ecmel.vscode-html-css",
 		"msjsdiag.debugger-for-chrome",
 		"firefox-devtools.vscode-firefox-debug"
