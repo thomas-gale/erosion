@@ -14,8 +14,8 @@
 
 ### build
 ```
-mkdir build && cd build
-emcmake cmake ../src/engine/
+mkdir build-engine && cd build-engine
+emcmake cmake ../src-engine/
 make
 ```
 
