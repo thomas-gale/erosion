@@ -1,0 +1,27 @@
+{
+	"name": "erosion",
+	"dockerFile": "Dockerfile",
+	"context": "..",
+	"runArgs": [ 
+		// Allow Go debugger
+		"--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+​
+	// Set *default* container specific settings.json values on container create.
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash",
+	},
+	
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"esbenp.prettier-vscode",
+		"dbaeumer.vscode-eslint",
+		"ms-azuretools.vscode-docker",
+		"ecmel.vscode-html-css",
+		"msjsdiag.debugger-for-chrome",
+		"firefox-devtools.vscode-firefox-debug"
+	],
+​
+	// To overcome quirks with file permissions.
+	// See https://code.visualstudio.com/docs/remote/containers-advanced#_adding-a-nonroot-user-to-your-dev-container.
+	"remoteUser": "vscode"
+}
