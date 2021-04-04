@@ -10,7 +10,16 @@
 - compile the core physics mechanic to CPU WASM https://taichi.readthedocs.io/en/stable/export_kernels.html (in the future maybe help taichi support compiling to the shiny new https://gpuweb.github.io/gpuweb/ spec)
 - make this stack into a game that's somewhat fun...
 
-## CRA Template
+## emscripten notes
+
+### build
+```
+mkdir build && cd build
+emcmake cmake ../src/engine/
+make
+```
+
+## cra template
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
