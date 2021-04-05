@@ -15,7 +15,7 @@ cd build-engine
 # emcc ../src-engine/test.cpp -o test.js --bind -s WASM=1 -s MODULARIZE=-s WASM=1 -s MODULARIZE=1
 # em++ ../src-engine/test.cpp ../src-engine/fib.cpp -o test.js -s WASM=1 -s EXPORT_ALL=1 || exit 1
 # em++ ../src-engine/test.cpp ../src-engine/fib.cpp -o test.js -s WASM=1 -s EXPORT_ALL=1 --bind || exit 1
-em++ ../src-engine/fib.cpp -o test.js -s WASM=1 -s EXPORT_ALL=1 -s ENVIRONMENT=web -s MODULARIZE=1 --bind || exit 1
+em++ ../src-engine/engine.cpp -o engine.js -s WASM=1 -s EXPORT_ALL=1 -s ENVIRONMENT=web -s MODULARIZE=1 --bind || exit 1
 
 cd ..
 

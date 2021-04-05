@@ -7,7 +7,7 @@ function App() {
 
   const [fibOut, setFibOut] = useState(0);
   useEffect(() => {
-    var factory = require("./engine/test");
+    var factory = require("./engine/engine");
     factory().then((i: any) => {
       var val = i.fib(fibIn);
       console.log("react fib: " + val);
