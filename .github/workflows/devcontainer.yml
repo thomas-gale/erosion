@@ -50,4 +50,5 @@ jobs:
           context: .
           file: ./.devcontainer/Dockerfile
           tags: |
+            ghcr.io/${{ env.REPO_OWNER }}/erosion-devcontainer:${{ steps.computehash.outputs.hash }}
             ghcr.io/${{ env.REPO_OWNER }}/erosion-devcontainer:latest
