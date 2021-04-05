@@ -4,18 +4,14 @@ project(Engine
     DESCRIPTION "Erosion engine"
     LANGUAGES CXX)
 
-# Project wide C++ standard
+# project wide C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
+# emscripten em++ flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s WASM=1 -s ENVIRONMENT=web -s MODULARIZE=1 --bind")
+
+# main wasm executable composition
 add_executable(
-    test
-    "test.cpp"
+    engine
+    "engine.cpp"
 )
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -o test.js -s MODULARIZE -s EXPORTED_RUNTIME_METHODS=['ccall']")
-
-message(STATUS "${CMAKE_CXX_FLAGS}")
-
-# target_compile_options(sqrt PUBLIC
-#     "-s" "MODULARIZE" "-s" "EXPORTED_RUNTIME_METHODS=[\'ccall\']"
-# )
