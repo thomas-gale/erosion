@@ -10,4 +10,4 @@ jobs:
             - name: build engine
               uses: ./.github/actions/devcontainer-eval
               with:
-                cmd: './scripts/build-engine.sh'
+                cmd: 'source /home/vscode/emsdk/emsdk_env.sh && ./scripts/build-engine.sh'
