@@ -28,5 +28,5 @@ find . -name "*.js" -exec cp '{}' ../src/engine/ \;
 find ../src/engine/ -name "*.js" -exec sed -i '1i/* eslint-disable */' '{}' \;
 
 find . -name "*.wasm" -exec cp '{}' ../public/ \;
-find . -name "*.js" -exec cp '{}' ../public/ \;
+# find . -name "*.js" -exec cp '{}' ../public/ \;
 cd ..
