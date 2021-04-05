@@ -1,6 +1,8 @@
 #!/bin/bash
-set -e
 
 sudo rm -r build-engine/*
-sudo rm src/engine/*.js
-sudo rm src/engine/*.wasm
+rm src/engine/*.js
+rm src/engine/*.wasm
+
+rm public/*.js
+rm public/*.wasm

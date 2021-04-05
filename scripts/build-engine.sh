@@ -2,15 +2,26 @@
 set -e
 
 # Build files
+# mkdir -p build-engine
+# cd build-engine
+# emcmake cmake ../src-engine/
+# make
+# cd ..
+
+# Build files, non cmake
 mkdir -p build-engine
 cd build-engine
-emcmake cmake ../src-engine/
-make
+# em++ ../src-engine/test.cpp -o test.js -s WASM=0 -s ENVIRONMENT=web -s EXTRA_EXPORTED_RUNTIME_METHODS='["cwrap"]' -s MODULARIZE=1
+# emcc ../src-engine/test.cpp -o test.js --bind -s WASM=1 -s MODULARIZE=-s WASM=1 -s MODULARIZE=1
+em++ ../src-engine/test.cpp ../src-engine/fib.cpp -o test.js -s WASM=1 -s EXPORT_ALL=1 || exit 1
 cd ..
 
 # Copy built files to CRA binding point
 mkdir -p src/engine
 cd build-engine 
-find . -name "*.wasm" -exec mv '{}' ../src/engine/ \;
-find . -name "*.js" -exec mv '{}' ../src/engine/ \;
+find . -name "*.wasm" -exec cp '{}' ../src/engine/ \;
+find . -name "*.js" -exec cp '{}' ../src/engine/ \;
+
+find . -name "*.wasm" -exec cp '{}' ../public/ \;
+find . -name "*.js" -exec cp '{}' ../public/ \;
 cd ..

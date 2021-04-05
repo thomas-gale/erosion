@@ -3,6 +3,8 @@
 # emscripten generated
 src/engine/*.js
 src/engine/*.wasm
+public/*.js
+public/*.wasm
 
 # dependencies
 /node_modules

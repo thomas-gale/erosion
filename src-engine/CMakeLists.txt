@@ -8,6 +8,14 @@ project(Engine
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(
-    helloworld
-    "helloworld.cpp"
+    test
+    "test.cpp"
 )
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -o test.js -s MODULARIZE -s EXPORTED_RUNTIME_METHODS=['ccall']")
+
+message(STATUS "${CMAKE_CXX_FLAGS}")
+
+# target_compile_options(sqrt PUBLIC
+#     "-s" "MODULARIZE" "-s" "EXPORTED_RUNTIME_METHODS=[\'ccall\']"
+# )
