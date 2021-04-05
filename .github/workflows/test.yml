@@ -8,11 +8,11 @@ jobs:
               uses: actions/checkout@v2
 
             - name: devcontainer build
-              uses: ./.github/actions/setup-devcontainer
+              uses: ./.github/actions/devcontainer-eval
               with:
-                stage: 'build'
+                cmd: 'echo build'
 
             - name: devcontainer deploy
-              uses: ./.github/actions/setup-devcontainer
+              uses: ./.github/actions/devcontainer-eval
               with:
-                stage: 'test'
+                cmd: 'echo deploy'
