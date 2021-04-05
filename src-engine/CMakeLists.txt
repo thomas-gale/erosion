@@ -8,10 +8,12 @@ project(Engine
 set(CMAKE_CXX_STANDARD 17)
 
 # emscripten em++ flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s WASM=1 -s ENVIRONMENT=web -s MODULARIZE=1 --bind")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s WASM=1 -s ENVIRONMENT=web -s MODULARIZE=1 --bind -s ERROR_ON_UNDEFINED_SYMBOLS=0")
 
 # main wasm executable composition
 add_executable(
     engine
+    "taichi/generated/mpm88.h"
+    "taichi/generated/mpm88.c"
     "engine.cpp"
 )

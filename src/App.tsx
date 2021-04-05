@@ -3,6 +3,8 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 function App() {
+  const [testI, setTestI] = useState<undefined | any>(undefined);
+
   const [fibIn, setFibIn] = useState(10);
 
   const [fibOut, setFibOut] = useState(0);
@@ -12,6 +14,7 @@ function App() {
       var val = i.fib(fibIn);
       console.log("react fib: " + val);
       setFibOut(val);
+      setTestI(i);
     });
   }, [fibIn, setFibOut]);
 
@@ -29,6 +32,14 @@ function App() {
           }}
         />
         <p>wasm fib output: {fibOut}</p>
+        <button
+          type="button"
+          onClick={(_: any) => {
+            if (testI) testI.mpm88();
+          }}
+        >
+          Load mpm88 wasm
+        </button>
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
