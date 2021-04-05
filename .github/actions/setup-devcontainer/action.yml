@@ -2,4 +2,4 @@ name: 'Setup devcontainer'
 description: 'Running actions with devcontainers'
 runs:
   using: 'docker'
-  image: '../../../.devcontainer/Dockerfile'
+  image: 'Dockerfile'
