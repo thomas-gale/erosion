@@ -4,6 +4,9 @@
 .secrets
 .env
 
+# taichi generated
+src-engine/taichi/generated/*.yml
+
 # emscripten generated
 src/engine/*.js
 src/engine/*.wasm
