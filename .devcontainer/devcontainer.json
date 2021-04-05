@@ -1,7 +1,7 @@
 {
 	"name": "erosion",
 	"dockerFile": "Dockerfile",
-	"context": "..",
+	"context": ".",
 	"runArgs": [
 		//  Allow use of Docker from the container. See the docker-in-docker definition for details.
 		"-v","/var/run/docker.sock:/var/run/docker.sock"

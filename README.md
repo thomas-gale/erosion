@@ -20,6 +20,7 @@ make
 ```
 
 # cd notes
+act github actions uses `.secrets` file 
 
 
 ## cra template
