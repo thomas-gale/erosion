@@ -66,8 +66,3 @@ RUN sudo apt-get update \
     #
     # act (github actions local test environment)
     && curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
-
-# Copies your code file from your action repository to the filesystem path `/` of the container
-COPY entrypoint.sh /entrypoint.sh
-RUN sudo chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
