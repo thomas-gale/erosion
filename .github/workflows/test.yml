@@ -7,12 +7,7 @@ jobs:
             - name: checkout
               uses: actions/checkout@v2
 
-            - name: devcontainer build
+            - name: build engine
               uses: ./.github/actions/devcontainer-eval
               with:
-                cmd: 'echo build'
-
-            - name: devcontainer deploy
-              uses: ./.github/actions/devcontainer-eval
-              with:
-                cmd: 'echo deploy'
+                cmd: './scripts/build-engine.sh'
