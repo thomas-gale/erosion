@@ -2,16 +2,13 @@
 	"name": "erosion",
 	"dockerFile": "Dockerfile",
 	"context": "..",
-	"runArgs": [ 
-		// Allow Go debugger
-		"--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
-​
-	// Set *default* container specific settings.json values on container create.
+	"runArgs": [
+		//  Allow use of Docker from the container. See the docker-in-docker definition for details.
+		"-v","/var/run/docker.sock:/var/run/docker.sock"
+	],
 	"settings": { 
 		"terminal.integrated.shell.linux": "/bin/bash",
 	},
-	
-	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"twxs.cmake",
 		"ms-vscode.cmake-tools",
