@@ -9,3 +9,10 @@ jobs:
 
             - name: devcontainer
               uses: ./.github/actions/setup-devcontainer
+              with:
+                stage: 'build'
+
+            - name: devcontainer
+              uses: ./.github/actions/setup-devcontainer
+              with:
+                stage: 'test'

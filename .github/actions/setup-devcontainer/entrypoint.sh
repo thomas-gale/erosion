@@ -1,4 +1,4 @@
-#!/bin/bash
-set -e
+#!/bin/sh -1
 
-echo "** Action Test Mode **"
+echo "** setup devcontainer **"
+echo "** stage: $1 **"

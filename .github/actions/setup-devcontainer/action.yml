@@ -1,5 +1,10 @@
-name: 'Setup devcontainer'
+name: 'devcontainer actions'
 description: 'Running actions with devcontainers'
+branding:
+  icon: 'package'
+  color: 'purple'
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ inputs.stage }}
