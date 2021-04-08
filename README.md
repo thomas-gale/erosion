@@ -19,7 +19,11 @@ emcmake cmake ../src-engine/
 make
 ```
 
-# cd notes
+## taichihub notes
+- Added the whole of taichi.js while I figure out which parts are needed to compile to the underlying engine.
+- Managed to get the fractal and mpm demos working inside the browser/hub method.
+
+## cd notes
 act github actions uses `.secrets` file 
 
 

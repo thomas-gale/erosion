@@ -23,7 +23,7 @@ RUN sudo apt-get update \
         build-essential gdb \
         libtinfo-dev clang-8 \
         clang-format clang-tidy valgrind \
-        python3-dev python3-pip \
+        python3.8 python3.8-dev python3-pip \
     #
     # cmake
     && mkdir -p ~/temp && cd ~/temp \
@@ -40,11 +40,13 @@ RUN sudo apt-get update \
     && echo "source \"/home/${USERNAME}/emsdk/emsdk_env.sh\"" >> /home/${USERNAME}/.bashrc \
     && cd ~ \
     #
-    # libs for taichi
-    && python3 -m pip install autopep8 pyyaml zmq \
-    && python3 -m pip install taichi taichi_glsl taichi_three \
+    # libs for taichi / taichihub server
+    && python3.8 -m pip install autopep8 pyyaml zmq \
+    && python3.8 -m pip install taichi taichi_glsl taichi_three \
+    && python3.8 -m pip install pymongo flask \
+    && sudo apt-get install -y mongodb \
     #
-    # Install Docker - x86_64 / amd64 stable
+    # install docker - x86_64 / amd64 stable
     && mkdir -p ~/temp && cd ~/temp \
     && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - \
     && sudo add-apt-repository \
