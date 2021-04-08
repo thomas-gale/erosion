@@ -13,6 +13,7 @@
 ## emscripten notes
 
 ### build
+
 ```
 mkdir build-engine && cd build-engine
 emcmake cmake ../src-engine/
@@ -20,12 +21,22 @@ make
 ```
 
 ## taichihub notes
+
 - Added the whole of taichi.js while I figure out which parts are needed to compile to the underlying engine.
 - Managed to get the fractal and mpm demos working inside the browser/hub method.
 
-## cd notes
-act github actions uses `.secrets` file 
+### Commands
 
+```bash
+cd taichi.js
+docker build . -t taichihub
+cd taichihub
+python3.8 -m flask run -h 0.0.0.0 -p 3001
+```
+
+## cd notes
+
+act github actions uses `.secrets` file
 
 ## cra template
 
