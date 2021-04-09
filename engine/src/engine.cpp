@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <Magnum/GL/DefaultFramebuffer.h>
 #ifndef CORRADE_TARGET_EMSCRIPTEN
 #include <Magnum/Platform/Sdl2Application.h>
@@ -5,26 +7,35 @@
 #include <Magnum/Platform/EmscriptenApplication.h>
 #endif
 
+extern "C" {
+#include "taichi/mpm88.py.h"
+}
+
 using namespace Magnum;
 
-class MyApplication: public Platform::Application {
-    public:
-        explicit MyApplication(const Arguments& arguments);
+class Engine : public Platform::Application {
+public:
+  explicit Engine(const Arguments &arguments);
 
-    private:
-        void drawEvent() override;
+private:
+  void drawEvent() override;
 };
 
-MyApplication::MyApplication(const Arguments& arguments): Platform::Application{arguments} {
-    /* TODO: Add your initialization code here */
+Engine::Engine(const Arguments &arguments) : Platform::Application{arguments} {
+  /* TODO: Add your initialization code here */
+
+  std::cout << "Initialising taichi..." << std::endl;
+  Tk_reset_c6_0(&Ti_ctx);
+  std::cout << "Initialised taichi!" << std::endl;
 }
 
-void MyApplication::drawEvent() {
-    GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
+void Engine::drawEvent() {
+  GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
 
-    /* TODO: Add your drawing code here */
+  /* TODO: Add your drawing code here */
+  std::cout << "drawEvent!" << std::endl;
 
-    swapBuffers();
+  swapBuffers();
 }
 
-MAGNUM_APPLICATION_MAIN(MyApplication)
+MAGNUM_APPLICATION_MAIN(Engine)
