@@ -4,10 +4,10 @@ project(ErosionEngine
     DESCRIPTION "Erosion physics engine"
     LANGUAGES C CXX)
 
-# Project wide C++ standard
+# project wide c++ standard
 set(CMAKE_CXX_STANDARD 17)
 
-# Magnum config
+# magnum config
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules/" ${CMAKE_MODULE_PATH})
 set(WITH_EMSCRIPTENAPPLICATION ON CACHE BOOL "" FORCE)
 

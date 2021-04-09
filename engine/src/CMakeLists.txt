@@ -1,4 +1,6 @@
-find_package(Magnum REQUIRED GL)
+find_package(Magnum REQUIRED 
+    GL
+    SceneGraph)
 
 if(CORRADE_TARGET_EMSCRIPTEN)
     find_package(Magnum REQUIRED EmscriptenApplication)
@@ -8,15 +10,17 @@ endif()
 
 set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
+add_subdirectory(taichi)
+
 add_executable(engine 
-taichi/mpm88.py.h
-taichi/mpm88.py.c
 engine.cpp)
 
 target_link_libraries(engine PRIVATE
     Magnum::Application
     Magnum::GL
-    Magnum::Magnum)
+    Magnum::Magnum
+    Magnum::SceneGraph
+    taichi)
 
 # For Emscripten copy the boilerplate next to the executable so it can be run
 # directly from the build dir; provide an install target as well
