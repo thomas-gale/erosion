@@ -5,11 +5,10 @@ import shutil
 import sys
 import os
 
-
 docker_image = 'taichihub'
 
-
-def do_compile(target, source=None, extra=[]):
+# Derived from taichi.js/taichihub/compiler.py
+def do_c_gen(target, source=None, extra=[]):
     if source is None:
         source = target
 
@@ -53,21 +52,18 @@ def do_compile(target, source=None, extra=[]):
     subprocess.check_call([sys.executable, '-m', 'taichi', 'cc_compose',
                            '-e', f'{source}.yml', f'{source}.c', f'{source}.h'])
 
-    print('Compiling via Emscripten...')
-    subprocess.check_call(['emcc', '-O3', f'{source}.c', '-o', f'{target}.js'])
-
-    with open(f'{target}.js') as f:
-        s = f.read()
-    # https://stackoverflow.com/questions/38769103/document-currentscript-is-null
-    # AJAX loaded Javascript doesn't seems support document.currentScript.src,
-    # which is being used in Emscripten generated JS stub.
-    # So we do a quick hack to make AJAX happy:
-    s = s.replace('var scriptDirectory=""', 'var scriptDirectory="/cache/"', 1)
-    with open(f'{target}.js', 'w') as f:
-        f.write(s)
-
     return output, 'success'
 
 
 if __name__ == '__main__':
-    do_compile(sys.argv[1])
+    dst = None
+    src = "./engine/src/taichi/mpm88.py"
+    ext = ["./engine/lib/taichi.js/taichihub/static/hub.py"]
+
+    print('compiling', src)
+    output, status = do_c_gen(dst, src, ext)
+    print('done with', src)
+
+    output = output.decode()
+    ret = {'status': status, 'output': output}
+    print(status)

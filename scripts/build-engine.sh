@@ -1,11 +1,14 @@
 #!/bin/bash
 set -e
 
-cd engine 
-
 # generate taichi code
+sudo docker build ./engine/lib/taichi.js -t taichihub
+python3.8 ./scripts/taichi-c-generator.py "helloworld"
+
+exit 0
 
 # build main magnum emscripten application.
+cd engine 
 mkdir -p build && cd build
 cmake .. \
     -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten-wasm.cmake \

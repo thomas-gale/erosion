@@ -7,3 +7,6 @@
 [submodule "engine/toolchains"]
 	path = engine/toolchains
 	url = https://github.com/mosra/toolchains
+[submodule "engine/lib/taichi.js"]
+	path = engine/lib/taichi.js
+	url = https://github.com/thomas-gale/taichi.js.git
