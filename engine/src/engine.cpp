@@ -27,6 +27,9 @@ Engine::Engine(const Arguments &arguments) : Platform::Application{arguments} {
   std::cout << "Initialising taichi..." << std::endl;
   Tk_reset_c6_0(&Ti_ctx);
   std::cout << "Initialised taichi!" << std::endl;
+
+  Tk_hub_get_num_particles_c10_0(&Ti_ctx);
+  std::cout << "Number of particles: " << Ti_ctx.args[0].val_i32 << std::endl;
 }
 
 void Engine::drawEvent() {
