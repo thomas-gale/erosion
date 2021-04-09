@@ -16,6 +16,8 @@
 #include <Magnum/Platform/EmscriptenApplication.h>
 #endif
 
+#include "drawableobjects/ParticleGroup2D.h"
+
 extern "C" {
 #include "taichi/mpm88.py.h"
 }
@@ -33,17 +35,37 @@ public:
 private:
   void drawEvent() override;
 
-  /* Scene and drawable group must be constructed before camera and other
-     drawble objects */
+  // Scene and drawable group must be constructed before camera and other
+  // drawable objects
   Containers::Pointer<Scene2D> _scene;
   Containers::Pointer<SceneGraph::DrawableGroup2D> _drawableGroup;
 
-  /* Camera helpers */
+  // Camera helpers
   Containers::Pointer<Object2D> _objCamera;
   Containers::Pointer<SceneGraph::Camera2D> _camera;
 
+  // Engine entities
+  Containers::Pointer<ParticleGroup2D> _drawableParticles;
   Timeline timeline_;
 };
+
+namespace {
+
+constexpr Float GridCellLength = 1.0f;       /* length of 1 grid cell */
+constexpr Vector2i NumGridCells{100, 100};   /* number of cells */
+constexpr Vector2 GridStart{-50.0f, -50.0f}; /* lower corner of the grid */
+constexpr Int RadiusCircleBoundary = 45;     /* radius of the boundary circle */
+
+/* Viewport will display this window */
+constexpr Float ProjectionScale = 1.05f;
+const Vector2i DomainDisplaySize =
+    NumGridCells * GridCellLength * ProjectionScale;
+
+Vector2 gridCenter() {
+  return Vector2{NumGridCells} * GridCellLength * 0.5f + GridStart;
+}
+
+} // namespace
 
 Engine::Engine(const Arguments &arguments)
     : Platform::Application{arguments, NoCreate} {
@@ -54,8 +76,6 @@ Engine::Engine(const Arguments &arguments)
 
   Tk_hub_get_num_particles_c10_0(&Ti_ctx);
   std::cout << "Number of particles: " << Ti_ctx.args[0].val_i32 << std::endl;
-
-  timeline_.start();
 
   // Setup window
   {
@@ -78,13 +98,16 @@ Engine::Engine(const Arguments &arguments)
 
     /* Configure camera */
     _objCamera.emplace(_scene.get());
-    // _objCamera->setTransformation(Matrix3::translation(gridCenter()));
+    _objCamera->setTransformation(Matrix3::translation(gridCenter()));
 
     _camera.emplace(*_objCamera);
-    // _camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
-    // .setProjectionMatrix(Matrix3::projection(Vector2{DomainDisplaySize}))
-    // .setViewport(GL::defaultFramebuffer.viewport().size());
+    _camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
+        .setProjectionMatrix(Matrix3::projection(Vector2{DomainDisplaySize}))
+        .setViewport(GL::defaultFramebuffer.viewport().size());
   }
+
+  // Start the timer and loop at max 60hz
+  timeline_.start();
 }
 
 void Engine::drawEvent() {
