@@ -3,6 +3,9 @@ set -e
 
 cd engine 
 
+# generate taichi code
+
+# build main magnum emscripten application.
 mkdir -p build && cd build
 cmake .. \
     -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten-wasm.cmake \

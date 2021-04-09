@@ -28,8 +28,8 @@ make
 ### Commands
 
 ```bash
-cd taichi.js
-docker build . -t taichihub
+cd engine/taichi.js
+sudo docker build . -t taichihub
 cd taichihub
 python3.8 -m flask run -h 0.0.0.0 -p 3001
 ```
