@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Taichi.js | Browse</title>
+
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mdui@1.0.0/dist/css/mdui.min.css"/>
+        <link href="https://cdn.bootcdn.net/ajax/libs/codemirror/5.35.0/codemirror.min.css" rel="stylesheet">
+
+        <style>
+        .canvas {
+            align: center;
+        }
+        </style>
+    </head>
+
+    <body class="mdui-theme-layout-auto mdui-theme-accent-pink mdui-theme-primary-indigo">
+        <div class="mdui-toolbar mdui-color-theme">
+            <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'Menu'}" mdui-menu="{target: '#toolbar-attr'}"><i class="mdui-icon material-icons">menu</i></a>
+            <ul class="mdui-menu mdui-menu-cascade" id="toolbar-attr">
+                <li class="mdui-menu-item">
+
+                <li class="mdui-menu-item">
+                <a href="https://github.com/taichi-dev/taichi.js" class="mdui-ripple">Taichi.js on GitHub</a>
+                </li>
+
+                <li class="mdui-menu-item">
+                <a href="https://taichi.readthedocs.io/" class="mdui-ripple">Taichi documentation</a>
+                </li>
+
+                <li class="mdui-menu-item">
+                <a href="https://github.com/taichi-dev/taichi/tree/master/examples" class="mdui-ripple">Taichi examples</a>
+                </li>
+
+                <li class="mdui-divider"></li>
+
+                <li class="mdui-menu-item">
+                <a href="https://github.com/taichi-dev/taichi.js/issues/new" class="mdui-ripple">Feedback</a>
+                </li>
+
+                <li class="mdui-menu-item">
+                <a href="/help">Help</a>
+                </li>
+            </ul>
+
+            <span class="mdui-typo-title">Taichi.js</span>
+            <div class="mdui-toolbar-spacer"></div>
+            <a href="/new" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons" mdui-tooltip="{content: 'New'}">add_box</i></a>
+            <a href="/" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons" mdui-tooltip="{content: 'Home'}">home</i></a>
+            <a href="/help" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons" mdui-tooltip="{content: 'Help'}">help_outline</i></a>
+        </div>
+
+        <script src="/taichi.js"></script>
+        <script src="/hubview.js"></script>
+
+        <div class="mdui-container mdui-rows mdui-m-t-2">
+
+        {% for shader in shaders %}
+            <div class="mdui-col-xs-4">
+                <a href="/p/{{ shader.name }}">
+                    <div class="mdui-card mdui-hoverable mdui-m-t-1 mdui-m-b-3 mdui-m-l-1 mdui-m-r-1" id="card-{{ loop.index }}">
+                        <div class="mdui-card-media">
+                            <canvas class="mdui-img-fluid mdui-img-rounded mdui-center mdui-valign" id="canvas-{{ loop.index }}" height="512" width="512">HTML5 is not supported on your browser :(</canvas>
+                            <div class="mdui-card-media-covered">
+                                <div class="mdui-card-primary">
+                                    <div class="mdui-card-primary-title"><span id="title-{{ loop.index }}">${{ shader.name }}</span></div>
+                                    <div class="mdui-card-primary-subtitle">by <span id="author-{{ loop.index }}">author of {{ shader.name }}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <script>
+            $(function() {
+                var editor = {
+                    value: undefined,
+                    setValue: function(value) { editor.value = value; },
+                    getValue: function() { return editor.value; },
+                };
+                var canvas = $('#canvas-' + {{ loop.index }});
+                var hub = new HubView(canvas, editor, {{ shader.name|tojson }});
+                hub.paused = true;
+
+                $('#card-' + {{ loop.index }}).hover(function() {
+                    setTimeout(function() {
+                        hub.paused = false;
+                        hub.onClick({ offsetX: (Math.random() * 0.8 + 0.1) * 512,
+                                      offsetY: (Math.random() * 0.8 + 0.1) * 512 });
+                    }, 100);
+                }, function() {
+                    hub.paused = true;
+                });
+
+                $.get('/load', {name: {{ shader.name|tojson }}}, function(res) {
+                    $('#title-' + {{ loop.index }}).html(res.title);
+                    $('#author-' + {{ loop.index }}).html(res.userid);
+                });
+            });
+            </script>
+        {% endfor %}
+
+            <button href="javascript:;" onclick="window.location.href = '/new'" class="mdui-m-l-1 mdui-m-r-1 mdui-m-t-2 mdui-m-b-1 mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple mdui-icon-left">
+                <i class="mdui-icon material-icons">add</i>Create new..
+            </button>
+        </div>
+
+        <script src="//cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"></script>
+    </body>
+</html>

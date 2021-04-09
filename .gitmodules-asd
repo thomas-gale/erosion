@@ -1,0 +1,9 @@
+[submodule "engine/toolchains"]
+	path = engine/toolchains
+	url = git://github.com/mosra/toolchains.git
+[submodule "engine/lib/corrade"]
+	path = engine/lib/corrade
+	url = https://github.com/mosra/corrade.git
+[submodule "engine/lib/magnum"]
+	path = engine/lib/magnum
+	url = https://github.com/mosra/magnum.git

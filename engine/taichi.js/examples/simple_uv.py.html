@@ -1,0 +1,35 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>simple_uv | Taichi.js</title>
+    <style>
+    canvas {
+        border: 1px solid black;
+    }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="512" height="512">no HTML5 support.</canvas>
+    <script src="./taichi.js"></script>
+    <script src="./simple_uv.py.js"></script>
+    <script>
+let taichi = new Taichi(Module);
+let RES = 512;
+
+taichi.ready(function() {
+
+    let canvas = document.getElementById('canvas');
+    let gui = new TaichiGUI(canvas, RES);
+
+    let paint = taichi.get('paint');
+    let vector_to_image = taichi.get('vector_to_image');
+
+    paint();
+    let extr = taichi.set_ext_arr(0, [RES, RES, 4]);
+    vector_to_image();
+
+    gui.set_image(extr);
+});
+    </script>
+</body>
+</html>

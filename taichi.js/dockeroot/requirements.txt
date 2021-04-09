@@ -1,5 +1,0 @@
-taichi
-taichi_glsl
-taichi_three
-jupyter
-pillow
