@@ -23,7 +23,9 @@ RUN sudo apt-get update \
         build-essential gdb \
         libtinfo-dev clang-8 \
         clang-format clang-tidy valgrind \
-        python3.8 python3.8-dev python3-pip \
+        python3.8 python3.8-dev python3-pip python-opengl \
+        libopenmpi-dev zlib1g-dev libsm6 libxext6 libxrender-dev \
+        libsdl2-dev \
     #
     # cmake
     && mkdir -p ~/temp && cd ~/temp \
