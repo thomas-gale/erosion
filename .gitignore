@@ -16,6 +16,9 @@ src/engine/*.wasm
 public/*.js
 public/*.wasm
 
+# magnum generator
+public/magnum
+
 # dependencies
 /node_modules
 /.pnp

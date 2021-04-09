@@ -4,7 +4,13 @@ project(ErosionEngine
     DESCRIPTION "Erosion physics engine"
     LANGUAGES CXX)
 
+# Project wide C++ standard
+set(CMAKE_CXX_STANDARD 17)
+
+# Magnum config
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules/" ${CMAKE_MODULE_PATH})
+set(CORRADE_TARGET_EMSCRIPTEN ON CACHE BOOL "" FORCE)
+set(WITH_EMSCRIPTENAPPLICATION ON CACHE BOOL "" FORCE)
 
 add_subdirectory(lib)
 add_subdirectory(src)
