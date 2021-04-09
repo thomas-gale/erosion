@@ -3,9 +3,7 @@ set -e
 
 # generate taichi code
 sudo docker build ./engine/lib/taichi.js -t taichihub
-python3.8 ./scripts/taichi-c-generator.py "helloworld"
-
-exit 0
+python3.8 ./scripts/taichi-c-generator.py
 
 # build main magnum emscripten application.
 cd engine 

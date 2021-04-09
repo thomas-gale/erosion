@@ -1,3 +1,8 @@
 build*/
 *.kdev4
 *~
+
+# taichi generated
+src/taichi/*.py.h
+src/taichi/*.py.c
+src/taichi/*.py.yml
