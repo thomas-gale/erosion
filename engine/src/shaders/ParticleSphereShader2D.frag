@@ -3,8 +3,8 @@
 
     Original authors — credit is appreciated but not required:
 
-        2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021
-             — Vladimír Vondruš <mosra@centrum.cz>
+        2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020 —
+            Vladimír Vondruš <mosra@centrum.cz>
         2019 — Nghia Truong <nghiatruong.vn@gmail.com>
 
     This is free and unencumbered software released into the public domain.
@@ -28,13 +28,12 @@
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-precision mediump float;
-in vec3 color;
-out vec4 fragmentColor;
+flat in lowp vec3 color;
+out lowp vec4 fragmentColor;
 
 void main() {
-    vec2 point = gl_PointCoord.xy*vec2(2.0, -2.0) + vec2(-1.0, 1.0);
-    float mag = dot(point, point);
+    mediump vec2 point = gl_PointCoord.xy*vec2(2.0, -2.0) + vec2(-1.0, 1.0);
+    mediump float mag = dot(point, point);
     if(mag > 1.0) discard; /* outside the circle */
     fragmentColor = vec4(color, 1.0);
 }

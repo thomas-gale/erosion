@@ -93,7 +93,7 @@ Engine::Engine(const Arguments &arguments)
     GLConfiguration glConf;
     glConf.setVersion(GL::Version::GLES300);
     glConf.setSampleCount(dpiScaling.max() < 2.0f ? 8 : 2);
-    // glConf.addFlags(GLConfiguration::Flag::EnableExtensionsByDefault);
+    glConf.addFlags(GLConfiguration::Flag::EnableExtensionsByDefault);
     if (!tryCreate(conf, glConf)) {
       create(conf, glConf.setSampleCount(0));
     }
