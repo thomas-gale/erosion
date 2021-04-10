@@ -10,6 +10,13 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+        with:
+            submodules: recursive
+
+      - name: build corrade resource compiler
+        uses: ./.github/actions/devcontainer-eval
+        with:
+          cmd: "./scripts/build-corrade-rc.sh"
 
       - name: build engine
         uses: ./.github/actions/devcontainer-eval
