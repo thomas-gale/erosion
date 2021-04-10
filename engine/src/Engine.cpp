@@ -58,6 +58,7 @@ private:
   Containers::Pointer<SceneGraph::Camera2D> _camera;
 
   // Engine entities
+  std::vector<Vector2> _testParticles;
   Containers::Pointer<ParticleGroup2D> _drawableParticles;
   Timeline timeline_;
 };
@@ -91,17 +92,7 @@ Engine::Engine(const Arguments &arguments)
   Tk_hub_get_num_particles_c10_0(&Ti_ctx);
   std::cout << "Number of particles: " << Ti_ctx.args[0].val_i32 << std::endl;
 
-  // Test GL version
-  // context
-
-  // context_ = std::make_unique<Platform::GLContext>();
-
-  // std::cout << "GLES200 supported: "
-  //           << context_->isVersionSupported(GL::Version::GLES200)
-  //           << std::endl;
-  // std::cout << "GLES300 supported: "
-  //           << context_->isVersionSupported(GL::Version::GLES300)
-  //           << std::endl;
+  _testParticles = std::vector<Vector2>{{10, 4}, {6, 40}};
 
   // Setup window
   std::cout << "Setting up window..." << std::endl;
@@ -135,8 +126,7 @@ Engine::Engine(const Arguments &arguments)
       .setViewport(GL::defaultFramebuffer.viewport().size());
 
   // Setup mpm sim data
-  _drawableParticles.emplace(std::vector<Vector2>{{0.5, 0.5}, {0.5, 0.6}},
-                             1.0f);
+  _drawableParticles.emplace(_testParticles, 1.0f);
 
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
 #ifndef MAGNUM_TARGET_GLES
@@ -166,14 +156,14 @@ void Engine::drawEvent() {
                              DomainDisplaySize.y());
 
     /* Draw other objects (boundary mesh, pointer mesh) */
-    _camera->draw(*_drawableGroup);
+    // _camera->draw(*_drawableGroup);
   }
 
   swapBuffers();
   timeline_.nextFrame();
 
   // Run next frame immediately
-  redraw();
+  // redraw();
 }
 } // namespace erosion
 
