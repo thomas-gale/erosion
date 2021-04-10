@@ -2,6 +2,9 @@ build*/
 *.kdev4
 *~
 
+# corrade rc binary
+corrade-rc/
+
 # taichi generated
 src/taichi/*.py.h
 src/taichi/*.py.c
