@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 #include <Corrade/Containers/Pointer.h>
 #include <Corrade/Utility/StlMath.h>
@@ -30,6 +31,8 @@ extern "C" {
 namespace erosion {
 
 using namespace Magnum;
+using namespace Math::Literals;
+
 using Scene2D = SceneGraph::Scene<SceneGraph::MatrixTransformation2D>;
 using Object2D = SceneGraph::Object<SceneGraph::MatrixTransformation2D>;
 
@@ -39,6 +42,9 @@ public:
 
 private:
   void drawEvent() override;
+
+  // GL context
+  // std::unique_ptr<Platform::GLContext> context_;
 
   // Scene and drawable group must be constructed before camera and other
   // drawable objects
@@ -73,7 +79,7 @@ Vector2 gridCenter() {
 } // namespace
 
 Engine::Engine(const Arguments &arguments)
-    : Platform::Application{arguments} {
+    : Platform::Application{arguments, NoCreate} {
 
   // Setup taichi
   std::cout << "Initialising taichi..." << std::endl;
@@ -83,6 +89,18 @@ Engine::Engine(const Arguments &arguments)
   Tk_hub_get_num_particles_c10_0(&Ti_ctx);
   std::cout << "Number of particles: " << Ti_ctx.args[0].val_i32 << std::endl;
 
+  // Test GL version
+  // context
+
+  // context_ = std::make_unique<Platform::GLContext>();
+
+  // std::cout << "GLES200 supported: "
+  //           << context_->isVersionSupported(GL::Version::GLES200)
+  //           << std::endl;
+  // std::cout << "GLES300 supported: "
+  //           << context_->isVersionSupported(GL::Version::GLES300)
+  //           << std::endl;
+
   // Setup window
   {
     const Vector2 dpiScaling = this->dpiScaling({});
@@ -90,11 +108,12 @@ Engine::Engine(const Arguments &arguments)
     conf.setTitle("Magnum 2D Fluid Simulation Example")
         .setSize(conf.size(), dpiScaling)
         .addWindowFlags(Configuration::WindowFlag::Resizable);
-    // GLConfiguration glConf;
-    // glConf.setSampleCount(dpiScaling.max() < 2.0f ? 8 : 2);
-    // if (!tryCreate(conf, glConf)) {
-    //   create(conf, glConf.setSampleCount(0));
-    // }
+    GLConfiguration glConf;
+    glConf.setVersion(GL::Version::GLES300);
+    glConf.setSampleCount(dpiScaling.max() < 2.0f ? 8 : 2);
+    if (!tryCreate(conf, glConf)) {
+      create(conf, glConf.setSampleCount(0));
+    }
   }
 
   // Setup scene objects and camera
