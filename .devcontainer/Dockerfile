@@ -42,10 +42,13 @@ RUN sudo apt-get update \
     && echo "source \"/home/${USERNAME}/emsdk/emsdk_env.sh\"" >> /home/${USERNAME}/.bashrc \
     && cd ~ \
     #
-    # libs for taichi / taichihub server
+    # libs for taichi / taichihub server (also install for root)
     && python3.8 -m pip install autopep8 pyyaml zmq \
+    && sudo -H python3.8 -m pip install autopep8 pyyaml zmq \
     && python3.8 -m pip install taichi taichi_glsl taichi_three \
+    && sudo -H python3.8 -m pip install taichi taichi_glsl taichi_three \
     && python3.8 -m pip install pymongo flask \
+    && sudo -H python3.8 -m pip install pymongo flask \
     && sudo apt-get install -y mongodb \
     #
     # install docker - x86_64 / amd64 stable
