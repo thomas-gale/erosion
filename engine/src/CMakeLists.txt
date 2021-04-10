@@ -5,6 +5,8 @@ find_package(Corrade REQUIRED Main)
 
 find_package(Magnum REQUIRED 
     GL
+    MeshTools
+    Primitives
     SceneGraph
     Shaders)
 

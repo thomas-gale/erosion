@@ -8,19 +8,21 @@
 #include <Magnum/GL/PixelFormat.h>
 #include <Magnum/GL/Renderer.h>
 #include <Magnum/GL/Version.h>
+#include <Magnum/Math/Color.h>
+#include <Magnum/Math/FunctionsBatch.h>
+#include <Magnum/MeshTools/Compile.h>
+#ifdef CORRADE_TARGET_EMSCRIPTEN
+#include <Magnum/Platform/EmscriptenApplication.h>
+#else
+#include <Magnum/Platform/Sdl2Application.h>
+#endif
 #include <Magnum/Primitives/Circle.h>
 #include <Magnum/SceneGraph/Camera.h>
 #include <Magnum/SceneGraph/Drawable.h>
-#include <Magnum/SceneGraph/FeatureGroup.h>
 #include <Magnum/SceneGraph/MatrixTransformation2D.h>
 #include <Magnum/SceneGraph/Scene.h>
-#include <Magnum/SceneGraph/SceneGraph.h>
 #include <Magnum/Timeline.h>
-#ifndef CORRADE_TARGET_EMSCRIPTEN
-#include <Magnum/Platform/Sdl2Application.h>
-#else
-#include <Magnum/Platform/EmscriptenApplication.h>
-#endif
+#include <Magnum/Trade/MeshData.h>
 
 #include "drawableobjects/ParticleGroup2D.h"
 
@@ -103,6 +105,7 @@ Engine::Engine(const Arguments &arguments)
 
   // Setup window
   std::cout << "Setting up window..." << std::endl;
+
   {
     const Vector2 dpiScaling = this->dpiScaling({});
     Configuration conf;
@@ -110,12 +113,12 @@ Engine::Engine(const Arguments &arguments)
         .setSize(conf.size(), dpiScaling)
         .setWindowFlags(Configuration::WindowFlag::Resizable);
     GLConfiguration glConf;
-    glConf.setVersion(GL::Version::GLES300);
     glConf.setSampleCount(dpiScaling.max() < 2.0f ? 8 : 2);
     if (!tryCreate(conf, glConf)) {
       create(conf, glConf.setSampleCount(0));
     }
   }
+
   std::cout << "Window scaling and GL context done..." << std::endl;
 
   // Setup scene objects and camera
