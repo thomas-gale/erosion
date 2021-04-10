@@ -5,6 +5,8 @@ find_package(Magnum REQUIRED
     SceneGraph
     Shaders)
 
+find_package(OpenGLES3 REQUIRED)
+
 if(CORRADE_TARGET_EMSCRIPTEN)
     find_package(Magnum REQUIRED EmscriptenApplication)
 else()
