@@ -1,5 +1,8 @@
 find_package(Corrade REQUIRED Main)
 
+# find_package(OpenGLES3 REQUIRED)
+# message(STATUS "OpenGLES3 Found: ${OpenGLES3_FOUND}")
+
 find_package(Magnum REQUIRED 
     GL
     SceneGraph
@@ -27,16 +30,20 @@ ${ErosionEngine_RESOURCES})
 target_link_libraries(engine PRIVATE
     Corrade::Main
     Magnum::Application
+    # Magnum::EmscriptenApplication
     Magnum::GL
     Magnum::Magnum
     Magnum::MeshTools
     Magnum::Primitives
     Magnum::SceneGraph
     Magnum::Shaders
+    # OpenGLES3::OpenGLES3
     taichi)
 
 target_include_directories(engine PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_compile_definitions(engine PUBLIC MAGNUM_TARGET_GLES3)
 
 # For Emscripten copy the boilerplate next to the executable so it can be run
 # directly from the build dir; provide an install target as well

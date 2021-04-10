@@ -102,12 +102,13 @@ Engine::Engine(const Arguments &arguments)
   //           << std::endl;
 
   // Setup window
+  std::cout << "Setting up window..." << std::endl;
   {
     const Vector2 dpiScaling = this->dpiScaling({});
     Configuration conf;
     conf.setTitle("Magnum 2D Fluid Simulation Example")
         .setSize(conf.size(), dpiScaling)
-        .addWindowFlags(Configuration::WindowFlag::Resizable);
+        .setWindowFlags(Configuration::WindowFlag::Resizable);
     GLConfiguration glConf;
     glConf.setVersion(GL::Version::GLES300);
     glConf.setSampleCount(dpiScaling.max() < 2.0f ? 8 : 2);
@@ -115,6 +116,7 @@ Engine::Engine(const Arguments &arguments)
       create(conf, glConf.setSampleCount(0));
     }
   }
+  std::cout << "Window scaling and GL context done..." << std::endl;
 
   // Setup scene objects and camera
   _scene.emplace();
@@ -172,4 +174,4 @@ void Engine::drawEvent() {
 }
 } // namespace erosion
 
-MAGNUM_APPLICATION_MAIN(erosion::Engine)
+MAGNUM_EMSCRIPTENAPPLICATION_MAIN(erosion::Engine)
