@@ -12,7 +12,7 @@ export const Engine = (): JSX.Element => {
 
   return (
     <div>
-      <h2>Module: { mod }</h2>
+      <h2>Module: { mod && mod.toString() }</h2>
       <canvas id="canvas"></canvas>
     </div>
   );
