@@ -3,7 +3,7 @@
 	url = https://github.com/mosra/corrade
 [submodule "engine/lib/magnum"]
 	path = engine/lib/magnum
-	url = https://github.com/mosra/magnum
+	url = https://github.com/thomas-gale/magnum
 [submodule "engine/toolchains"]
 	path = engine/toolchains
 	url = https://github.com/mosra/toolchains
