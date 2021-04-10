@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include <Corrade/Containers/Pointer.h>
+#include <Corrade/Utility/StlMath.h>
 #include <Magnum/GL/Context.h>
 #include <Magnum/GL/DefaultFramebuffer.h>
 #include <Magnum/GL/PixelFormat.h>
@@ -72,7 +73,7 @@ Vector2 gridCenter() {
 } // namespace
 
 Engine::Engine(const Arguments &arguments)
-    : Platform::Application{arguments, NoCreate} {
+    : Platform::Application{arguments} {
 
   // Setup taichi
   std::cout << "Initialising taichi..." << std::endl;
@@ -88,15 +89,12 @@ Engine::Engine(const Arguments &arguments)
     Configuration conf;
     conf.setTitle("Magnum 2D Fluid Simulation Example")
         .setSize(conf.size(), dpiScaling)
-        .setWindowFlags(Configuration::WindowFlag::Resizable);
-    // .setWindowFlags(Configuration::WindowFlag::AlwaysRequestAnimationFrame);
-    GLConfiguration glConf;
-    glConf.setVersion(GL::Version::GLES300);
-    glConf.setSampleCount(dpiScaling.max() < 2.0f ? 8 : 2);
-    glConf.addFlags(GLConfiguration::Flag::EnableExtensionsByDefault);
-    if (!tryCreate(conf, glConf)) {
-      create(conf, glConf.setSampleCount(0));
-    }
+        .addWindowFlags(Configuration::WindowFlag::Resizable);
+    // GLConfiguration glConf;
+    // glConf.setSampleCount(dpiScaling.max() < 2.0f ? 8 : 2);
+    // if (!tryCreate(conf, glConf)) {
+    //   create(conf, glConf.setSampleCount(0));
+    // }
   }
 
   // Setup scene objects and camera
@@ -148,6 +146,7 @@ void Engine::drawEvent() {
   }
 
   swapBuffers();
+  timeline_.nextFrame();
 
   // Run next frame immediately
   redraw();

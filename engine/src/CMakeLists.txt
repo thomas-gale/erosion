@@ -48,16 +48,12 @@ if(CORRADE_TARGET_EMSCRIPTEN)
             ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
             ${MAGNUM_WEBAPPLICATION_CSS}
             ${CMAKE_CURRENT_SOURCE_DIR}/engine.html
-            # ${CMAKE_CURRENT_SOURCE_DIR}/shaders/ParticleSphereShader2D.vert
-            # ${CMAKE_CURRENT_SOURCE_DIR}/shaders/ParticleSphereShader2D.frag
             ${CMAKE_CURRENT_SOURCE_DIR}/engine.html
             $<TARGET_FILE_DIR:engine>)
 
     install(TARGETS engine DESTINATION ${MAGNUM_DEPLOY_PREFIX})
     install(FILES
         engine.html
-        # shaders/ParticleSphereShader2D.vert
-        # shaders/ParticleSphereShader2D.frag
         ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
         ${MAGNUM_WEBAPPLICATION_CSS}
         DESTINATION ${MAGNUM_DEPLOY_PREFIX})
