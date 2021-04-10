@@ -20,7 +20,9 @@ set(WITH_EMSCRIPTENAPPLICATION ON CACHE BOOL "" FORCE)
 # emscripten config
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s MAX_WEBGL_VERSION=2")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s MIN_WEBGL_VERSION=2 -s FULL_ES3=1")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s MIN_WEBGL_VERSION=2")
+
+# force webgl 2, link with dyncall for taichi.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s MIN_WEBGL_VERSION=2 -s  -s \"DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']\"")
 
 add_subdirectory(lib)
 add_subdirectory(src)
