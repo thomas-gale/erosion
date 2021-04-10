@@ -88,11 +88,12 @@ Engine::Engine(const Arguments &arguments)
     Configuration conf;
     conf.setTitle("Magnum 2D Fluid Simulation Example")
         .setSize(conf.size(), dpiScaling)
-        .setWindowFlags(Configuration::WindowFlag::Resizable)
-        .setWindowFlags(Configuration::WindowFlag::AlwaysRequestAnimationFrame);
+        .setWindowFlags(Configuration::WindowFlag::Resizable);
+    // .setWindowFlags(Configuration::WindowFlag::AlwaysRequestAnimationFrame);
     GLConfiguration glConf;
+    glConf.setVersion(GL::Version::GLES300);
     glConf.setSampleCount(dpiScaling.max() < 2.0f ? 8 : 2);
-    glConf.addFlags(GLConfiguration::Flag::EnableExtensionsByDefault);
+    // glConf.addFlags(GLConfiguration::Flag::EnableExtensionsByDefault);
     if (!tryCreate(conf, glConf)) {
       create(conf, glConf.setSampleCount(0));
     }
@@ -112,9 +113,13 @@ Engine::Engine(const Arguments &arguments)
       .setViewport(GL::defaultFramebuffer.viewport().size());
 
   // Setup mpm sim data
-  _drawableParticles.emplace(std::vector<Vector2>{ { 0.5, 0.5 }, { 0.5, 0.6} }, 1.0f);
+  _drawableParticles.emplace(std::vector<Vector2>{{0.5, 0.5}, {0.5, 0.6}},
+                             1.0f);
 
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
+#ifndef MAGNUM_TARGET_GLES
+  GL::Renderer::enable(GL::Renderer::Feature::ProgramPointSize);
+#endif
 
   // Start the timer and loop at max 60hz
   timeline_.start();
@@ -143,6 +148,9 @@ void Engine::drawEvent() {
   }
 
   swapBuffers();
+
+  // Run next frame immediately
+  redraw();
 }
 } // namespace erosion
 

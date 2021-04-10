@@ -2,7 +2,9 @@ find_package(Corrade REQUIRED Main)
 
 find_package(Magnum REQUIRED 
     GL
-    SceneGraph)
+    SceneGraph
+    Shaders)
+
 if(CORRADE_TARGET_EMSCRIPTEN)
     find_package(Magnum REQUIRED EmscriptenApplication)
 else()
@@ -23,10 +25,14 @@ Engine.cpp
 ${ErosionEngine_RESOURCES})
 
 target_link_libraries(engine PRIVATE
+    Corrade::Main
     Magnum::Application
     Magnum::GL
     Magnum::Magnum
+    Magnum::MeshTools
+    Magnum::Primitives
     Magnum::SceneGraph
+    Magnum::Shaders
     taichi)
 
 target_include_directories(engine PRIVATE
