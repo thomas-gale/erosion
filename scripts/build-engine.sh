@@ -16,3 +16,10 @@ cmake .. \
 
 cmake --build .
 cmake --build . --target install
+cd ../..
+
+# copy built files to cra binding point
+mkdir -p src/engine
+find ./public/magnum/ -name "*.wasm" -exec cp '{}' ./public/ \;
+find ./public/magnum/ -name "*.js" -exec cp '{}' ./src/engine/ \;
+find ./src/engine/ -name "*.js" -exec sed -i '1i/* eslint-disable */' '{}' \;

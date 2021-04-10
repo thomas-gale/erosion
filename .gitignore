@@ -13,6 +13,7 @@ taichi.js/taichihub/cache
 # emscripten generated
 src/engine/*.js
 src/engine/*.wasm
+src/engine/*.css
 public/*.js
 public/*.wasm
 
