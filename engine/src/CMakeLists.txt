@@ -1,7 +1,8 @@
+find_package(Corrade REQUIRED Main)
+
 find_package(Magnum REQUIRED 
     GL
     SceneGraph)
-
 if(CORRADE_TARGET_EMSCRIPTEN)
     find_package(Magnum REQUIRED EmscriptenApplication)
 else()
@@ -10,13 +11,16 @@ endif()
 
 set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
+corrade_add_resource(ErosionEngine_RESOURCES resources.conf)
+
 add_subdirectory(taichi)
 
 # TODO, move some of this stuff into separate library targets
 add_executable(engine 
 shaders/ParticleSphereShader2D.h shaders/ParticleSphereShader2D.cpp
 drawableobjects/ParticleGroup2D.h drawableobjects/ParticleGroup2D.cpp
-Engine.cpp)
+Engine.cpp
+${ErosionEngine_RESOURCES})
 
 target_link_libraries(engine PRIVATE
     Magnum::Application
@@ -36,16 +40,16 @@ if(CORRADE_TARGET_EMSCRIPTEN)
             ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
             ${MAGNUM_WEBAPPLICATION_CSS}
             ${CMAKE_CURRENT_SOURCE_DIR}/engine.html
-            ${CMAKE_CURRENT_SOURCE_DIR}/shaders/ParticleSphereShader2D.vert
-            ${CMAKE_CURRENT_SOURCE_DIR}/shaders/ParticleSphereShader2D.frag
+            # ${CMAKE_CURRENT_SOURCE_DIR}/shaders/ParticleSphereShader2D.vert
+            # ${CMAKE_CURRENT_SOURCE_DIR}/shaders/ParticleSphereShader2D.frag
             ${CMAKE_CURRENT_SOURCE_DIR}/engine.html
             $<TARGET_FILE_DIR:engine>)
 
     install(TARGETS engine DESTINATION ${MAGNUM_DEPLOY_PREFIX})
     install(FILES
         engine.html
-        shaders/ParticleSphereShader2D.vert
-        shaders/ParticleSphereShader2D.frag
+        # shaders/ParticleSphereShader2D.vert
+        # shaders/ParticleSphereShader2D.frag
         ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
         ${MAGNUM_WEBAPPLICATION_CSS}
         DESTINATION ${MAGNUM_DEPLOY_PREFIX})

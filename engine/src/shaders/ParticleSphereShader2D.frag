@@ -28,8 +28,9 @@
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-flat in vec3 color;
-out lowp vec4 fragmentColor;
+precision mediump float;
+in vec3 color;
+out vec4 fragmentColor;
 
 void main() {
     vec2 point = gl_PointCoord.xy*vec2(2.0, -2.0) + vec2(-1.0, 1.0);

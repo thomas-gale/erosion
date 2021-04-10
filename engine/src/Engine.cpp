@@ -1,7 +1,11 @@
 #include <iostream>
 
 #include <Corrade/Containers/Pointer.h>
+#include <Magnum/GL/Context.h>
 #include <Magnum/GL/DefaultFramebuffer.h>
+#include <Magnum/GL/PixelFormat.h>
+#include <Magnum/GL/Renderer.h>
+#include <Magnum/GL/Version.h>
 #include <Magnum/Primitives/Circle.h>
 #include <Magnum/SceneGraph/Camera.h>
 #include <Magnum/SceneGraph/Drawable.h>
@@ -69,6 +73,7 @@ Vector2 gridCenter() {
 
 Engine::Engine(const Arguments &arguments)
     : Platform::Application{arguments, NoCreate} {
+
   // Setup taichi
   std::cout << "Initialising taichi..." << std::endl;
   Tk_reset_c6_0(&Ti_ctx);
@@ -83,28 +88,33 @@ Engine::Engine(const Arguments &arguments)
     Configuration conf;
     conf.setTitle("Magnum 2D Fluid Simulation Example")
         .setSize(conf.size(), dpiScaling)
-        .setWindowFlags(Configuration::WindowFlag::Resizable);
+        .setWindowFlags(Configuration::WindowFlag::Resizable)
+        .setWindowFlags(Configuration::WindowFlag::AlwaysRequestAnimationFrame);
     GLConfiguration glConf;
     glConf.setSampleCount(dpiScaling.max() < 2.0f ? 8 : 2);
+    glConf.addFlags(GLConfiguration::Flag::EnableExtensionsByDefault);
     if (!tryCreate(conf, glConf)) {
       create(conf, glConf.setSampleCount(0));
     }
   }
 
   // Setup scene objects and camera
-  {
-    _scene.emplace();
-    _drawableGroup.emplace();
+  _scene.emplace();
+  _drawableGroup.emplace();
 
-    /* Configure camera */
-    _objCamera.emplace(_scene.get());
-    _objCamera->setTransformation(Matrix3::translation(gridCenter()));
+  /* Configure camera */
+  _objCamera.emplace(_scene.get());
+  _objCamera->setTransformation(Matrix3::translation(gridCenter()));
 
-    _camera.emplace(*_objCamera);
-    _camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
-        .setProjectionMatrix(Matrix3::projection(Vector2{DomainDisplaySize}))
-        .setViewport(GL::defaultFramebuffer.viewport().size());
-  }
+  _camera.emplace(*_objCamera);
+  _camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
+      .setProjectionMatrix(Matrix3::projection(Vector2{DomainDisplaySize}))
+      .setViewport(GL::defaultFramebuffer.viewport().size());
+
+  // Setup mpm sim data
+  _drawableParticles.emplace(std::vector<Vector2>{ { 0.5, 0.5 }, { 0.5, 0.6} }, 1.0f);
+
+  GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
 
   // Start the timer and loop at max 60hz
   timeline_.start();
@@ -117,7 +127,20 @@ void Engine::drawEvent() {
   Tk_substep_c4_0(&Ti_ctx);
 
   /* TODO: Add your drawing code here */
-  GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
+  GL::defaultFramebuffer.clear(GL::FramebufferClear::Color |
+                               GL::FramebufferClear::Depth);
+
+  /* Draw objects */
+  {
+    /* Trigger drawable object to update the particles to the GPU */
+    _drawableParticles->setDirty();
+    _drawableParticles->draw(_camera,
+                             GL::defaultFramebuffer.viewport().size().y(),
+                             DomainDisplaySize.y());
+
+    /* Draw other objects (boundary mesh, pointer mesh) */
+    _camera->draw(*_drawableGroup);
+  }
 
   swapBuffers();
 }
