@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 #include <memory>
 
@@ -58,6 +59,7 @@ private:
   Containers::Pointer<SceneGraph::Camera2D> _camera;
 
   // Engine entities
+  float _pos;
   std::vector<Vector2> _testParticles;
   Containers::Pointer<ParticleGroup2D> _drawableParticles;
   Timeline timeline_;
@@ -92,6 +94,8 @@ Engine::Engine(const Arguments &arguments)
   Tk_hub_get_num_particles_c10_0(&Ti_ctx);
   std::cout << "Number of particles: " << Ti_ctx.args[0].val_i32 << std::endl;
 
+  // Test
+  _pos = 0.0f;
   _testParticles = std::vector<Vector2>{{10, 4}, {6, 40}};
 
   // Setup window
@@ -139,13 +143,20 @@ Engine::Engine(const Arguments &arguments)
 
 void Engine::drawEvent() {
   /* TODO: Move to dedicated running loop */
-  std::cout << "substepping, previous frame duration: "
-            << timeline_.previousFrameDuration() << std::endl;
+  // std::cout << "substepping, previous frame duration: "
+  // << timeline_.previousFrameDuration() << std::endl;
   Tk_substep_c4_0(&Ti_ctx);
 
   /* TODO: Add your drawing code here */
   GL::defaultFramebuffer.clear(GL::FramebufferClear::Color |
                                GL::FramebufferClear::Depth);
+
+  // Update
+  _pos += 1.0f * timeline_.previousFrameDuration();
+  _testParticles[0][0] = 20.0f * std::cos(_pos);
+  _testParticles[0][1] = 20.0f * std::sin(_pos);
+  _testParticles[1][0] = 30.0f * std::cos(_pos);
+  _testParticles[1][1] = 30.0f * std::sin(_pos);
 
   /* Draw objects */
   {
@@ -163,7 +174,7 @@ void Engine::drawEvent() {
   timeline_.nextFrame();
 
   // Run next frame immediately
-  // redraw();
+  redraw();
 }
 } // namespace erosion
 
