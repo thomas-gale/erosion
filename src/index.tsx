@@ -13,7 +13,6 @@ ReactDOM.render(
       <CssBaseline />
       <App />
     </ThemeProvider>
-    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

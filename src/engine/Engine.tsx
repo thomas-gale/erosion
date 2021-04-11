@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    margin: "1rem -1rem 1rem -1rem"
+  canvas: {
+    width: "100%",
+    height: "100%",
   },
 }));
 
@@ -21,5 +22,7 @@ export const Engine = (): JSX.Element => {
     });
   }, [setMod]);
 
-  return <canvas className={classes.container} ref={canvasRef} id="canvas"></canvas>;
+  return (
+    <canvas ref={canvasRef} className={classes.canvas} id="canvas"/>
+  );
 };
