@@ -1,4 +1,3 @@
-import './App.css';
 import { Engine } from './engine/Engine';
 import { Box, Grid } from '@material-ui/core';
 import React from 'react';
