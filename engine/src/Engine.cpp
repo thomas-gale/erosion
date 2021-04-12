@@ -39,69 +39,45 @@ using namespace Math::Literals;
 using Scene2D = SceneGraph::Scene<SceneGraph::MatrixTransformation2D>;
 using Object2D = SceneGraph::Object<SceneGraph::MatrixTransformation2D>;
 
-// Scoped settings.
-namespace {
-
-constexpr Float GridCellLength = 1.0f;       /* length of 1 grid cell */
-constexpr Vector2i NumGridCells{100, 100};   /* number of cells */
-constexpr Vector2 GridStart{-50.0f, -50.0f}; /* lower corner of the grid */
-constexpr Int RadiusCircleBoundary = 45;     /* radius of the boundary circle */
-
-/* Viewport will display this window */
-constexpr Float ProjectionScale = 1.05f;
-const Vector2i DomainDisplaySize =
-    NumGridCells * GridCellLength * ProjectionScale;
-
-Vector2 gridCenter() {
-  return Vector2{NumGridCells} * GridCellLength * 0.5f + GridStart;
-}
-
 class Engine : public Platform::Application {
 public:
   explicit Engine(const Arguments &arguments);
 
 private:
   void drawEvent() override;
+  void updateParticles();
 
-  // GL context
-  // std::unique_ptr<Platform::GLContext> context_;
-
-  // Scene and drawable group must be constructed before camera and other
+  // scene and drawable group must be constructed before camera and other
   // drawable objects
   Containers::Pointer<Scene2D> _scene;
   Containers::Pointer<SceneGraph::DrawableGroup2D> _drawableGroup;
 
-  // Camera helpers
+  // camera helpers
   Containers::Pointer<Object2D> _objCamera;
   Containers::Pointer<SceneGraph::Camera2D> _camera;
 
-  // Engine entities
+  // engine entities
   float _pos;
+  int _numParticles;
   std::vector<Vector2> _testParticles;
   Containers::Pointer<ParticleGroup2D> _drawableParticles;
   Timeline timeline_;
 };
 
-} // namespace
-
 Engine::Engine(const Arguments &arguments)
     : Platform::Application{arguments, NoCreate} {
 
-  // Setup taichi
+  // setup taichi
   std::cout << "Initialising taichi..." << std::endl;
   Tk_reset_c6_0(&Ti_ctx);
   std::cout << "Initialised taichi!" << std::endl;
 
   Tk_hub_get_num_particles_c10_0(&Ti_ctx);
-  std::cout << "Number of particles: " << Ti_ctx.args[0].val_i32 << std::endl;
+  _numParticles = Ti_ctx.args[0].val_i32;
+  std::cout << "Number of particles: " << _numParticles << std::endl;
 
-  // Test
-  _pos = 0.0f;
-  _testParticles = std::vector<Vector2>{{10, 4}, {6, 40}};
-
-  // Setup window
+  // setup window
   std::cout << "Setting up window..." << std::endl;
-
   {
     const Vector2 dpiScaling = this->dpiScaling({});
     Configuration conf;
@@ -114,69 +90,66 @@ Engine::Engine(const Arguments &arguments)
       create(conf, glConf.setSampleCount(0));
     }
   }
-
   std::cout << "Window scaling and GL context done..." << std::endl;
 
-  // Setup scene objects and camera
+  // setup scene objects and camera
   _scene.emplace();
   _drawableGroup.emplace();
 
-  /* Configure camera */
+  // configure camera
+  auto size = GL::defaultFramebuffer.viewport().size();
+  std::cout << "Viewport size: " << size.x() << " x " << size.y() << std::endl;
   _objCamera.emplace(_scene.get());
-  _objCamera->setTransformation(Matrix3::translation(gridCenter()));
-
   _camera.emplace(*_objCamera);
   _camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
-      .setProjectionMatrix(Matrix3::projection(Vector2{DomainDisplaySize}))
+      .setProjectionMatrix(Matrix3::projection(Vector2(1.0f, 1.0f)))
       .setViewport(GL::defaultFramebuffer.viewport().size());
 
-  // Setup mpm sim data
-  _drawableParticles.emplace(_testParticles, 1.0f);
+  // setup mpm sim data
+  _testParticles = std::vector<Vector2>(_numParticles);
+  updateParticles();
+  _drawableParticles.emplace(_testParticles, 0.01f);
 
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
-#ifndef MAGNUM_TARGET_GLES
-  GL::Renderer::enable(GL::Renderer::Feature::ProgramPointSize);
-#endif
 
-  // Start the timer and loop at max 60hz
+  // start the timer
   timeline_.start();
 }
 
 void Engine::drawEvent() {
-  /* TODO: Move to dedicated running loop */
   // std::cout << "substepping, previous frame duration: "
   // << timeline_.previousFrameDuration() << std::endl;
-  Tk_substep_c4_0(&Ti_ctx);
 
-  /* TODO: Add your drawing code here */
+  // for (auto i = 0; i < 20; ++i) {
+  Tk_substep_c4_0(&Ti_ctx);
+  // }
+  updateParticles();
+
+  // drawing code
   GL::defaultFramebuffer.clear(GL::FramebufferClear::Color |
                                GL::FramebufferClear::Depth);
 
-  // Update
-  _pos += 1.0f * timeline_.previousFrameDuration();
-  _testParticles[0][0] = 20.0f * std::cos(_pos);
-  _testParticles[0][1] = 20.0f * std::sin(_pos);
-  _testParticles[1][0] = 30.0f * std::cos(_pos);
-  _testParticles[1][1] = 30.0f * std::sin(_pos);
+  // trigger drawable object to update the particles to the GPU
+  _drawableParticles->setDirty();
+  _drawableParticles->draw(_camera,
+                           GL::defaultFramebuffer.viewport().size().y(), 1.0);
 
-  /* Draw objects */
-  {
-    /* Trigger drawable object to update the particles to the GPU */
-    _drawableParticles->setDirty();
-    _drawableParticles->draw(_camera,
-                             GL::defaultFramebuffer.viewport().size().y(),
-                             DomainDisplaySize.y());
-
-    /* Draw other objects (boundary mesh, pointer mesh) */
-    // _camera->draw(*_drawableGroup);
-  }
-
+  // draw
   swapBuffers();
   timeline_.nextFrame();
 
-  // Run next frame immediately
+  // run next frame immediately (emscripten pauses otherwise)
   redraw();
 }
+
+void Engine::updateParticles() {
+  Tk_hub_get_particles_c12_0(&Ti_ctx);
+  for (auto i = 0; i < _numParticles; ++i) {
+    _testParticles[i] =
+        Vector2(Ti_ctx.root->S1[i].S2 - 0.5, Ti_ctx.root->S1[i].S3 - 0.5);
+  }
+}
+
 } // namespace erosion
 
 MAGNUM_EMSCRIPTENAPPLICATION_MAIN(erosion::Engine)
