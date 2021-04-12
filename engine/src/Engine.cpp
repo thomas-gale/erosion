@@ -44,6 +44,8 @@ public:
   explicit Engine(const Arguments &arguments);
 
 private:
+  static int constexpr SIMULATION_SUBSTEP = 5;
+
   void drawEvent() override;
   void updateParticles();
 
@@ -111,18 +113,14 @@ Engine::Engine(const Arguments &arguments)
   _drawableParticles.emplace(_testParticles, 0.01f);
 
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
-
-  // start the timer
-  timeline_.start();
 }
 
 void Engine::drawEvent() {
-  // std::cout << "substepping, previous frame duration: "
-  // << timeline_.previousFrameDuration() << std::endl;
 
-  // for (auto i = 0; i < 20; ++i) {
-  Tk_substep_c4_0(&Ti_ctx);
-  // }
+  // update mpm simulation
+  for (int i = 0; i < SIMULATION_SUBSTEP; ++i) {
+    Tk_substep_c4_0(&Ti_ctx);
+  }
   updateParticles();
 
   // drawing code
@@ -136,7 +134,6 @@ void Engine::drawEvent() {
 
   // draw
   swapBuffers();
-  timeline_.nextFrame();
 
   // run next frame immediately (emscripten pauses otherwise)
   redraw();
