@@ -23,3 +23,4 @@ mkdir -p src/engine
 find ./public/magnum/ -name "*.wasm" -exec cp '{}' ./public/ \;
 find ./public/magnum/ -name "engine.js" -exec cp '{}' ./src/engine/ \;
 find ./src/engine/ -name "engine.js" -exec sed -i '1i/* eslint-disable */' '{}' \;
+rm -r ./public/magnum
