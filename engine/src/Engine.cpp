@@ -39,6 +39,23 @@ using namespace Math::Literals;
 using Scene2D = SceneGraph::Scene<SceneGraph::MatrixTransformation2D>;
 using Object2D = SceneGraph::Object<SceneGraph::MatrixTransformation2D>;
 
+// Scoped settings.
+namespace {
+
+constexpr Float GridCellLength = 1.0f;       /* length of 1 grid cell */
+constexpr Vector2i NumGridCells{100, 100};   /* number of cells */
+constexpr Vector2 GridStart{-50.0f, -50.0f}; /* lower corner of the grid */
+constexpr Int RadiusCircleBoundary = 45;     /* radius of the boundary circle */
+
+/* Viewport will display this window */
+constexpr Float ProjectionScale = 1.05f;
+const Vector2i DomainDisplaySize =
+    NumGridCells * GridCellLength * ProjectionScale;
+
+Vector2 gridCenter() {
+  return Vector2{NumGridCells} * GridCellLength * 0.5f + GridStart;
+}
+
 class Engine : public Platform::Application {
 public:
   explicit Engine(const Arguments &arguments);
@@ -64,22 +81,6 @@ private:
   Containers::Pointer<ParticleGroup2D> _drawableParticles;
   Timeline timeline_;
 };
-
-namespace {
-
-constexpr Float GridCellLength = 1.0f;       /* length of 1 grid cell */
-constexpr Vector2i NumGridCells{100, 100};   /* number of cells */
-constexpr Vector2 GridStart{-50.0f, -50.0f}; /* lower corner of the grid */
-constexpr Int RadiusCircleBoundary = 45;     /* radius of the boundary circle */
-
-/* Viewport will display this window */
-constexpr Float ProjectionScale = 1.05f;
-const Vector2i DomainDisplaySize =
-    NumGridCells * GridCellLength * ProjectionScale;
-
-Vector2 gridCenter() {
-  return Vector2{NumGridCells} * GridCellLength * 0.5f + GridStart;
-}
 
 } // namespace
 
