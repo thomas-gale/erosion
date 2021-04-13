@@ -1,8 +1,5 @@
 find_package(Corrade REQUIRED Main)
 
-# find_package(OpenGLES3 REQUIRED)
-# message(STATUS "OpenGLES3 Found: ${OpenGLES3_FOUND}")
-
 find_package(Magnum REQUIRED 
     GL
     MeshTools
@@ -32,14 +29,12 @@ ${ErosionEngine_RESOURCES})
 target_link_libraries(engine PRIVATE
     Corrade::Main
     Magnum::Application
-    # Magnum::EmscriptenApplication
     Magnum::GL
     Magnum::Magnum
     Magnum::MeshTools
     Magnum::Primitives
     Magnum::SceneGraph
     Magnum::Shaders
-    # OpenGLES3::OpenGLES3
     taichi)
 
 target_include_directories(engine PRIVATE
@@ -53,17 +48,8 @@ if(CORRADE_TARGET_EMSCRIPTEN)
     add_custom_command(TARGET engine POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
-            ${MAGNUM_WEBAPPLICATION_CSS}
-            ${CMAKE_CURRENT_SOURCE_DIR}/engine.html
-            ${CMAKE_CURRENT_SOURCE_DIR}/engine.html
             $<TARGET_FILE_DIR:engine>)
-
     install(TARGETS engine DESTINATION ${MAGNUM_DEPLOY_PREFIX})
-    install(FILES
-        engine.html
-        ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
-        ${MAGNUM_WEBAPPLICATION_CSS}
-        DESTINATION ${MAGNUM_DEPLOY_PREFIX})
     install(FILES
         $<TARGET_FILE_DIR:engine>/engine.js.mem
         $<TARGET_FILE_DIR:engine>/engine.wasm
