@@ -44,7 +44,7 @@ public:
   explicit Engine(const Arguments &arguments);
 
 private:
-  static int constexpr SIMULATION_SUBSTEP = 5;
+  static int constexpr SIMULATION_SUBSTEP = 10;
 
   void drawEvent() override;
   void updateParticles();
