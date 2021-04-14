@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 # magnum config
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules/" ${CMAKE_MODULE_PATH})
 set(WITH_EMSCRIPTENAPPLICATION ON CACHE BOOL "" FORCE)
+set(WITH_ANYIMAGEIMPORTER ON CACHE BOOL "" FORCE)
 
 # emscripten flags
 # force webgl 2, link with dyncall for taichi.

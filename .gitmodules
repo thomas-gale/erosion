@@ -10,3 +10,6 @@
 [submodule "engine/lib/taichi.js"]
 	path = engine/lib/taichi.js
 	url = https://github.com/thomas-gale/taichi.js.git
+[submodule "engine/lib/magnum-plugins"]
+	path = engine/lib/magnum-plugins
+	url = https://github.com/mosra/magnum-plugins.git
