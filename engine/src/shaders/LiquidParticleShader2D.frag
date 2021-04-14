@@ -31,20 +31,20 @@
 flat in lowp vec3 color;
 out lowp vec4 fragmentColor;
 
-mediump float metaball(mediump vec2 p, mediump float r) {
-  return r / dot(p, p);
-}
+// mediump float metaball(mediump vec2 p, mediump float r) {
+//   return r / dot(p, p);
+// }
 
 void main() {
   mediump vec2 point = gl_PointCoord.xy * vec2(2.0, -2.0) + vec2(-1.0, 1.0);
 
-  mediump float ball = metaball(point, 1.0f);
-  mediump float c = clamp(ball+0.5f, 0.5f, 1.0f);
+  // mediump float ball = metaball(point, 1.0f);
+  // mediump float c = clamp(ball+0.5f, 0.5f, 1.0f);
 
-  //   mediump float mag = dot(point, point);
+  mediump float mag = dot(point, point);
 
-  //   if (mag > 1.0)
-  // discard; /* outside the circle */
+  if (mag > 1.0)
+    discard; /* outside the circle */
 
-  fragmentColor = vec4(color, c);
+  fragmentColor = vec4(color, 1.0f);
 }

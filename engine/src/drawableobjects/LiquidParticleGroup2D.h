@@ -31,7 +31,7 @@
 #include <Magnum/SceneGraph/Camera.h>
 #include <vector>
 
-#include "shaders/LiquidParticleShader2D.h
+#include "shaders/LiquidParticleShader2D.h"
 
 namespace erosion {
 
@@ -57,13 +57,6 @@ public:
     return *this;
   }
 
-  LiquidParticleShader2D::ColorMode colorMode() const { return _colorMode; }
-
-  LiquidParticleGroup2D &setColorMode(LiquidParticleShader2D::ColorMode colorMode) {
-    _colorMode = colorMode;
-    return *this;
-  }
-
   const Color3 &color() const { return _color; }
 
   LiquidParticleGroup2D &setColor(const Color3 &color) {
@@ -76,8 +69,6 @@ private:
   bool _dirty = false;
 
   Float _particleRadius = 1.0f;
-  LiquidParticleShader2D::ColorMode _colorMode =
-      LiquidParticleShader2D::ColorMode::RampColorById;
   Color3 _color{0.6f, 0.6f, 1.0f};
 
   GL::Buffer _bufferParticles;

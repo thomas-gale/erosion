@@ -25,7 +25,7 @@
 #include <Magnum/Timeline.h>
 #include <Magnum/Trade/MeshData.h>
 
-#include "drawableobjects/SolidParticleGroup2D.h"
+#include "drawableobjects/LiquidParticleGroup2D.h"
 
 extern "C" {
 #include "taichi/mpm88.py.h"
@@ -62,7 +62,7 @@ private:
   float _pos;
   int _numParticles;
   std::vector<Vector2> _testParticles;
-  Containers::Pointer<SolidParticleGroup2D> _drawableParticles;
+  Containers::Pointer<LiquidParticleGroup2D> _drawableParticles;
   Timeline timeline_;
 };
 
