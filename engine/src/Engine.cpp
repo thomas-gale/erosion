@@ -25,7 +25,7 @@
 #include <Magnum/Timeline.h>
 #include <Magnum/Trade/MeshData.h>
 
-#include "drawableobjects/ParticleGroup2D.h"
+#include "drawableobjects/SolidParticleGroup2D.h"
 
 extern "C" {
 #include "taichi/mpm88.py.h"
@@ -62,7 +62,7 @@ private:
   float _pos;
   int _numParticles;
   std::vector<Vector2> _testParticles;
-  Containers::Pointer<ParticleGroup2D> _drawableParticles;
+  Containers::Pointer<SolidParticleGroup2D> _drawableParticles;
   Timeline timeline_;
 };
 
@@ -110,7 +110,7 @@ Engine::Engine(const Arguments &arguments)
   // setup mpm sim data
   _testParticles = std::vector<Vector2>(_numParticles);
   updateParticles();
-  _drawableParticles.emplace(_testParticles, 0.01f);
+  _drawableParticles.emplace(_testParticles, 0.02f);
 
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
 }

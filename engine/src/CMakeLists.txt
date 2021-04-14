@@ -21,8 +21,8 @@ add_subdirectory(taichi)
 
 # TODO, move some of this stuff into separate library targets
 add_executable(engine 
-shaders/ParticleSphereShader2D.h shaders/ParticleSphereShader2D.cpp
-drawableobjects/ParticleGroup2D.h drawableobjects/ParticleGroup2D.cpp
+shaders/SolidParticleSphereShader2D.h shaders/SolidParticleSphereShader2D.cpp
+drawableobjects/SolidParticleGroup2D.h drawableobjects/SolidParticleGroup2D.cpp
 Engine.cpp
 ${ErosionEngine_RESOURCES})
 

@@ -1,5 +1,3 @@
-#ifndef Magnum_Examples_FluidSimulation2D_ParticleSphereFlatShader_h
-#define Magnum_Examples_FluidSimulation2D_ParticleSphereFlatShader_h
 /*
     This file is part of Magnum.
 
@@ -30,34 +28,23 @@
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <Magnum/GL/AbstractShaderProgram.h>
+flat in lowp vec3 color;
+out lowp vec4 fragmentColor;
 
-namespace erosion {
+mediump float metaball(mediump vec2 p, mediump float r) {
+  return r / dot(p, p);
+}
 
-using namespace Magnum;
+void main() {
+  mediump vec2 point = gl_PointCoord.xy * vec2(2.0, -2.0) + vec2(-1.0, 1.0);
 
-class ParticleSphereShader2D : public GL::AbstractShaderProgram {
-public:
-  enum ColorMode { UniformDiffuseColor = 0, RampColorById };
+  mediump float ball = metaball(point, 1.0f);
+  mediump float c = clamp(ball+0.5f, 0.5f, 1.0f);
 
-  explicit ParticleSphereShader2D();
+  //   mediump float mag = dot(point, point);
 
-  ParticleSphereShader2D &setNumParticles(Int numParticles);
-  ParticleSphereShader2D &setParticleRadius(Float radius);
+  //   if (mag > 1.0)
+  // discard; /* outside the circle */
 
-  ParticleSphereShader2D &setColorMode(Int colorMode);
-  ParticleSphereShader2D &setColor(const Color3 &color);
-
-  ParticleSphereShader2D &setViewport(const Vector2i &viewport);
-  ParticleSphereShader2D &setViewProjectionMatrix(const Matrix3 &matrix);
-  ParticleSphereShader2D &setScreenHeight(Int height);
-  ParticleSphereShader2D &setDomainHeight(Int height);
-
-private:
-  Int _uNumParticles, _uParticleRadius, _uColorMode, _uColor,
-      _uViewProjectionMatrix, _uScreenHeight, _uDomainHeight;
-};
-
-} // namespace erosion
-
-#endif
+  fragmentColor = vec4(color, c);
+}

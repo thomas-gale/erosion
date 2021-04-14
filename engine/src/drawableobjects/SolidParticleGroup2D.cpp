@@ -28,7 +28,7 @@
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "drawableobjects/ParticleGroup2D.h"
+#include "drawableobjects/SolidParticleGroup2D.h"
 
 #include <Corrade/Containers/ArrayView.h>
 #include <Corrade/Utility/Assert.h>
@@ -42,17 +42,17 @@ namespace erosion {
 
 using namespace Math::Literals;
 
-ParticleGroup2D::ParticleGroup2D(const std::vector<Vector2> &points,
+SolidParticleGroup2D::SolidParticleGroup2D(const std::vector<Vector2> &points,
                                  Float particleRadius)
     : _points{points}, _particleRadius{particleRadius},
       _meshParticles{GL::MeshPrimitive::Points} {
   _meshParticles.addVertexBuffer(_bufferParticles, 0,
                                  Shaders::Generic2D::Position{});
-  _particleShader.reset(new ParticleSphereShader2D);
+  _particleShader.reset(new SolidParticleSphereShader2D);
 }
 
-ParticleGroup2D &
-ParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
+SolidParticleGroup2D &
+SolidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
                       Int screenHeight, Int projectionHeight) {
   if (_points.empty())
     return *this;
