@@ -34,6 +34,7 @@
 #include <Corrade/Utility/Resource.h>
 #include <Magnum/GL/Shader.h>
 #include <Magnum/GL/Version.h>
+#include <Magnum/GL/Texture.h>
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/Matrix3.h>
 
@@ -67,6 +68,11 @@ LiquidParticleShader2D::setParticleRadius(Float radius) {
 
 LiquidParticleShader2D &LiquidParticleShader2D::setColor(const Color3 &color) {
   setUniform(_uColor, color);
+  return *this;
+}
+
+LiquidParticleShader2D &LiquidParticleShader2D::bindBackgroudTexture(GL::Texture2D& texture) {
+  texture.bind(TextureUnit);
   return *this;
 }
 

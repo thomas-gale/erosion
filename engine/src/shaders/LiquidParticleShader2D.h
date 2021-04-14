@@ -31,6 +31,7 @@
  */
 
 #include <Magnum/GL/AbstractShaderProgram.h>
+#include <Magnum/GL/GL.h>
 
 namespace erosion {
 
@@ -38,20 +39,21 @@ using namespace Magnum;
 
 class LiquidParticleShader2D : public GL::AbstractShaderProgram {
 public:
-  enum ColorMode { UniformDiffuseColor = 0, RampColorById };
-
   explicit LiquidParticleShader2D();
 
   LiquidParticleShader2D &setParticleRadius(Float radius);
   LiquidParticleShader2D &setColor(const Color3 &color);
+  LiquidParticleShader2D &bindBackgroudTexture(GL::Texture2D &texture);
   LiquidParticleShader2D &setViewport(const Vector2i &viewport);
   LiquidParticleShader2D &setViewProjectionMatrix(const Matrix3 &matrix);
   LiquidParticleShader2D &setScreenHeight(Int height);
   LiquidParticleShader2D &setDomainHeight(Int height);
 
 private:
-  Int _uParticleRadius, _uColor,
-      _uViewProjectionMatrix, _uScreenHeight, _uDomainHeight;
+  enum: Int { TextureUnit = 0 };
+
+  Int _uParticleRadius, _uColor, _uViewProjectionMatrix, _uScreenHeight,
+      _uDomainHeight;
 };
 
 } // namespace erosion
