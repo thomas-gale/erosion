@@ -53,7 +53,7 @@ LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
 
 LiquidParticleGroup2D &
 LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
-                      Int screenHeight, Int projectionHeight) {
+                      Int screenHeight, Int screenWidth, Int projectionHeight) {
   if (_points.empty())
     return *this;
 
@@ -74,6 +74,7 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
       .setViewProjectionMatrix(camera->projectionMatrix() *
                                camera->cameraMatrix())
       .setScreenHeight(screenHeight)
+      .setScreenWidth(screenWidth)
       .setDomainHeight(projectionHeight)
       .draw(_meshParticles);
 

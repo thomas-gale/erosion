@@ -113,6 +113,11 @@ Engine::Engine(const Arguments &arguments)
   _drawableParticles.emplace(_testParticles, 0.02f);
 
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
+  GL::Renderer::enable(GL::Renderer::Feature::Blending);
+  GL::Renderer::setBlendFunction(
+      GL::Renderer::BlendFunction::One, /* or SourceAlpha for non-premultiplied
+                                         */
+      GL::Renderer::BlendFunction::OneMinusSourceAlpha);
 }
 
 void Engine::drawEvent() {
@@ -130,7 +135,8 @@ void Engine::drawEvent() {
   // trigger drawable object to update the particles to the GPU
   _drawableParticles->setDirty();
   _drawableParticles->draw(_camera,
-                           GL::defaultFramebuffer.viewport().size().y(), 1.0);
+                           GL::defaultFramebuffer.viewport().size().y(),
+                           GL::defaultFramebuffer.viewport().size().x(), 1.0);
 
   // draw
   swapBuffers();

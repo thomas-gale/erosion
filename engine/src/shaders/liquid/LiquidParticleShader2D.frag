@@ -28,12 +28,15 @@
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-flat in lowp vec3 color;
-out lowp vec4 fragmentColor;
+uniform highp int screenHeight;
+uniform highp int screenWidth;
 
-// mediump float metaball(mediump vec2 p, mediump float r) {
-//   return r / dot(p, p);
-// }
+flat in lowp vec3 color;
+out mediump vec4 fragmentColor;
+
+mediump float circle(mediump vec2 uv, mediump vec2 pos, mediump float r) {
+  return r / distance(uv, pos);
+}
 
 void main() {
   mediump vec2 point = gl_PointCoord.xy * vec2(2.0, -2.0) + vec2(-1.0, 1.0);
@@ -41,10 +44,19 @@ void main() {
   // mediump float ball = metaball(point, 1.0f);
   // mediump float c = clamp(ball+0.5f, 0.5f, 1.0f);
 
-  mediump float mag = dot(point, point);
+  mediump float mag = clamp(dot(point, point), 0.0, 1.0);
 
-  if (mag > 1.0)
-    discard; /* outside the circle */
+  if (mag > 0.9)
+  discard; /* outside the circle */
 
-  fragmentColor = vec4(color, 1.0f);
+  // mediump vec2 uv = gl_FragCoord.xy / vec2(screenWidth, screenHeight);
+  // uv -= 0.5;
+
+  // mediump float c = circle(uv, point, 1.0);
+  // mediump float mag = dot(point, point);
+
+
+  fragmentColor = vec4(color, 0.5f - mag);
+  // fragmentColor = vec4(vec3(0.0), 0.0) + vec4(0.0, 1.0 * c / 3.0, 1.0, c) * c;
+
 }

@@ -57,6 +57,7 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
 
   _uViewProjectionMatrix = uniformLocation("viewProjectionMatrix");
   _uScreenHeight = uniformLocation("screenHeight");
+  _uScreenWidth = uniformLocation("screenWidth");
   _uDomainHeight = uniformLocation("domainHeight");
 }
 
@@ -84,6 +85,11 @@ LiquidParticleShader2D::setViewProjectionMatrix(const Matrix3 &matrix) {
 
 LiquidParticleShader2D &LiquidParticleShader2D::setScreenHeight(Int height) {
   setUniform(_uScreenHeight, height);
+  return *this;
+}
+
+LiquidParticleShader2D &LiquidParticleShader2D::setScreenWidth(Int width) {
+  setUniform(_uScreenWidth, width);
   return *this;
 }
 

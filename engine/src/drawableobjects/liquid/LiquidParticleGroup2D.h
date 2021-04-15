@@ -41,7 +41,7 @@ public:
                            Float particleRadius);
 
   LiquidParticleGroup2D &draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
-                        Int screenHeight, Int projectionHeight);
+                        Int screenHeight, Int screenWidth, Int projectionHeight);
 
   bool isDirty() const { return _dirty; }
 

@@ -47,12 +47,13 @@ public:
   LiquidParticleShader2D &setViewport(const Vector2i &viewport);
   LiquidParticleShader2D &setViewProjectionMatrix(const Matrix3 &matrix);
   LiquidParticleShader2D &setScreenHeight(Int height);
+  LiquidParticleShader2D &setScreenWidth(Int width);
   LiquidParticleShader2D &setDomainHeight(Int height);
 
 private:
   enum: Int { TextureUnit = 0 };
 
-  Int _uParticleRadius, _uColor, _uViewProjectionMatrix, _uScreenHeight,
+  Int _uParticleRadius, _uColor, _uViewProjectionMatrix, _uScreenHeight, _uScreenWidth,
       _uDomainHeight;
 };
 
