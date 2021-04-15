@@ -33,6 +33,7 @@ target_link_libraries(engine PRIVATE
     Magnum::Application
     Magnum::GL
     Magnum::Magnum
+    Magnum::AnyImageImporter
     Magnum::MeshTools
     Magnum::Primitives
     Magnum::SceneGraph
