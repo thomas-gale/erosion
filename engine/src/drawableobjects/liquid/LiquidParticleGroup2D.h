@@ -71,6 +71,8 @@ private:
   Float _particleRadius = 1.0f;
   Color3 _color{0.6f, 0.6f, 1.0f};
 
+  GL::Buffer _bufferBackgroudQuad;
+  GL::Mesh _meshBackgroudQuad;
   GL::Buffer _bufferParticles;
   GL::Mesh _meshParticles;
   Containers::Pointer<LiquidParticleShader2D> _particleShader;

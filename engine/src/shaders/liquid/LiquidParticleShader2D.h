@@ -43,7 +43,6 @@ public:
 
   LiquidParticleShader2D &setParticleRadius(Float radius);
   LiquidParticleShader2D &setColor(const Color3 &color);
-  LiquidParticleShader2D &bindBackgroudTexture(GL::Texture2D &texture);
   LiquidParticleShader2D &setViewport(const Vector2i &viewport);
   LiquidParticleShader2D &setViewProjectionMatrix(const Matrix3 &matrix);
   LiquidParticleShader2D &setScreenHeight(Int height);
@@ -51,9 +50,7 @@ public:
   LiquidParticleShader2D &setDomainHeight(Int height);
 
 private:
-  enum: Int { TextureUnit = 0 };
-
-  Int _uParticleRadius, _uColor, _uViewProjectionMatrix, _uScreenHeight, _uScreenWidth,
+    Int _uParticleRadius, _uColor, _uViewProjectionMatrix, _uScreenHeight, _uScreenWidth,
       _uDomainHeight;
 };
 

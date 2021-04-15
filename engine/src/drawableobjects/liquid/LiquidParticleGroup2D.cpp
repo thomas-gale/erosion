@@ -42,13 +42,20 @@ namespace erosion {
 
 using namespace Math::Literals;
 
+// Define 6 verts for the background quad of 2 triangles.
+
 LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
                                  Float particleRadius)
     : _points{points}, _particleRadius{particleRadius},
+      _meshBackgroudQuad{GL::MeshPrimitive::Triangles},
       _meshParticles{GL::MeshPrimitive::Points} {
-  _meshParticles.addVertexBuffer(_bufferParticles, 0,
+  _meshParticles.addVertexBuffer(_bufferBackgroudQuad, 0,
+                                 Shaders::Generic2D::Position{});
+  _meshParticles.addVertexBuffer(_bufferParticles, 1,
                                  Shaders::Generic2D::Position{});
   _particleShader.reset(new LiquidParticleShader2D);
+
+   // Create 6 verts for the background quad of 2 triangles.
 }
 
 LiquidParticleGroup2D &

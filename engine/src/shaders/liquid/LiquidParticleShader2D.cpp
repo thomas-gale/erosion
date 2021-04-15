@@ -72,11 +72,6 @@ LiquidParticleShader2D &LiquidParticleShader2D::setColor(const Color3 &color) {
   return *this;
 }
 
-LiquidParticleShader2D &LiquidParticleShader2D::bindBackgroudTexture(GL::Texture2D& texture) {
-  texture.bind(TextureUnit);
-  return *this;
-}
-
 LiquidParticleShader2D &
 LiquidParticleShader2D::setViewProjectionMatrix(const Matrix3 &matrix) {
   setUniform(_uViewProjectionMatrix, matrix);
