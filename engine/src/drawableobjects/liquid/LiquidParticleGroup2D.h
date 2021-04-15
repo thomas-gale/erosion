@@ -31,7 +31,7 @@
 #include <Magnum/SceneGraph/Camera.h>
 #include <vector>
 
-#include "shaders/LiquidParticleShader2D.h"
+#include "shaders/liquid/LiquidParticleShader2D.h"
 
 namespace erosion {
 

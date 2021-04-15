@@ -25,7 +25,7 @@
 #include <Magnum/Timeline.h>
 #include <Magnum/Trade/MeshData.h>
 
-#include "drawableobjects/LiquidParticleGroup2D.h"
+#include "drawableobjects/liquid/LiquidParticleGroup2D.h"
 
 extern "C" {
 #include "taichi/mpm88.py.h"

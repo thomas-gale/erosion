@@ -28,31 +28,33 @@
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "shaders/LiquidParticleShader2D.h"
+#include "shaders/solid/SolidParticleSphereShader2D.h"
 
 #include <Corrade/Containers/Reference.h>
 #include <Corrade/Utility/Resource.h>
 #include <Magnum/GL/Shader.h>
 #include <Magnum/GL/Version.h>
-#include <Magnum/GL/Texture.h>
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/Matrix3.h>
 
 namespace erosion {
 
-LiquidParticleShader2D::LiquidParticleShader2D() {
+SolidParticleSphereShader2D::SolidParticleSphereShader2D() {
   Utility::Resource rs("data");
 
   GL::Shader vertShader{GL::Version::GLES300, GL::Shader::Type::Vertex};
   GL::Shader fragShader{GL::Version::GLES300, GL::Shader::Type::Fragment};
-  vertShader.addSource(rs.get("LiquidParticleShader2D.vert"));
-  fragShader.addSource(rs.get("LiquidParticleShader2D.frag"));
+  vertShader.addSource(rs.get("SolidParticleSphereShader2D.vert"));
+  fragShader.addSource(rs.get("SolidParticleSphereShader2D.frag"));
 
   CORRADE_INTERNAL_ASSERT(GL::Shader::compile({vertShader, fragShader}));
   attachShaders({vertShader, fragShader});
   CORRADE_INTERNAL_ASSERT(link());
 
+  _uNumParticles = uniformLocation("numParticles");
   _uParticleRadius = uniformLocation("particleRadius");
+
+  _uColorMode = uniformLocation("colorMode");
   _uColor = uniformLocation("uniformColor");
 
   _uViewProjectionMatrix = uniformLocation("viewProjectionMatrix");
@@ -60,34 +62,40 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
   _uDomainHeight = uniformLocation("domainHeight");
 }
 
-LiquidParticleShader2D &
-LiquidParticleShader2D::setParticleRadius(Float radius) {
+SolidParticleSphereShader2D &
+SolidParticleSphereShader2D::setNumParticles(Int numParticles) {
+  setUniform(_uNumParticles, numParticles);
+  return *this;
+}
+
+SolidParticleSphereShader2D &
+SolidParticleSphereShader2D::setParticleRadius(Float radius) {
   setUniform(_uParticleRadius, radius);
   return *this;
 }
 
-LiquidParticleShader2D &LiquidParticleShader2D::setColor(const Color3 &color) {
+SolidParticleSphereShader2D &SolidParticleSphereShader2D::setColorMode(Int colorMode) {
+  setUniform(_uColorMode, colorMode);
+  return *this;
+}
+
+SolidParticleSphereShader2D &SolidParticleSphereShader2D::setColor(const Color3 &color) {
   setUniform(_uColor, color);
   return *this;
 }
 
-LiquidParticleShader2D &LiquidParticleShader2D::bindBackgroudTexture(GL::Texture2D& texture) {
-  texture.bind(TextureUnit);
-  return *this;
-}
-
-LiquidParticleShader2D &
-LiquidParticleShader2D::setViewProjectionMatrix(const Matrix3 &matrix) {
+SolidParticleSphereShader2D &
+SolidParticleSphereShader2D::setViewProjectionMatrix(const Matrix3 &matrix) {
   setUniform(_uViewProjectionMatrix, matrix);
   return *this;
 }
 
-LiquidParticleShader2D &LiquidParticleShader2D::setScreenHeight(Int height) {
+SolidParticleSphereShader2D &SolidParticleSphereShader2D::setScreenHeight(Int height) {
   setUniform(_uScreenHeight, height);
   return *this;
 }
 
-LiquidParticleShader2D &LiquidParticleShader2D::setDomainHeight(Int height) {
+SolidParticleSphereShader2D &SolidParticleSphereShader2D::setDomainHeight(Int height) {
   setUniform(_uDomainHeight, height);
   return *this;
 }

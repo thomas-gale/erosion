@@ -28,7 +28,7 @@
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "drawableobjects/SolidParticleGroup2D.h"
+#include "drawableobjects/liquid/LiquidParticleGroup2D.h"
 
 #include <Corrade/Containers/ArrayView.h>
 #include <Corrade/Utility/Assert.h>
@@ -42,17 +42,17 @@ namespace erosion {
 
 using namespace Math::Literals;
 
-SolidParticleGroup2D::SolidParticleGroup2D(const std::vector<Vector2> &points,
+LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
                                  Float particleRadius)
     : _points{points}, _particleRadius{particleRadius},
       _meshParticles{GL::MeshPrimitive::Points} {
   _meshParticles.addVertexBuffer(_bufferParticles, 0,
                                  Shaders::Generic2D::Position{});
-  _particleShader.reset(new SolidParticleSphereShader2D);
+  _particleShader.reset(new LiquidParticleShader2D);
 }
 
-SolidParticleGroup2D &
-SolidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
+LiquidParticleGroup2D &
+LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
                       Int screenHeight, Int projectionHeight) {
   if (_points.empty())
     return *this;
@@ -67,10 +67,8 @@ SolidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
 
   (*_particleShader)
       /* particle data */
-      .setNumParticles(Int(_points.size()))
       .setParticleRadius(_particleRadius)
       /* sphere render data */
-      .setColorMode(_colorMode)
       .setColor(_color)
       /* view/prj matrices and size */
       .setViewProjectionMatrix(camera->projectionMatrix() *
