@@ -35,15 +35,15 @@ uniform highp int domainHeight;
 uniform mediump float particleRadius;
 uniform lowp vec3 uniformColor;
 
-layout(location = 0) in highp vec2 backgroudQuad;
-layout(location = 1) in highp vec2 position;
+layout(location = 0) in highp vec2 backgroundQuad;
+// layout(location = 1) in highp vec2 position;
 
 flat out lowp vec3 color;
 out highp vec2 points;
 
 void main() {
     color = uniformColor;
-    points = position;
+    // points = position;
     // gl_PointSize = particleRadius * float(screenHeight) / float(domainHeight);
-    gl_Position = mat4(viewProjectionMatrix) * vec4(position, 0, 1.0);
+    gl_Position = mat4(viewProjectionMatrix) * vec4(backgroundQuad, 0, 1.0);
 }

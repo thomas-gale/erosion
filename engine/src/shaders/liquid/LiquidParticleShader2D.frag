@@ -39,24 +39,25 @@ mediump float circle(mediump vec2 uv, mediump vec2 pos, mediump float r) {
 }
 
 void main() {
-  mediump vec2 point = gl_PointCoord.xy * vec2(2.0, -2.0) + vec2(-1.0, 1.0);
+  // mediump vec2 point = gl_PointCoord.xy * vec2(2.0, -2.0) + vec2(-1.0, 1.0);
 
   // mediump float ball = metaball(point, 1.0f);
   // mediump float c = clamp(ball+0.5f, 0.5f, 1.0f);
 
-  mediump float mag = clamp(dot(point, point), 0.0, 1.0);
+  // mediump float mag = clamp(dot(point, point), 0.0, 1.0);
 
-  if (mag > 0.9)
-  discard; /* outside the circle */
+  // if (mag > 0.9)
+  // discard; /* outside the circle */
 
-  // mediump vec2 uv = gl_FragCoord.xy / vec2(screenWidth, screenHeight);
-  // uv -= 0.5;
+  mediump vec2 uv = gl_FragCoord.xy / vec2(screenWidth, screenHeight);
+  uv -= 0.5;
 
   // mediump float c = circle(uv, point, 1.0);
   // mediump float mag = dot(point, point);
 
+  fragmentColor = vec4(uv, 0.0f, 1.0f);
 
-  fragmentColor = vec4(color, 0.5f - mag);
+  // fragmentColor = vec4(color, 0.5f - mag);
   // fragmentColor = vec4(vec3(0.0), 0.0) + vec4(0.0, 1.0 * c / 3.0, 1.0, c) * c;
 
 }

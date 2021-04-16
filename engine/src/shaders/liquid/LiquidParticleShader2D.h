@@ -50,6 +50,8 @@ public:
   LiquidParticleShader2D &setDomainHeight(Int height);
 
 private:
+    
+
     Int _uParticleRadius, _uColor, _uViewProjectionMatrix, _uScreenHeight, _uScreenWidth,
       _uDomainHeight;
 };

@@ -34,6 +34,9 @@
 #include <Corrade/Utility/Assert.h>
 #include <Magnum/GL/Renderer.h>
 #include <Magnum/Math/Functions.h>
+#include <Magnum/MeshTools/CompressIndices.h>
+#include <Magnum/MeshTools/Interleave.h>
+#include <Magnum/Primitives/Square.h>
 #include <Magnum/SceneGraph/Drawable.h>
 #include <Magnum/Shaders/Generic.h>
 #include <Magnum/Trade/MeshData.h>
@@ -42,35 +45,50 @@ namespace erosion {
 
 using namespace Math::Literals;
 
-// Define 6 verts for the background quad of 2 triangles.
-
 LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
-                                 Float particleRadius)
-    : _points{points}, _particleRadius{particleRadius},
-      _meshBackgroudQuad{GL::MeshPrimitive::Triangles},
-      _meshParticles{GL::MeshPrimitive::Points} {
-  _meshParticles.addVertexBuffer(_bufferBackgroudQuad, 0,
-                                 Shaders::Generic2D::Position{});
-  _meshParticles.addVertexBuffer(_bufferParticles, 1,
-                                 Shaders::Generic2D::Position{});
+                                             Float particleRadius)
+    : _points{points}, _particleRadius{particleRadius} {
+  // _meshBackgroudQuad{GL::MeshPrimitive::Triangles},
+  // _meshParticles{GL::MeshPrimitive::Points} {
+  // _meshParticles.addVertexBuffer(_bufferBackgroudQuad, 0,
+  //                                Shaders::Generic2D::Position{});
+  // _meshParticles.addVertexBuffer(_bufferParticles, 1,
+  //                                Shaders::Generic2D::Position{});
+
   _particleShader.reset(new LiquidParticleShader2D);
 
-   // Create 6 verts for the background quad of 2 triangles.
+  Trade::MeshData quad = Primitives::squareSolid();
+  GL::Buffer quadVerts;
+  quadVerts.setData(quad.positions2DAsArray());
+
+  // auto compressed = MeshTools::compressIndices(quad.indicesAsArray());
+  // GL::Buffer quadIndices;
+  // quadIndices.setData(compressed.first);
+
+  _meshBackgroudQuad.setPrimitive(quad.primitive())
+      .setCount(quad.positions2DAsArray().size())
+      .addVertexBuffer(std::move(quadVerts), 0, Shaders::Generic2D::Position{});
+      // .setIndexBuffer(std::move(quadIndices), 0, compressed.second);
+
+  // _meshBackgroudQuad.setCount(Int(quad.positions2DAsArray().size()));
+
+  // Create 6 verts for the background quad of 2 triangles.
 }
 
 LiquidParticleGroup2D &
 LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
-                      Int screenHeight, Int screenWidth, Int projectionHeight) {
+                            Int screenHeight, Int screenWidth,
+                            Int projectionHeight) {
   if (_points.empty())
     return *this;
 
-  if (_dirty) {
-    Containers::ArrayView<const float> data(
-        reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
-    _bufferParticles.setData(data);
-    _meshParticles.setCount(Int(_points.size()));
-    _dirty = false;
-  }
+  // if (_dirty) {
+  //   Containers::ArrayView<const float> data(
+  //       reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
+  //   _bufferParticles.setData(data);
+  //   _meshParticles.setCount(Int(_points.size()));
+  //   _dirty = false;
+  // }
 
   (*_particleShader)
       /* particle data */
@@ -83,7 +101,7 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
       .setScreenHeight(screenHeight)
       .setScreenWidth(screenWidth)
       .setDomainHeight(projectionHeight)
-      .draw(_meshParticles);
+      .draw(_meshBackgroudQuad);
 
   return *this;
 }
