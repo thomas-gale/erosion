@@ -32,15 +32,19 @@
 
 #include <Corrade/Containers/Reference.h>
 #include <Corrade/Utility/Resource.h>
+#include <Magnum/GL/AbstractShaderProgram.h>
+#include <Magnum/GL/Buffer.h>
+#include <Magnum/GL/Renderer.h>
 #include <Magnum/GL/Shader.h>
-#include <Magnum/GL/Version.h>
 #include <Magnum/GL/Texture.h>
+#include <Magnum/GL/Version.h>
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/Matrix3.h>
 
 namespace erosion {
 
-LiquidParticleShader2D::LiquidParticleShader2D() {
+LiquidParticleShader2D::LiquidParticleShader2D()
+    : _bufferParticles{GL::Buffer::TargetHint::Uniform} {
   Utility::Resource rs("data");
 
   GL::Shader vertShader{GL::Version::GLES300, GL::Shader::Type::Vertex};
@@ -52,6 +56,9 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
   attachShaders({vertShader, fragShader});
   CORRADE_INTERNAL_ASSERT(link());
 
+  // _uNumberMPMPoints = uniformLocation("numberPoints");
+  _uMpmPoints = uniformLocation("mpmPos");
+
   _uParticleRadius = uniformLocation("particleRadius");
   _uColor = uniformLocation("uniformColor");
 
@@ -59,6 +66,29 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
   _uScreenHeight = uniformLocation("screenHeight");
   _uScreenWidth = uniformLocation("screenWidth");
   _uDomainHeight = uniformLocation("domainHeight");
+}
+
+// LiquidParticleShader2D &LiquidParticleShader2D::setNumberMPMPoints(Int
+// number) {
+//   setUniform(_uNumberMPMPoints, number);
+//   return *this;
+// }
+
+// LiquidParticleShader2D &
+// LiquidParticleShader2D::setMPMPoints(const Math::Vector<2, Float>> points) {
+//   setUniform(_uMpmPoints, points);
+//   return *this;
+// }
+
+LiquidParticleShader2D &
+LiquidParticleShader2D::setMPMPoints(const std::vector<Vector2> &points) {
+
+  Containers::ArrayView<const float> data(
+      reinterpret_cast<const float *>(&points[0]), points.size() * 2);
+  _bufferParticles.setData(data);
+  setUniformBlockBinding(uniformBlockIndex("Mpm"), _uMpmPoints);
+
+  return *this;
 }
 
 LiquidParticleShader2D &

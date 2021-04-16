@@ -74,9 +74,8 @@ private:
   // GL::Buffer _bufferBackgroudQuad;
   GL::Mesh _meshBackgroudQuad;
 
-
-  GL::Buffer _bufferParticles;
-  GL::Mesh _meshParticles;
+  // GL::Buffer _bufferParticles;
+  // GL::Mesh _meshParticles;
   Containers::Pointer<LiquidParticleShader2D> _particleShader;
 };
 

@@ -28,6 +28,9 @@
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// uniform highp int numberPoints;
+layout(std140) uniform Mpm { mediump vec2 mpmPos[2048]; };
+
 uniform highp int screenHeight;
 uniform highp int screenWidth;
 
@@ -58,6 +61,6 @@ void main() {
   fragmentColor = vec4(uv, 0.0f, 1.0f);
 
   // fragmentColor = vec4(color, 0.5f - mag);
-  // fragmentColor = vec4(vec3(0.0), 0.0) + vec4(0.0, 1.0 * c / 3.0, 1.0, c) * c;
-
+  // fragmentColor = vec4(vec3(0.0), 0.0) + vec4(0.0, 1.0 * c / 3.0, 1.0, c) *
+  // c;
 }

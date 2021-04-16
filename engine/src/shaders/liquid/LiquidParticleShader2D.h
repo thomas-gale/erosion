@@ -31,6 +31,8 @@
  */
 
 #include <Magnum/GL/AbstractShaderProgram.h>
+#include <Magnum/GL/Buffer.h>
+#include <Magnum/Types.h>
 #include <Magnum/GL/GL.h>
 
 namespace erosion {
@@ -41,6 +43,11 @@ class LiquidParticleShader2D : public GL::AbstractShaderProgram {
 public:
   explicit LiquidParticleShader2D();
 
+  // LiquidParticleShader2D &setNumberMPMPoints(Int number);
+  // LiquidParticleShader2D &setMPMPoints(Containers::ArrayView<const
+  // Math::Vector<2, Float>> points);
+
+  LiquidParticleShader2D &setMPMPoints(const std::vector<Vector2> &points);
   LiquidParticleShader2D &setParticleRadius(Float radius);
   LiquidParticleShader2D &setColor(const Color3 &color);
   LiquidParticleShader2D &setViewport(const Vector2i &viewport);
@@ -50,10 +57,12 @@ public:
   LiquidParticleShader2D &setDomainHeight(Int height);
 
 private:
-    
+  GL::Buffer _bufferParticles;
 
-    Int _uParticleRadius, _uColor, _uViewProjectionMatrix, _uScreenHeight, _uScreenWidth,
-      _uDomainHeight;
+  UnsignedInt _uMpmPoints;
+
+  Int _uParticleRadius, _uColor, _uViewProjectionMatrix, _uScreenHeight,
+      _uScreenWidth, _uDomainHeight;
 };
 
 } // namespace erosion
