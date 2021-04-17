@@ -31,11 +31,14 @@
 #include "drawableobjects/liquid/LiquidParticleGroup2D.h"
 
 #include <Corrade/Containers/ArrayView.h>
+#include <Corrade/Containers/Optional.h>
 #include <Corrade/PluginManager/Manager.h>
 #include <Corrade/Utility/Assert.h>
 #include <Corrade/Utility/Resource.h>
 #include <Magnum/GL/AbstractShaderProgram.h>
 #include <Magnum/GL/Renderer.h>
+#include <Magnum/GL/TextureFormat.h>
+#include <Magnum/ImageView.h>
 #include <Magnum/Math/Functions.h>
 #include <Magnum/MeshTools/CompressIndices.h>
 #include <Magnum/MeshTools/Interleave.h>
@@ -43,7 +46,9 @@
 #include <Magnum/SceneGraph/Drawable.h>
 #include <Magnum/Shaders/Generic.h>
 #include <Magnum/Trade/AbstractImporter.h>
+#include <Magnum/Trade/ImageData.h>
 #include <Magnum/Trade/MeshData.h>
+#include <Magnum/Trade/Trade.h>
 
 namespace erosion {
 
@@ -74,6 +79,15 @@ LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
   const Utility::Resource rs{"data"};
   if (!importer->openData(rs.getRaw("voronoise.tga")))
     std::exit(2);
+
+  Containers::Optional<Trade::ImageData2D> image = importer->image2D(0);
+  CORRADE_INTERNAL_ASSERT(image);
+
+  _texture.setWrapping(GL::SamplerWrapping::ClampToEdge)
+      .setMagnificationFilter(GL::SamplerFilter::Linear)
+      .setMinificationFilter(GL::SamplerFilter::Linear)
+      .setStorage(1, GL::textureFormat(image->format()), image->size())
+      .setSubImage(0, {}, *image);
 
   // load reference points into buffer.
   _particleShader->setMPMPoints(_points);
@@ -119,6 +133,8 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
       //   .setParticleRadius(_particleRadius)
       /* sphere render data */
       //   .setColor(_color)
+      // texture
+      .bindTexture(_texture)
       /* view/prj matrices and size */
       .setViewProjectionMatrix(camera->projectionMatrix() *
                                camera->cameraMatrix())

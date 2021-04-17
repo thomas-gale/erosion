@@ -57,14 +57,21 @@ void main() {
   // discard; /* outside the circle */
 
   mediump vec2 uv = gl_FragCoord.xy / vec2(screenWidth, screenHeight);
-  uv -= 0.5;
+  // uv -= 0.5;
 
   // mediump float c = circle(uv, point, 1.0);
   // mediump float mag = dot(point, point);
 
-  fragmentColor = vec4(uv, 0.0f, 1.0f);
+
+  // mediump vec2 correctedTexCoords = interpolatedTextureCoordinates * vec2(0.5, 0.5) + vec2(0.5, 0.5);
+  // mediump vec2 correctedTexCoords = interpolatedTextureCoordinates * vec2(0.5, 0.5) + vec2(0.5, 0.5);
+  mediump vec2 correctedTexCoords = interpolatedTextureCoordinates * vec2(1.0, -1.0) + vec2(0.5, 0.5);
+  // correctedTexCoords.y = correctedTexCoords.y * -1.0;
+
+  fragmentColor = vec4(1.0, 1.0, 1.0, 1.0);
+  fragmentColor.rgb = texture(textureData, correctedTexCoords).rrr;
   // fragmentColor.rgb = fragmentColor.rgb *
-  //                     texture(textureData, interpolatedTextureCoordinates).rgb;
+  //                     texture(textureData, correctedTexCoords).rgb;
 
   // fragmentColor = vec4(color, 0.5f - mag);
   // fragmentColor = vec4(vec3(0.0), 0.0) + vec4(0.0, 1.0 * c / 3.0, 1.0, c) *
