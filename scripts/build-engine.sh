@@ -8,12 +8,12 @@ set -e
 sudo docker build ./engine/lib/taichi.js -t taichihub
 python3.8 ./scripts/taichi-c-generator.py
 
-# build main magnum emscripten application.
+# build main magnum emscripten application (enabling debugging for now)
 cd engine 
 mkdir -p build && cd build
 mkdir -p install
 cmake .. \
-    -DLOCALTEST=$1 \
+    -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten-wasm.cmake \
     -DCMAKE_PREFIX_PATH=~/emsdk/upstream/emscripten/system \
     -DCMAKE_INSTALL_PREFIX=./install \
