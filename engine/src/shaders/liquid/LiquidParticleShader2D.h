@@ -59,7 +59,8 @@ public:
 private:
   GL::Buffer _bufferParticles;
 
-  UnsignedInt _uMpmPoints;
+  // UnsignedInt _uMpmPoints;
+  UnsignedInt _uMpm;
 
   Int _uParticleRadius, _uColor, _uViewProjectionMatrix, _uScreenHeight,
       _uScreenWidth, _uDomainHeight;

@@ -112,6 +112,9 @@ Engine::Engine(const Arguments &arguments)
   updateParticles();
   _drawableParticles.emplace(_testParticles, 0.02f);
 
+  // gl setup
+  // std::cout << GL::Context::current().
+
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
   GL::Renderer::enable(GL::Renderer::Feature::Blending);
   GL::Renderer::setBlendFunction(

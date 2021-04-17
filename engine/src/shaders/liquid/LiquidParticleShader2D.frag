@@ -29,7 +29,8 @@
  */
 
 // uniform highp int numberPoints;
-layout(std140) uniform Mpm { mediump vec2 mpmPos[2048]; };
+// layout(std140) uniform Mpm { mediump vec2 mpmPos[1024]; };
+// layout(std140) uniform Mpm2 { mediump vec2 mpmPos2[32]; };
 
 uniform highp int screenHeight;
 uniform highp int screenWidth;
