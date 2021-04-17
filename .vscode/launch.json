@@ -5,15 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "launch chrome against source mapped localhost",
+            "name": "launch chrome",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:3000/build/Debug/bin/engine.html",
-            "webRoot": "${workspaceFolder}/engine",
-            "sourceMaps": true
+            "url": "http://localhost:3000/",
+            "webRoot": "${workspaceFolder}",
         },
         {
-            "name": "attach chrome against source mapped localhost",
+            "name": "attach to a chrome",
             "type": "chrome",
             "request": "attach",
             "port": 9222,
