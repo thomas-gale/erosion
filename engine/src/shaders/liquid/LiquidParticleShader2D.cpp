@@ -62,15 +62,15 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
   // _uMpm = uniformBlockIndex("Mpm");
   // std::cout << "Mpm blockIndex: " << _uMpm << std::endl;
 
-  _uParticleRadius = uniformLocation("particleRadius");
-  _uColor = uniformLocation("uniformColor");
+  // _uParticleRadius = uniformLocation("particleRadius");
+  // _uColor = uniformLocation("uniformColor");
 
   _uViewProjectionMatrix = uniformLocation("viewProjectionMatrix");
   std::cout << "_uViewProjectionMatrix: " << _uViewProjectionMatrix
             << std::endl;
   _uScreenHeight = uniformLocation("screenHeight");
   _uScreenWidth = uniformLocation("screenWidth");
-  _uDomainHeight = uniformLocation("domainHeight");
+  // _uDomainHeight = uniformLocation("domainHeight");
 }
 
 // LiquidParticleShader2D &LiquidParticleShader2D::setNumberMPMPoints(Int
@@ -84,6 +84,12 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
 //   setUniform(_uMpmPoints, points);
 //   return *this;
 // }
+
+LiquidParticleShader2D &
+LiquidParticleShader2D::bindTexture(GL::Texture2D& texture) {
+  texture.bind(TextureUnit);
+  return *this;
+}
 
 LiquidParticleShader2D &
 LiquidParticleShader2D::setMPMPoints(const std::vector<Vector2> &points) {
@@ -109,16 +115,16 @@ LiquidParticleShader2D::setMPMPoints(const std::vector<Vector2> &points) {
   return *this;
 }
 
-LiquidParticleShader2D &
-LiquidParticleShader2D::setParticleRadius(Float radius) {
-  setUniform(_uParticleRadius, radius);
-  return *this;
-}
+// LiquidParticleShader2D &
+// LiquidParticleShader2D::setParticleRadius(Float radius) {
+//   setUniform(_uParticleRadius, radius);
+//   return *this;
+// }
 
-LiquidParticleShader2D &LiquidParticleShader2D::setColor(const Color3 &color) {
-  setUniform(_uColor, color);
-  return *this;
-}
+// LiquidParticleShader2D &LiquidParticleShader2D::setColor(const Color3 &color) {
+//   setUniform(_uColor, color);
+//   return *this;
+// }
 
 LiquidParticleShader2D &
 LiquidParticleShader2D::setViewProjectionMatrix(const Matrix3 &matrix) {
@@ -136,8 +142,8 @@ LiquidParticleShader2D &LiquidParticleShader2D::setScreenWidth(Int width) {
   return *this;
 }
 
-LiquidParticleShader2D &LiquidParticleShader2D::setDomainHeight(Int height) {
-  setUniform(_uDomainHeight, height);
-  return *this;
-}
+// LiquidParticleShader2D &LiquidParticleShader2D::setDomainHeight(Int height) {
+//   setUniform(_uDomainHeight, height);
+//   return *this;
+// }
 } // namespace erosion

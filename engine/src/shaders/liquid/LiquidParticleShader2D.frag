@@ -34,8 +34,11 @@
 
 uniform highp int screenHeight;
 uniform highp int screenWidth;
+uniform sampler2D textureData;
 
-flat in lowp vec3 color;
+// flat in lowp vec3 color;
+in highp vec2 interpolatedTextureCoordinates;
+
 out mediump vec4 fragmentColor;
 
 mediump float circle(mediump vec2 uv, mediump vec2 pos, mediump float r) {
@@ -60,6 +63,8 @@ void main() {
   // mediump float mag = dot(point, point);
 
   fragmentColor = vec4(uv, 0.0f, 1.0f);
+  // fragmentColor.rgb = fragmentColor.rgb *
+  //                     texture(textureData, interpolatedTextureCoordinates).rgb;
 
   // fragmentColor = vec4(color, 0.5f - mag);
   // fragmentColor = vec4(vec3(0.0), 0.0) + vec4(0.0, 1.0 * c / 3.0, 1.0, c) *

@@ -102,15 +102,15 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
 
   (*_particleShader)
       /* particle data */
-      .setParticleRadius(_particleRadius)
+    //   .setParticleRadius(_particleRadius)
       /* sphere render data */
-      .setColor(_color)
+    //   .setColor(_color)
       /* view/prj matrices and size */
       .setViewProjectionMatrix(camera->projectionMatrix() *
                                camera->cameraMatrix())
       .setScreenHeight(screenHeight)
       .setScreenWidth(screenWidth)
-      .setDomainHeight(projectionHeight)
+    //   .setDomainHeight(projectionHeight)
       .draw(_meshBackgroudQuad);
 
   return *this;

@@ -41,22 +41,29 @@ using namespace Magnum;
 
 class LiquidParticleShader2D : public GL::AbstractShaderProgram {
 public:
+  using Position = GL::Attribute<0, Vector2>;
+  using TextureCoordinates = GL::Attribute<1, Vector2>;
+
   explicit LiquidParticleShader2D();
 
   // LiquidParticleShader2D &setNumberMPMPoints(Int number);
   // LiquidParticleShader2D &setMPMPoints(Containers::ArrayView<const
   // Math::Vector<2, Float>> points);
 
+  LiquidParticleShader2D &bindTexture(GL::Texture2D& texture);
+
   LiquidParticleShader2D &setMPMPoints(const std::vector<Vector2> &points);
-  LiquidParticleShader2D &setParticleRadius(Float radius);
-  LiquidParticleShader2D &setColor(const Color3 &color);
+  // LiquidParticleShader2D &setParticleRadius(Float radius);
+  // LiquidParticleShader2D &setColor(const Color3 &color);
   LiquidParticleShader2D &setViewport(const Vector2i &viewport);
   LiquidParticleShader2D &setViewProjectionMatrix(const Matrix3 &matrix);
   LiquidParticleShader2D &setScreenHeight(Int height);
   LiquidParticleShader2D &setScreenWidth(Int width);
-  LiquidParticleShader2D &setDomainHeight(Int height);
+  // LiquidParticleShader2D &setDomainHeight(Int height);
 
 private:
+  enum: Int { TextureUnit = 0 };
+
   GL::Buffer _bufferParticles;
 
   // UnsignedInt _uMpmPoints;
