@@ -5,14 +5,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "launch chrome against source mapped localhost",
             "type": "chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}"
+            "url": "http://localhost:3000/build/Debug/bin/engine.html",
+            "webRoot": "${workspaceFolder}/engine",
+            "sourceMaps": true
         },
         {
-          "name": "Debug CRA Tests",
+            "name": "attach chrome against source mapped localhost",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9222,
+            "webRoot": "${workspaceFolder}/engine",
+            "sourceMaps": true
+        },
+        {
+          "name": "debug cra tests",
           "type": "node",
           "request": "launch",
           "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",

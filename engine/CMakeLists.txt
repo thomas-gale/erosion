@@ -20,9 +20,10 @@ set(WITH_ANYIMAGEIMPORTER ON CACHE BOOL "" FORCE)
 
 # enable debugging to source map
 #  --source-map-base http://localhost:3001/build
-set(ENV{EMCC_DEBUG} 1) 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g4 -s MIN_WEBGL_VERSION=2 -s \"DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']\"")
-message(STATUS "Flags: ${CMAKE_CXX_FLAGS}")
+# set(ENV{EMCC_DEBUG} 1) 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -s ALLOW_MEMORY_GROWTH=1 -s \"DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']\"")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s MIN_WEBGL_VERSION=2 -s \"DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']\"")
+# message(STATUS "Flags: ${CMAKE_CXX_FLAGS}")
 
 # enable binding for use in react
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s WASM=1 -s ENVIRONMENT=web -s MODULARIZE=1 --bind")

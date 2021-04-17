@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 
-npx serve ./engine/build/install/ -p 3000
+npx serve ./engine/ -p 3000

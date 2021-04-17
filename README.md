@@ -16,10 +16,15 @@
 ### build
 
 ```
-mkdir build-engine && cd build-engine
-emcmake cmake ../src-engine/
-make
+./scripts/build-engine.sh
 ```
+
+### debugging (using chrome)
+```
+./scripts/debug-serve.sh
+chrome --remote-debugging-port=9222 http://localhost:3000/build/Debug/bin/engine.html
+```
+- vscode debug `attach chrome against source mapped host`
 
 ## taichihub notes
 

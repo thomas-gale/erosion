@@ -43,29 +43,33 @@ target_link_libraries(engine PRIVATE
 target_include_directories(engine PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR})
 
-# add source map
+# target_compile_options(engine PRIVATE
+#     -g -s "DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']")
+
+# add source map for debugging
 target_link_options(engine PRIVATE
     -g4)
+    # -g4 -s \"DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']\")
+
+# --source-map-base "http://localhost:3000/"
 
 # For Emscripten copy the boilerplate next to the executable so it can be run
 # directly from the build dir; provide an install target as well
-# if(CORRADE_TARGET_EMSCRIPTEN)
-#     add_custom_command(TARGET engine POST_BUILD
-#         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#             ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
-#             ${MAGNUM_WEBAPPLICATION_CSS}
-#             ${CMAKE_CURRENT_SOURCE_DIR}/engine.html
-#             $<TARGET_FILE_DIR:engine>)
-#     install(TARGETS engine DESTINATION ${MAGNUM_DEPLOY_PREFIX})
-#     install(FILES
-#         engine.html
-#         ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
-#         ${MAGNUM_WEBAPPLICATION_CSS}
-#         DESTINATION ${MAGNUM_DEPLOY_PREFIX})
-#     install(FILES
-#         $<TARGET_FILE_DIR:engine>/engine.js.mem
-#         $<TARGET_FILE_DIR:engine>/engine.wasm
-#         DESTINATION ${MAGNUM_DEPLOY_PREFIX} OPTIONAL)
-
-
-# endif()
+if(CORRADE_TARGET_EMSCRIPTEN)
+    add_custom_command(TARGET engine POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
+            ${MAGNUM_WEBAPPLICATION_CSS}
+            ${CMAKE_CURRENT_SOURCE_DIR}/engine.html
+            $<TARGET_FILE_DIR:engine>)
+    # install(TARGETS engine DESTINATION ${MAGNUM_DEPLOY_PREFIX})
+    # install(FILES
+    #     engine.html
+    #     ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
+    #     ${MAGNUM_WEBAPPLICATION_CSS}
+    #     DESTINATION ${MAGNUM_DEPLOY_PREFIX})
+    # install(FILES
+    #     $<TARGET_FILE_DIR:engine>/engine.js.mem
+    #     $<TARGET_FILE_DIR:engine>/engine.wasm
+    #     DESTINATION ${MAGNUM_DEPLOY_PREFIX} OPTIONAL)
+endif()
