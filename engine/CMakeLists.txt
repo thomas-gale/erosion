@@ -9,10 +9,17 @@ set(CMAKE_CXX_STANDARD 17)
 
 # magnum config
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules/" ${CMAKE_MODULE_PATH})
-set(WITH_EMSCRIPTENAPPLICATION ON CACHE BOOL "" FORCE)
+
+if (${LOCALTEST})
+    message(STATUS "building sdl2 application")
+    set(WITH_SDL2APPLICATION ON CACHE BOOL "" FORCE)
+else()
+    message(STATUS "building webgl2 (gles3) application")
+    set(WITH_EMSCRIPTENAPPLICATION ON CACHE BOOL "" FORCE)
+    set(TARGET_GLES2 OFF CACHE BOOL "" FORCE)
+endif()
+
 set(WITH_ANYIMAGEIMPORTER ON CACHE BOOL "" FORCE)
-# set(MAGNUM_TARGET_GLES2 OFF CACHE BOOL "" FORCE)
-set(TARGET_GLES2 OFF CACHE BOOL "" FORCE)
 
 # emscripten flags
 # force webgl 2, link with dyncall for taichi.
