@@ -19,7 +19,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "./scripts/build-engine.sh && react-scripts start",
+    "start": "./scripts/build-engine.sh Release && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint \"src/**\"",

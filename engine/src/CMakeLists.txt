@@ -47,8 +47,11 @@ target_include_directories(engine PRIVATE
 #     -g -s "DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']")
 
 # add source map for debugging
-target_link_options(engine PRIVATE
-    -g4)
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    target_link_options(engine PRIVATE
+        -g4)
+endif()
+
     # -g4 -s \"DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']\")
 
 # --source-map-base "http://localhost:3000/"
