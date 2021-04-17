@@ -24,12 +24,14 @@
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include <vector>
+
 #include <Corrade/Containers/Pointer.h>
 #include <Magnum/GL/Buffer.h>
 #include <Magnum/GL/Mesh.h>
+#include <Magnum/GL/Texture.h>
 #include <Magnum/Math/Color.h>
 #include <Magnum/SceneGraph/Camera.h>
-#include <vector>
 
 #include "shaders/liquid/LiquidParticleShader2D.h"
 
@@ -38,10 +40,11 @@ namespace erosion {
 class LiquidParticleGroup2D {
 public:
   explicit LiquidParticleGroup2D(const std::vector<Vector2> &points,
-                           Float particleRadius);
+                                 Float particleRadius);
 
   LiquidParticleGroup2D &draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
-                        Int screenHeight, Int screenWidth, Int projectionHeight);
+                              Int screenHeight, Int screenWidth,
+                              Int projectionHeight);
 
   bool isDirty() const { return _dirty; }
 
@@ -65,6 +68,7 @@ public:
   }
 
 private:
+  GL::Texture2D _texture;
   const std::vector<Vector2> &_points;
   bool _dirty = false;
 

@@ -31,7 +31,9 @@
 #include "drawableobjects/liquid/LiquidParticleGroup2D.h"
 
 #include <Corrade/Containers/ArrayView.h>
+#include <Corrade/PluginManager/Manager.h>
 #include <Corrade/Utility/Assert.h>
+#include <Corrade/Utility/Resource.h>
 #include <Magnum/GL/AbstractShaderProgram.h>
 #include <Magnum/GL/Renderer.h>
 #include <Magnum/Math/Functions.h>
@@ -40,6 +42,7 @@
 #include <Magnum/Primitives/Square.h>
 #include <Magnum/SceneGraph/Drawable.h>
 #include <Magnum/Shaders/Generic.h>
+#include <Magnum/Trade/AbstractImporter.h>
 #include <Magnum/Trade/MeshData.h>
 
 namespace erosion {
@@ -61,14 +64,25 @@ LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
       .setCount(quad.positions2DAsArray().size())
       .addVertexBuffer(std::move(quadVerts), 0, Shaders::Generic2D::Position{});
 
+  // import texture
+  PluginManager::Manager<Trade::AbstractImporter> manager;
+  Containers::Pointer<Trade::AbstractImporter> importer =
+      manager.loadAndInstantiate("TgaImporter");
+  if (!importer)
+    std::exit(1);
+
+  const Utility::Resource rs{"data"};
+  if (!importer->openData(rs.getRaw("voronoise.tga")))
+    std::exit(2);
+
   // load reference points into buffer.
   _particleShader->setMPMPoints(_points);
 
-//   Containers::ArrayView<const float> data(
-//       reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
-//   _bufferParticles.setData(data);
-//   _particleShader->setUniformBlockBinding(
-//       _particleShader->uniformBlockIndex("mpmPoints"), 1);
+  //   Containers::ArrayView<const float> data(
+  //       reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
+  //   _bufferParticles.setData(data);
+  //   _particleShader->setUniformBlockBinding(
+  //       _particleShader->uniformBlockIndex("mpmPoints"), 1);
 }
 
 LiquidParticleGroup2D &
@@ -102,15 +116,15 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
 
   (*_particleShader)
       /* particle data */
-    //   .setParticleRadius(_particleRadius)
+      //   .setParticleRadius(_particleRadius)
       /* sphere render data */
-    //   .setColor(_color)
+      //   .setColor(_color)
       /* view/prj matrices and size */
       .setViewProjectionMatrix(camera->projectionMatrix() *
                                camera->cameraMatrix())
       .setScreenHeight(screenHeight)
       .setScreenWidth(screenWidth)
-    //   .setDomainHeight(projectionHeight)
+      //   .setDomainHeight(projectionHeight)
       .draw(_meshBackgroudQuad);
 
   return *this;

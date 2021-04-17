@@ -2,7 +2,9 @@ find_package(Corrade REQUIRED Main)
 
 find_package(Magnum REQUIRED 
     GL
+    Trade
     MeshTools
+    TgaImporter
     Primitives
     SceneGraph
     Shaders)
@@ -33,11 +35,12 @@ target_link_libraries(engine PRIVATE
     Magnum::Application
     Magnum::GL
     Magnum::Magnum
-    Magnum::AnyImageImporter
     Magnum::MeshTools
     Magnum::Primitives
     Magnum::SceneGraph
     Magnum::Shaders
+    Magnum::Trade
+    Magnum::TgaImporter
     taichi)
 
 target_include_directories(engine PRIVATE

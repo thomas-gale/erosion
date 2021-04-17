@@ -36,7 +36,7 @@ uniform highp mat3 viewProjectionMatrix;
 // uniform lowp vec3 uniformColor;
 
 layout(location = 0) in highp vec2 backgroundQuad;
-layout(location = 1) in highp vec2 textureCoordinates;
+// layout(location = 1) in highp vec2 textureCoordinates;
 
 // flat out lowp vec3 color;
 out highp vec2 interpolatedTextureCoordinates;
@@ -48,6 +48,6 @@ void main() {
   // gl_PointSize = particleRadius * float(screenHeight) / float(domainHeight);
 //   color = uniformColor;
 
-  interpolatedTextureCoordinates = textureCoordinates;
+  interpolatedTextureCoordinates = backgroundQuad;
   gl_Position = mat4(viewProjectionMatrix) * vec4(backgroundQuad, 0, 1.0);
 }
