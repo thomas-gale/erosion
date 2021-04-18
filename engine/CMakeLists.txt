@@ -23,14 +23,14 @@ set(WITH_TGAIMPORTER ON CACHE BOOL "" FORCE)
 # emscripten flags
 
 # force webgl 2, link with dyncall for taichi.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s \"DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']\"")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s ALLOW_MEMORY_GROWTH=1 -s \"DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']\"")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s MIN_WEBGL_VERSION=2 -s  -s \"DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']\"")
 
 # enable debugging to source map
 #  --source-map-base http://localhost:3001/build
 # set(ENV{EMCC_DEBUG} 1) 
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -s DEMANGLE_SUPPORT=1 -s ALLOW_MEMORY_GROWTH=1")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -s DEMANGLE_SUPPORT=1")
     # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -s DEMANGLE_SUPPORT=1 -s ALLOW_MEMORY_GROWTH=1 -s \"DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['\\$dynCall']\"")
 endif()
 
