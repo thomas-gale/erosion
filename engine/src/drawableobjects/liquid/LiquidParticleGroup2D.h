@@ -68,7 +68,10 @@ public:
   }
 
 private:
-  GL::Texture2D _texture;
+  GL::Buffer _bufferParticles;
+  GL::Texture2D _particlesTexture;
+
+  GL::Texture2D _voronoiseTexture;
   const std::vector<Vector2> &_points;
   bool _dirty = false;
 

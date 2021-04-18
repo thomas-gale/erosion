@@ -50,9 +50,10 @@ public:
   // LiquidParticleShader2D &setMPMPoints(Containers::ArrayView<const
   // Math::Vector<2, Float>> points);
 
-  LiquidParticleShader2D &bindTexture(GL::Texture2D& texture);
+  LiquidParticleShader2D &bindVoronoiseTexture(GL::Texture2D& texture);
+  LiquidParticleShader2D &bindMPMPointsTexture(GL::Texture2D& texture);
 
-  LiquidParticleShader2D &setMPMPoints(const std::vector<Vector2> &points);
+  // LiquidParticleShader2D &setMPMPoints(const std::vector<Vector2> &points);
   // LiquidParticleShader2D &setParticleRadius(Float radius);
   // LiquidParticleShader2D &setColor(const Color3 &color);
   LiquidParticleShader2D &setViewport(const Vector2i &viewport);
@@ -62,7 +63,7 @@ public:
   // LiquidParticleShader2D &setDomainHeight(Int height);
 
 private:
-  enum: Int { TextureUnit = 0 };
+  enum: Int { VoronoiseTextureUnit = 0, ParticlesTextureUnit = 1 };
 
   GL::Buffer _bufferParticles;
 

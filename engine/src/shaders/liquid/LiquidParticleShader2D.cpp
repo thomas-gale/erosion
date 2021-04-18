@@ -86,34 +86,40 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
 // }
 
 LiquidParticleShader2D &
-LiquidParticleShader2D::bindTexture(GL::Texture2D& texture) {
-  texture.bind(TextureUnit);
+LiquidParticleShader2D::bindVoronoiseTexture(GL::Texture2D& texture) {
+  texture.bind(VoronoiseTextureUnit);
   return *this;
 }
 
 LiquidParticleShader2D &
-LiquidParticleShader2D::setMPMPoints(const std::vector<Vector2> &points) {
-
-  Containers::ArrayView<const float> data(
-      reinterpret_cast<const float *>(&points[0]), points.size() * 2);
-
-  // _bufferParticles = GL::Buffer{GL::Buffer::TargetHint::Uniform};
-  // _bufferParticles.setData(data);
-  // _bufferParticles.bind(GL::Buffer::Target::Uniform, _uMpm);
-
-  // std::cout << "mpmPos blockIndex: " << uniformBlockIndex("mpmPos") <<
-  // std::endl; std::cout << "_MpmPoints: " << _uMpmPoints << std::endl;
-
-  // std::cout << "Mpm2 blockIndex: " << uniformBlockIndex("Mpm2") << std::endl;
-  // std::cout << "mpmPos2 blockIndex: " << uniformBlockIndex("mpmPos2") <<
-  // std::endl;
-
-  // setUniformBlockBinding(uniformBlockIndex("Mpm"), _uMpmPoints);
-  // setUniform(_uMpmPoints, data);
-  // setUniform(uniformBlockIndex("Mpm"), data);
-
+LiquidParticleShader2D::bindMPMPointsTexture(GL::Texture2D& texture) {
+  texture.bind(ParticlesTextureUnit);
   return *this;
 }
+
+// LiquidParticleShader2D &
+// LiquidParticleShader2D::setMPMPoints(const std::vector<Vector2> &points) {
+
+//   Containers::ArrayView<const float> data(
+//       reinterpret_cast<const float *>(&points[0]), points.size() * 2);
+
+//   // _bufferParticles = GL::Buffer{GL::Buffer::TargetHint::Uniform};
+//   // _bufferParticles.setData(data);
+//   // _bufferParticles.bind(GL::Buffer::Target::Uniform, _uMpm);
+
+//   // std::cout << "mpmPos blockIndex: " << uniformBlockIndex("mpmPos") <<
+//   // std::endl; std::cout << "_MpmPoints: " << _uMpmPoints << std::endl;
+
+//   // std::cout << "Mpm2 blockIndex: " << uniformBlockIndex("Mpm2") << std::endl;
+//   // std::cout << "mpmPos2 blockIndex: " << uniformBlockIndex("mpmPos2") <<
+//   // std::endl;
+
+//   // setUniformBlockBinding(uniformBlockIndex("Mpm"), _uMpmPoints);
+//   // setUniform(_uMpmPoints, data);
+//   // setUniform(uniformBlockIndex("Mpm"), data);
+
+//   return *this;
+// }
 
 // LiquidParticleShader2D &
 // LiquidParticleShader2D::setParticleRadius(Float radius) {

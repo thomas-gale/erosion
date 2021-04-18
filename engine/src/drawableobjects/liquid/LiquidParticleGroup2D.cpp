@@ -42,6 +42,7 @@
 #include <Magnum/Math/Functions.h>
 #include <Magnum/MeshTools/CompressIndices.h>
 #include <Magnum/MeshTools/Interleave.h>
+#include <Magnum/PixelFormat.h>
 #include <Magnum/Primitives/Square.h>
 #include <Magnum/SceneGraph/Drawable.h>
 #include <Magnum/Shaders/Generic.h>
@@ -69,7 +70,7 @@ LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
       .setCount(quad.positions2DAsArray().size())
       .addVertexBuffer(std::move(quadVerts), 0, Shaders::Generic2D::Position{});
 
-  // import texture
+  // import voronoise texture
   PluginManager::Manager<Trade::AbstractImporter> manager;
   Containers::Pointer<Trade::AbstractImporter> importer =
       manager.loadAndInstantiate("TgaImporter");
@@ -83,14 +84,30 @@ LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
   Containers::Optional<Trade::ImageData2D> image = importer->image2D(0);
   CORRADE_INTERNAL_ASSERT(image);
 
-  _texture.setWrapping(GL::SamplerWrapping::ClampToEdge)
+  _voronoiseTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
       .setMagnificationFilter(GL::SamplerFilter::Linear)
       .setMinificationFilter(GL::SamplerFilter::Linear)
       .setStorage(1, GL::textureFormat(image->format()), image->size())
       .setSubImage(0, {}, *image);
 
+  // import/convert/load mpm particles texture
+  // ImageView1D pointsData(reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
+  Containers::ArrayView<const float> data(
+      reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
+
+  // auto pointsCount = _points.size() * 2;
+  ImageView2D pointsData{PixelFormat::RG32F, { int(data.size()), 1}, data};
+
+  // Containers::ArrayView<const float> data(
+  //     reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
+
+  _particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
+      .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
+                  Vector2i{int(data.size()), 1})
+      .setSubImage(0, {}, pointsData);
+
   // load reference points into buffer.
-  _particleShader->setMPMPoints(_points);
+  // _particleShader->setMPMPoints(_points);
 
   //   Containers::ArrayView<const float> data(
   //       reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
@@ -128,13 +145,22 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
   //   _dirty = false;
   // }
 
+  // if (_dirty) {
+  //   Containers::ArrayView<const float> data(
+  //       reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
+  //   _bufferParticles.setData(data);
+  //   // _meshParticles.setCount(Int(_points.size()));
+  //   _dirty = false;
+  // }
+
   (*_particleShader)
       /* particle data */
       //   .setParticleRadius(_particleRadius)
       /* sphere render data */
       //   .setColor(_color)
-      // texture
-      .bindTexture(_texture)
+      // textures
+      .bindVoronoiseTexture(_voronoiseTexture)
+      .bindMPMPointsTexture(_particlesTexture)
       /* view/prj matrices and size */
       .setViewProjectionMatrix(camera->projectionMatrix() *
                                camera->cameraMatrix())
