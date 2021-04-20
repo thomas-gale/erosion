@@ -57,9 +57,8 @@ namespace erosion {
 
 using namespace Math::Literals;
 
-LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
-                                             Float particleRadius)
-    : _points{points}, _particleRadius{particleRadius} {
+LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points)
+    : _points{points} {
 
   _particleShader.reset(new LiquidParticleShader2D);
 
@@ -71,134 +70,30 @@ LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
   _meshBackgroudQuad.setPrimitive(quad.primitive())
       .setCount(quad.positions2DAsArray().size())
       .addVertexBuffer(std::move(quadVerts), 0, Shaders::Generic2D::Position{});
-
-  // import voronoise texture
-  PluginManager::Manager<Trade::AbstractImporter> manager;
-  Containers::Pointer<Trade::AbstractImporter> importer =
-      manager.loadAndInstantiate("TgaImporter");
-  if (!importer)
-    std::exit(1);
-
-  const Utility::Resource rs{"data"};
-  if (!importer->openData(rs.getRaw("voronoise.tga")))
-    std::exit(2);
-
-  Containers::Optional<Trade::ImageData2D> image = importer->image2D(0);
-  CORRADE_INTERNAL_ASSERT(image);
-
-  _voronoiseTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
-      .setMagnificationFilter(GL::SamplerFilter::Linear)
-      .setMinificationFilter(GL::SamplerFilter::Linear)
-      .setStorage(1, GL::textureFormat(image->format()), image->size())
-      .setSubImage(0, {}, *image);
-
-  // import/convert/load mpm particles texture
-  // ImageView1D pointsData(reinterpret_cast<const float *>(&_points[0]),
-  // _points.size() * 2);
-  //   Containers::ArrayView<const float> data(
-  //       reinterpret_cast<const float *>(&_points[0]), _points.size() * 4);
-
-  //   // auto pointsCount = _points.size() * 2;
-  //   ImageView2D pointsData{
-  //       PixelFormat::RG32F, {int(_points.size() * 2), 1}, data};
-
-  //   // Containers::ArrayView<const float> data(
-  //   //     reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
-
-  //   // This is crap.
-  //   //   std::cout << "Points data: " << pointsData.pixels()[0].data() << " "
-  //   //             << pointsData.pixels()[1].data() << std::endl;
-
-  //   _particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
-  //       .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
-  //                   Vector2i{int(_points.size() * 2), 1})
-  //       .setSubImage(0, {}, pointsData);
-
-  // load reference points into buffer.
-  // _particleShader->setMPMPoints(_points);
-
-  //   Containers::ArrayView<const float> data(
-  //       reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
-  //   _bufferParticles.setData(data);
-  //   _particleShader->setUniformBlockBinding(
-  //       _particleShader->uniformBlockIndex("mpmPoints"), 1);
 }
 
 LiquidParticleGroup2D &
 LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
                             Int screenHeight, Int screenWidth,
                             Int projectionHeight) {
-  // if (_points.empty())
-  //   return *this;
-
-  // if (_dirty) {
-  //   Containers::ArrayView<const float> data(
-  //       reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
-  //   _bufferParticles.setData(data);
-  //   _meshParticles.setCount(Int(_points.size()));
-  //   _dirty = false;
-  // }
-
-  // if (_dirty) {
-  //   Containers::ArrayView<const Magnum::Math::Vector<2UL, Magnum::Float>>
-  //   data(
-  //       reinterpret_cast<const Magnum::Math::Vector<2UL, Magnum::Float> *>(
-  //           &_points[0]),
-  //       _points.size());
-
-  //   (*_particleShader)
-  //       .setNumberMPMPoints(Int(_points.size()))
-  //       .setMPMPoints(data);
-
-  //   _dirty = false;
-  // }
-
-  // if (_dirty) {
-  //   Containers::ArrayView<const float> data(
-  //       reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
-  //   _bufferParticles.setData(data);
-  //   // _meshParticles.setCount(Int(_points.size()));
-  //   _dirty = false;
-  // }
-
-  // if (_dirty) {
-
+  // create a view on the underlying point data and bind to a 2D texture
   Containers::ArrayView<const float> data(
       reinterpret_cast<const float *>(&_points[0]), _points.size() * 4);
-
-  // auto pointsCount = _points.size() * 2;
   ImageView2D pointsData{
       PixelFormat::RG32F, {int(_points.size() * 2), 1}, data};
-
-  // Containers::ArrayView<const float> data(
-  //     reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
-
-  // This is crap.
-  //   std::cout << "Points data: " << pointsData.pixels()[0].data() << " "
-  //             << pointsData.pixels()[1].data() << std::endl;
-
   GL::Texture2D particlesTexture;
-
   particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
       .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
                   Vector2i{int(_points.size() * 2), 1})
       .setSubImage(0, {}, pointsData);
-  // }
 
+  // configuring the shader and draw.
   (*_particleShader)
-      /* particle data */
-      //   .setParticleRadius(_particleRadius)
-      /* sphere render data */
-      //   .setColor(_color)
-      // textures
-      // .bindVoronoiseTexture(_voronoiseTexture)
       .bindMPMPointsTexture(particlesTexture)
-      /* view/prj matrices and size */
       .setViewProjectionMatrix(camera->projectionMatrix() *
                                camera->cameraMatrix())
       .setScreenHeight(screenHeight)
       .setScreenWidth(screenWidth)
-      //   .setDomainHeight(projectionHeight)
       .draw(_meshBackgroudQuad);
 
   return *this;

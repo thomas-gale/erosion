@@ -39,50 +39,16 @@ namespace erosion {
 
 class LiquidParticleGroup2D {
 public:
-  explicit LiquidParticleGroup2D(const std::vector<Vector2> &points,
-                                 Float particleRadius);
+  explicit LiquidParticleGroup2D(const std::vector<Vector2> &points);
 
   LiquidParticleGroup2D &draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
                               Int screenHeight, Int screenWidth,
                               Int projectionHeight);
 
-  bool isDirty() const { return _dirty; }
-
-  LiquidParticleGroup2D &setDirty() {
-    _dirty = true;
-    return *this;
-  }
-
-  Float particleRadius() const { return _particleRadius; }
-
-  LiquidParticleGroup2D &setParticleRadius(Float radius) {
-    _particleRadius = radius;
-    return *this;
-  }
-
-  const Color3 &color() const { return _color; }
-
-  LiquidParticleGroup2D &setColor(const Color3 &color) {
-    _color = color;
-    return *this;
-  }
-
 private:
   GL::Buffer _bufferParticles;
-  // GL::Texture2D _particlesTexture;
-
-  GL::Texture2D _voronoiseTexture;
   const std::vector<Vector2> &_points;
-  bool _dirty = false;
-
-  Float _particleRadius = 1.0f;
-  Color3 _color{0.6f, 0.6f, 1.0f};
-
-  // GL::Buffer _bufferBackgroudQuad;
   GL::Mesh _meshBackgroudQuad;
-
-  // GL::Buffer _bufferParticles;
-  // GL::Mesh _meshParticles;
   Containers::Pointer<LiquidParticleShader2D> _particleShader;
 };
 

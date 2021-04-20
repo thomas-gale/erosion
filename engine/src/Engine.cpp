@@ -59,7 +59,6 @@ private:
   Containers::Pointer<SceneGraph::Camera2D> _camera;
 
   // engine entities
-  float _pos;
   int _numParticles;
   std::vector<Vector2> _testParticles;
   Containers::Pointer<LiquidParticleGroup2D> _drawableParticles;
@@ -110,17 +109,9 @@ Engine::Engine(const Arguments &arguments)
   // setup mpm sim data
   _testParticles = std::vector<Vector2>(_numParticles);
   updateParticles();
-  _drawableParticles.emplace(_testParticles, 0.02f);
-
-  // gl setup
-  // std::cout << GL::Context::current().
+  _drawableParticles.emplace(_testParticles);
 
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
-  GL::Renderer::enable(GL::Renderer::Feature::Blending);
-  GL::Renderer::setBlendFunction(
-      GL::Renderer::BlendFunction::One, /* or SourceAlpha for non-premultiplied
-                                         */
-      GL::Renderer::BlendFunction::OneMinusSourceAlpha);
 }
 
 void Engine::drawEvent() {
@@ -136,7 +127,6 @@ void Engine::drawEvent() {
                                GL::FramebufferClear::Depth);
 
   // trigger drawable object to update the particles to the GPU
-  _drawableParticles->setDirty();
   _drawableParticles->draw(_camera,
                            GL::defaultFramebuffer.viewport().size().y(),
                            GL::defaultFramebuffer.viewport().size().x(), 1.0);
