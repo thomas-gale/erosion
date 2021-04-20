@@ -1,11 +1,6 @@
 #!/bin/bash
 set -e
 
-# Default value is debug
-if [ $1 = ""]; then
-$1 = Debug
-fi
-
 export BUILD_TYPE=$1
 if [ ${BUILD_TYPE} = Debug ]; then
 # export EMCC_DEBUG=1

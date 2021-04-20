@@ -31,10 +31,10 @@
 // uniform highp int numberPoints;// layout(std140) uniform Mpm { highp vec2 mpmPos[1024]; };
 // layout(std140) uniform Mpm2 { highp vec2 mpmPos2[32]; };
 
-#define numberPoints 512
+#define numberPoints 2048
 #define backCol vec3(.4, .4, .4)
 #define liqCol vec3(.2, .5, 1.)
-#define blobSize .1
+#define blobSize 1.
 
 uniform highp int screenHeight;
 uniform highp int screenWidth;
@@ -66,25 +66,50 @@ void main() {
   highp vec2 uv = gl_FragCoord.xy / vec2(screenWidth, screenHeight);
 
   // Total falloff for frag over all mpm points
-  highp float f = 1.;
+  // highp float f = 1.;
+  highp float distSquaredSum = 1.;
 
-  for (int i = 0; i < 100; ++i) {
+  fragmentColor = vec4(backCol, 1.);
+  for (int i = 0; i < numberPoints; ++i) {
     // read mpm point coords from rg channel of data texture (2D of dimension
     // [pointNumber,1])
     highp vec2 point =
-        texture(mpmPointsTexture, vec2(float(i) / float(numberPoints), 0.)).rg +
+        texture(mpmPointsTexture, vec2(float(i) / float(numberPoints), .5)).rg +
         vec2(.5, .5);
 
+    highp float dist = distance(uv, point);
+
+    // if (dist > .1) {
+    //   continue;
+    // }
+
+    if (dist < 0.02) {
+      fragmentColor = vec4(liqCol, 1.);
+      break;
+    }
+
+    // distSquaredSum = distSquaredSum * clamp(dist, .1, 1.);
+
+    // distSquaredSum = distSquaredSum * clamp((1. / pow(distance(uv, point), 2.)), 0.5, 1.);
+
+    // if (dist < .1) {
+
+    // f = f * metaballFallOff();
+    // }
+
     // compute fall off for each point and accumulate product
-    f = f * metaballFallOff(distance(uv, point));
     // f = f * clamp(metaballFallOff(distance(uv, point)), .1, 1.);
     // f = f * clamp(circle(uv, point, blobSize), .1, 1.);
     // f = f * circle(uv, point, blobSize);
   }
 
+  // Normalise
+  // highp float f = 1. - distSquaredSum;
+
   // clamp colour
-  highp vec3 col = (f > 1.) ? liqCol : backCol;
-  fragmentColor = vec4(clamp(col, 0., 1.), 1.);
+  // highp vec3 col = (f > log2(300.)) ? liqCol : backCol;
+  // highp vec3 col = (f > .999999) ? liqCol : backCol;
+  // fragmentColor = vec4(col, 1.);
   // fragmentColor = vec4(vec3(f), 1.);
 
   // uv -= 0.5;

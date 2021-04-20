@@ -95,24 +95,24 @@ LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
   // import/convert/load mpm particles texture
   // ImageView1D pointsData(reinterpret_cast<const float *>(&_points[0]),
   // _points.size() * 2);
-//   Containers::ArrayView<const float> data(
-//       reinterpret_cast<const float *>(&_points[0]), _points.size() * 4);
+  //   Containers::ArrayView<const float> data(
+  //       reinterpret_cast<const float *>(&_points[0]), _points.size() * 4);
 
-//   // auto pointsCount = _points.size() * 2;
-//   ImageView2D pointsData{
-//       PixelFormat::RG32F, {int(_points.size() * 2), 1}, data};
+  //   // auto pointsCount = _points.size() * 2;
+  //   ImageView2D pointsData{
+  //       PixelFormat::RG32F, {int(_points.size() * 2), 1}, data};
 
-//   // Containers::ArrayView<const float> data(
-//   //     reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
+  //   // Containers::ArrayView<const float> data(
+  //   //     reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
 
-//   // This is crap.
-//   //   std::cout << "Points data: " << pointsData.pixels()[0].data() << " "
-//   //             << pointsData.pixels()[1].data() << std::endl;
+  //   // This is crap.
+  //   //   std::cout << "Points data: " << pointsData.pixels()[0].data() << " "
+  //   //             << pointsData.pixels()[1].data() << std::endl;
 
-//   _particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
-//       .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
-//                   Vector2i{int(_points.size() * 2), 1})
-//       .setSubImage(0, {}, pointsData);
+  //   _particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
+  //       .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
+  //                   Vector2i{int(_points.size() * 2), 1})
+  //       .setSubImage(0, {}, pointsData);
 
   // load reference points into buffer.
   // _particleShader->setMPMPoints(_points);
@@ -161,29 +161,29 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
   //   _dirty = false;
   // }
 
-//   if (_dirty) {
+  // if (_dirty) {
 
-    Containers::ArrayView<const float> data(
-        reinterpret_cast<const float *>(&_points[0]), _points.size() * 4);
+  Containers::ArrayView<const float> data(
+      reinterpret_cast<const float *>(&_points[0]), _points.size() * 4);
 
-    // auto pointsCount = _points.size() * 2;
-    ImageView2D pointsData{
-        PixelFormat::RG32F, {int(_points.size() * 2), 1}, data};
+  // auto pointsCount = _points.size() * 2;
+  ImageView2D pointsData{
+      PixelFormat::RG32F, {int(_points.size() * 2), 1}, data};
 
-    // Containers::ArrayView<const float> data(
-    //     reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
+  // Containers::ArrayView<const float> data(
+  //     reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
 
-    // This is crap.
-    //   std::cout << "Points data: " << pointsData.pixels()[0].data() << " "
-    //             << pointsData.pixels()[1].data() << std::endl;
+  // This is crap.
+  //   std::cout << "Points data: " << pointsData.pixels()[0].data() << " "
+  //             << pointsData.pixels()[1].data() << std::endl;
 
-    GL::Texture2D particlesTexture;
+  GL::Texture2D particlesTexture;
 
-    particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
-        .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
-                    Vector2i{int(_points.size() * 2), 1})
-        .setSubImage(0, {}, pointsData);
-//   }
+  particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
+      .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
+                  Vector2i{int(_points.size() * 2), 1})
+      .setSubImage(0, {}, pointsData);
+  // }
 
   (*_particleShader)
       /* particle data */
