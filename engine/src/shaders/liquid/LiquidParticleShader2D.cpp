@@ -88,12 +88,14 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
 LiquidParticleShader2D &
 LiquidParticleShader2D::bindVoronoiseTexture(GL::Texture2D& texture) {
   texture.bind(VoronoiseTextureUnit);
+  setUniform(uniformLocation("voronoiseTexture"), VoronoiseTextureUnit);
   return *this;
 }
 
 LiquidParticleShader2D &
 LiquidParticleShader2D::bindMPMPointsTexture(GL::Texture2D& texture) {
   texture.bind(ParticlesTextureUnit);
+  setUniform(uniformLocation("mpmPointsTexture"), ParticlesTextureUnit);
   return *this;
 }
 

@@ -28,6 +28,8 @@
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include <iostream>
+
 #include "drawableobjects/liquid/LiquidParticleGroup2D.h"
 
 #include <Corrade/Containers/ArrayView.h>
@@ -91,19 +93,25 @@ LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points,
       .setSubImage(0, {}, *image);
 
   // import/convert/load mpm particles texture
-  // ImageView1D pointsData(reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
+  // ImageView1D pointsData(reinterpret_cast<const float *>(&_points[0]),
+  // _points.size() * 2);
   Containers::ArrayView<const float> data(
-      reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
+      reinterpret_cast<const float *>(&_points[0]), _points.size() * 4);
 
   // auto pointsCount = _points.size() * 2;
-  ImageView2D pointsData{PixelFormat::RG32F, { int(data.size()), 1}, data};
+  ImageView2D pointsData{
+      PixelFormat::RG32F, {int(_points.size() * 2), 1}, data};
 
   // Containers::ArrayView<const float> data(
   //     reinterpret_cast<const float *>(&_points[0]), _points.size() * 2);
 
+  // This is crap.
+  //   std::cout << "Points data: " << pointsData.pixels()[0].data() << " "
+  //             << pointsData.pixels()[1].data() << std::endl;
+
   _particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
       .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
-                  Vector2i{int(data.size()), 1})
+                  Vector2i{int(_points.size() * 2), 1})
       .setSubImage(0, {}, pointsData);
 
   // load reference points into buffer.

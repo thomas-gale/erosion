@@ -35,6 +35,7 @@
 uniform highp int screenHeight;
 uniform highp int screenWidth;
 uniform sampler2D voronoiseTexture; // Bound to texture unit 0
+uniform sampler2D mpmPointsTexture; // Bound to texture unit 1
 
 // flat in lowp vec3 color;
 in highp vec2 interpolatedTextureCoordinates;
@@ -62,12 +63,14 @@ void main() {
   // mediump float c = circle(uv, point, 1.0);
   // mediump float mag = dot(point, point);
 
+  // mediump vec2 correctedTexCoords = interpolatedTextureCoordinates *
+  // vec2(0.5, 0.5) + vec2(0.5, 0.5); mediump vec2 correctedTexCoords =
+  // interpolatedTextureCoordinates * vec2(0.5, 0.5) + vec2(0.5, 0.5);
 
-  // mediump vec2 correctedTexCoords = interpolatedTextureCoordinates * vec2(0.5, 0.5) + vec2(0.5, 0.5);
-  // mediump vec2 correctedTexCoords = interpolatedTextureCoordinates * vec2(0.5, 0.5) + vec2(0.5, 0.5);
-
-  mediump vec2 correctedTexCoords = interpolatedTextureCoordinates * vec2(1.0, -1.0) + vec2(0.5, 0.5);
+  mediump vec2 correctedTexCoords =
+      interpolatedTextureCoordinates * vec2(1.0, -1.0) + vec2(0.5, 0.5);
 
   fragmentColor = vec4(1.0, 1.0, 1.0, 1.0);
   fragmentColor.rgb = texture(voronoiseTexture, correctedTexCoords).rrr;
+  fragmentColor.rg = fragmentColor.rg * texture(mpmPointsTexture, correctedTexCoords).rg;
 }
