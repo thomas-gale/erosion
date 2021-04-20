@@ -31,10 +31,10 @@
 // uniform highp int numberPoints;// layout(std140) uniform Mpm { highp vec2
 // mpmPos[1024]; }; layout(std140) uniform Mpm2 { highp vec2 mpmPos2[32]; };
 
-#define numberPoints 256
+#define numberPoints 1024
 #define backCol vec3(.4, .4, .4)
 #define liqCol vec3(.2, .5, 1.)
-#define blobSize .01
+#define blobSize .015
 
 uniform highp int screenHeight;
 uniform highp int screenWidth;
