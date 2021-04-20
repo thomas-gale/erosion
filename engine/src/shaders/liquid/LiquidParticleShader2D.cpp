@@ -57,82 +57,19 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
   attachShaders({vertShader, fragShader});
   CORRADE_INTERNAL_ASSERT(link());
 
-  // _uNumberMPMPoints = uniformLocation("numberPoints");
-  // _uMpmPoints = uniformLocation("mpmPos");
-  // _uMpm = uniformBlockIndex("Mpm");
-  // std::cout << "Mpm blockIndex: " << _uMpm << std::endl;
-
-  // _uParticleRadius = uniformLocation("particleRadius");
-  // _uColor = uniformLocation("uniformColor");
-
   _uViewProjectionMatrix = uniformLocation("viewProjectionMatrix");
   std::cout << "_uViewProjectionMatrix: " << _uViewProjectionMatrix
             << std::endl;
   _uScreenHeight = uniformLocation("screenHeight");
   _uScreenWidth = uniformLocation("screenWidth");
-  // _uDomainHeight = uniformLocation("domainHeight");
-}
-
-// LiquidParticleShader2D &LiquidParticleShader2D::setNumberMPMPoints(Int
-// number) {
-//   setUniform(_uNumberMPMPoints, number);
-//   return *this;
-// }
-
-// LiquidParticleShader2D &
-// LiquidParticleShader2D::setMPMPoints(const Math::Vector<2, Float>> points) {
-//   setUniform(_uMpmPoints, points);
-//   return *this;
-// }
-
-LiquidParticleShader2D &
-LiquidParticleShader2D::bindVoronoiseTexture(GL::Texture2D& texture) {
-  texture.bind(VoronoiseTextureUnit);
-  setUniform(uniformLocation("voronoiseTexture"), VoronoiseTextureUnit);
-  return *this;
 }
 
 LiquidParticleShader2D &
-LiquidParticleShader2D::bindMPMPointsTexture(GL::Texture2D& texture) {
+LiquidParticleShader2D::bindMPMPointsTexture(GL::Texture2D &texture) {
   texture.bind(ParticlesTextureUnit);
   setUniform(uniformLocation("mpmPointsTexture"), ParticlesTextureUnit);
   return *this;
 }
-
-// LiquidParticleShader2D &
-// LiquidParticleShader2D::setMPMPoints(const std::vector<Vector2> &points) {
-
-//   Containers::ArrayView<const float> data(
-//       reinterpret_cast<const float *>(&points[0]), points.size() * 2);
-
-//   // _bufferParticles = GL::Buffer{GL::Buffer::TargetHint::Uniform};
-//   // _bufferParticles.setData(data);
-//   // _bufferParticles.bind(GL::Buffer::Target::Uniform, _uMpm);
-
-//   // std::cout << "mpmPos blockIndex: " << uniformBlockIndex("mpmPos") <<
-//   // std::endl; std::cout << "_MpmPoints: " << _uMpmPoints << std::endl;
-
-//   // std::cout << "Mpm2 blockIndex: " << uniformBlockIndex("Mpm2") << std::endl;
-//   // std::cout << "mpmPos2 blockIndex: " << uniformBlockIndex("mpmPos2") <<
-//   // std::endl;
-
-//   // setUniformBlockBinding(uniformBlockIndex("Mpm"), _uMpmPoints);
-//   // setUniform(_uMpmPoints, data);
-//   // setUniform(uniformBlockIndex("Mpm"), data);
-
-//   return *this;
-// }
-
-// LiquidParticleShader2D &
-// LiquidParticleShader2D::setParticleRadius(Float radius) {
-//   setUniform(_uParticleRadius, radius);
-//   return *this;
-// }
-
-// LiquidParticleShader2D &LiquidParticleShader2D::setColor(const Color3 &color) {
-//   setUniform(_uColor, color);
-//   return *this;
-// }
 
 LiquidParticleShader2D &
 LiquidParticleShader2D::setViewProjectionMatrix(const Matrix3 &matrix) {
@@ -149,9 +86,4 @@ LiquidParticleShader2D &LiquidParticleShader2D::setScreenWidth(Int width) {
   setUniform(_uScreenWidth, width);
   return *this;
 }
-
-// LiquidParticleShader2D &LiquidParticleShader2D::setDomainHeight(Int height) {
-//   setUniform(_uDomainHeight, height);
-//   return *this;
-// }
 } // namespace erosion

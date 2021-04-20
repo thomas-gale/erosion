@@ -32,8 +32,8 @@
 
 #include <Magnum/GL/AbstractShaderProgram.h>
 #include <Magnum/GL/Buffer.h>
-#include <Magnum/Types.h>
 #include <Magnum/GL/GL.h>
+#include <Magnum/Types.h>
 
 namespace erosion {
 
@@ -41,37 +41,19 @@ using namespace Magnum;
 
 class LiquidParticleShader2D : public GL::AbstractShaderProgram {
 public:
-  using Position = GL::Attribute<0, Vector2>;
-  using TextureCoordinates = GL::Attribute<1, Vector2>;
-
   explicit LiquidParticleShader2D();
 
-  // LiquidParticleShader2D &setNumberMPMPoints(Int number);
-  // LiquidParticleShader2D &setMPMPoints(Containers::ArrayView<const
-  // Math::Vector<2, Float>> points);
-
-  LiquidParticleShader2D &bindVoronoiseTexture(GL::Texture2D& texture);
-  LiquidParticleShader2D &bindMPMPointsTexture(GL::Texture2D& texture);
-
-  // LiquidParticleShader2D &setMPMPoints(const std::vector<Vector2> &points);
-  // LiquidParticleShader2D &setParticleRadius(Float radius);
-  // LiquidParticleShader2D &setColor(const Color3 &color);
+  LiquidParticleShader2D &bindMPMPointsTexture(GL::Texture2D &texture);
   LiquidParticleShader2D &setViewport(const Vector2i &viewport);
   LiquidParticleShader2D &setViewProjectionMatrix(const Matrix3 &matrix);
   LiquidParticleShader2D &setScreenHeight(Int height);
   LiquidParticleShader2D &setScreenWidth(Int width);
-  // LiquidParticleShader2D &setDomainHeight(Int height);
 
 private:
-  enum: Int { ParticlesTextureUnit = 0, VoronoiseTextureUnit = 1};
+  enum : Int { ParticlesTextureUnit = 0 };
 
-  GL::Buffer _bufferParticles;
-
-  // UnsignedInt _uMpmPoints;
-  UnsignedInt _uMpm;
-
-  Int _uParticleRadius, _uColor, _uViewProjectionMatrix, _uScreenHeight,
-      _uScreenWidth, _uDomainHeight;
+  // UnsignedInt _uMpm;
+  Int _uViewProjectionMatrix, _uScreenHeight, _uScreenWidth;
 };
 
 } // namespace erosion
