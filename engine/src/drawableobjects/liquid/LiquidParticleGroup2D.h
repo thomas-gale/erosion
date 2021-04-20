@@ -69,7 +69,7 @@ public:
 
 private:
   GL::Buffer _bufferParticles;
-  GL::Texture2D _particlesTexture;
+  // GL::Texture2D _particlesTexture;
 
   GL::Texture2D _voronoiseTexture;
   const std::vector<Vector2> &_points;
