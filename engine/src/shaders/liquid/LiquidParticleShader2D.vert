@@ -32,13 +32,13 @@ uniform highp mat3 viewProjectionMatrix;
 // uniform highp int screenHeight;
 // uniform highp int screenWidth;
 // uniform highp int domainHeight;
-// uniform mediump float particleRadius;
-// uniform lowp vec3 uniformColor;
+// uniform highp float particleRadius;
+// uniform highp vec3 uniformColor;
 
 layout(location = 0) in highp vec2 backgroundQuad;
 // layout(location = 1) in highp vec2 textureCoordinates;
 
-// flat out lowp vec3 color;
+// flat out highp vec3 color;
 out highp vec2 interpolatedTextureCoordinates;
 
 // out highp vec2 points;

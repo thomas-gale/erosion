@@ -28,9 +28,13 @@
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// uniform highp int numberPoints;
-// layout(std140) uniform Mpm { mediump vec2 mpmPos[1024]; };
-// layout(std140) uniform Mpm2 { mediump vec2 mpmPos2[32]; };
+// uniform highp int numberPoints;// layout(std140) uniform Mpm { highp vec2 mpmPos[1024]; };
+// layout(std140) uniform Mpm2 { highp vec2 mpmPos2[32]; };
+
+#define numberPoints 512
+#define backCol vec3(.4, .4, .4)
+#define liqCol vec3(.2, .5, 1.)
+#define blobSize .1
 
 uniform highp int screenHeight;
 uniform highp int screenWidth;
@@ -38,51 +42,65 @@ uniform highp int screenWidth;
 uniform sampler2D mpmPointsTexture; // Bound to texture unit 0
 // uniform sampler2D voronoiseTexture; // Bound to texture unit 1
 
-// flat in lowp vec3 color;
 in highp vec2 interpolatedTextureCoordinates;
+out highp vec4 fragmentColor;
 
-out mediump vec4 fragmentColor;
+// https://en.wikipedia.org/wiki/Metaballs
+highp float metaballFallOff(highp float r) { return blobSize / pow(r, 2.); }
 
-mediump float circle(mediump vec2 uv, mediump vec2 pos, mediump float r) {
+highp float circle(highp vec2 uv, highp vec2 pos, highp float r) {
   return r / distance(uv, pos);
 }
 
 void main() {
-  // mediump vec2 point = gl_PointCoord.xy * vec2(2.0, -2.0) + vec2(-1.0, 1.0);
+  // highp vec2 point = gl_PointCoord.xy * vec2(2.0, -2.0) + vec2(-1.0, 1.0);
 
-  // mediump float ball = metaball(point, 1.0f);
-  // mediump float c = clamp(ball+0.5f, 0.5f, 1.0f);
+  // highp float ball = metaball(point, 1.0f);
+  // highp float c = clamp(ball+0.5f, 0.5f, 1.0f);
 
-  // mediump float mag = clamp(dot(point, point), 0.0, 1.0);
+  // highp float mag = clamp(dot(point, point), 0.0, 1.0);
 
   // if (mag > 0.9)
   // discard; /* outside the circle */
 
-  mediump vec2 uv = gl_FragCoord.xy / vec2(screenWidth, screenHeight);
+  highp vec2 uv = gl_FragCoord.xy / vec2(screenWidth, screenHeight);
 
+  // Total falloff for frag over all mpm points
+  highp float f = 1.;
 
-  fragmentColor = vec4(0.5f, 0.5f, 0.5f, 1.0f);
-  for (int i = 0; i < 10; ++i) {
-    // Read mpm point coords from RG channel of data texture (2D of dimension [pointNumber,1])
-    mediump vec2 point = texture(mpmPointsTexture, vec2(float(i)/float(512), 0.0f)).rg + vec2(0.5, 0.5);
-    fragmentColor.rgb = fragmentColor.rgb * vec3(circle(uv, point, 0.2f));
+  for (int i = 0; i < 100; ++i) {
+    // read mpm point coords from rg channel of data texture (2D of dimension
+    // [pointNumber,1])
+    highp vec2 point =
+        texture(mpmPointsTexture, vec2(float(i) / float(numberPoints), 0.)).rg +
+        vec2(.5, .5);
+
+    // compute fall off for each point and accumulate product
+    f = f * metaballFallOff(distance(uv, point));
+    // f = f * clamp(metaballFallOff(distance(uv, point)), .1, 1.);
+    // f = f * clamp(circle(uv, point, blobSize), .1, 1.);
+    // f = f * circle(uv, point, blobSize);
   }
 
-
+  // clamp colour
+  highp vec3 col = (f > 1.) ? liqCol : backCol;
+  fragmentColor = vec4(clamp(col, 0., 1.), 1.);
+  // fragmentColor = vec4(vec3(f), 1.);
 
   // uv -= 0.5;
 
-  // mediump float c = circle(uv, point, 1.0);
-  // mediump float mag = dot(point, point);
+  // highp float c = circle(uv, point, 1.0);
+  // highp float mag = dot(point, point);
 
-  // mediump vec2 correctedTexCoords = interpolatedTextureCoordinates *
-  // vec2(0.5, 0.5) + vec2(0.5, 0.5); mediump vec2 correctedTexCoords =
+  // highp vec2 correctedTexCoords = interpolatedTextureCoordinates *
+  // vec2(0.5, 0.5) + vec2(0.5, 0.5); highp vec2 correctedTexCoords =
   // interpolatedTextureCoordinates * vec2(0.5, 0.5) + vec2(0.5, 0.5);
 
-  // mediump vec2 correctedTexCoords =
+  // highp vec2 correctedTexCoords =
   //     interpolatedTextureCoordinates * vec2(1.0, -1.0) + vec2(0.5, 0.5);
 
   // fragmentColor = vec4(1.0, 1.0, 1.0, 1.0);
   // fragmentColor.rgb = texture(voronoiseTexture, correctedTexCoords).rrr;
-  // fragmentColor.rg = fragmentColor.rg * texture(mpmPointsTexture, interpolatedTextureCoordinates).rg;
+  // fragmentColor.rg = fragmentColor.rg * texture(mpmPointsTexture,
+  // interpolatedTextureCoordinates).rg;
 }
