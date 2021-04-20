@@ -191,7 +191,7 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
       /* sphere render data */
       //   .setColor(_color)
       // textures
-      .bindVoronoiseTexture(_voronoiseTexture)
+      // .bindVoronoiseTexture(_voronoiseTexture)
       .bindMPMPointsTexture(particlesTexture)
       /* view/prj matrices and size */
       .setViewProjectionMatrix(camera->projectionMatrix() *

@@ -63,7 +63,7 @@ public:
   // LiquidParticleShader2D &setDomainHeight(Int height);
 
 private:
-  enum: Int { VoronoiseTextureUnit = 0, ParticlesTextureUnit = 1 };
+  enum: Int { ParticlesTextureUnit = 0, VoronoiseTextureUnit = 1};
 
   GL::Buffer _bufferParticles;
 

@@ -34,8 +34,9 @@
 
 uniform highp int screenHeight;
 uniform highp int screenWidth;
-uniform sampler2D voronoiseTexture; // Bound to texture unit 0
-uniform sampler2D mpmPointsTexture; // Bound to texture unit 1
+// uniform highp int numberPoints;
+uniform sampler2D mpmPointsTexture; // Bound to texture unit 0
+// uniform sampler2D voronoiseTexture; // Bound to texture unit 1
 
 // flat in lowp vec3 color;
 in highp vec2 interpolatedTextureCoordinates;
@@ -58,6 +59,17 @@ void main() {
   // discard; /* outside the circle */
 
   mediump vec2 uv = gl_FragCoord.xy / vec2(screenWidth, screenHeight);
+
+
+  fragmentColor = vec4(0.5f, 0.5f, 0.5f, 1.0f);
+  for (int i = 0; i < 10; ++i) {
+    // Read mpm point coords from RG channel of data texture (2D of dimension [pointNumber,1])
+    mediump vec2 point = texture(mpmPointsTexture, vec2(float(i)/float(512), 0.0f)).rg + vec2(0.5, 0.5);
+    fragmentColor.rgb = fragmentColor.rgb * vec3(circle(uv, point, 0.2f));
+  }
+
+
+
   // uv -= 0.5;
 
   // mediump float c = circle(uv, point, 1.0);
@@ -67,10 +79,10 @@ void main() {
   // vec2(0.5, 0.5) + vec2(0.5, 0.5); mediump vec2 correctedTexCoords =
   // interpolatedTextureCoordinates * vec2(0.5, 0.5) + vec2(0.5, 0.5);
 
-  mediump vec2 correctedTexCoords =
-      interpolatedTextureCoordinates * vec2(1.0, -1.0) + vec2(0.5, 0.5);
+  // mediump vec2 correctedTexCoords =
+  //     interpolatedTextureCoordinates * vec2(1.0, -1.0) + vec2(0.5, 0.5);
 
-  fragmentColor = vec4(1.0, 1.0, 1.0, 1.0);
-  fragmentColor.rgb = texture(voronoiseTexture, correctedTexCoords).rrr;
-  fragmentColor.rg = fragmentColor.rg * texture(mpmPointsTexture, correctedTexCoords).rg;
+  // fragmentColor = vec4(1.0, 1.0, 1.0, 1.0);
+  // fragmentColor.rgb = texture(voronoiseTexture, correctedTexCoords).rrr;
+  // fragmentColor.rg = fragmentColor.rg * texture(mpmPointsTexture, interpolatedTextureCoordinates).rg;
 }
