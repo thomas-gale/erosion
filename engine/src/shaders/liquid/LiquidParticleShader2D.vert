@@ -29,25 +29,11 @@
  */
 
 uniform highp mat3 viewProjectionMatrix;
-// uniform highp int screenHeight;
-// uniform highp int screenWidth;
-// uniform highp int domainHeight;
-// uniform highp float particleRadius;
-// uniform highp vec3 uniformColor;
 
 layout(location = 0) in highp vec2 backgroundQuad;
-// layout(location = 1) in highp vec2 textureCoordinates;
 
-// flat out highp vec3 color;
-out highp vec2 interpolatedTextureCoordinates;
-
-// out highp vec2 points;
-
+// all the mpm point rendering is performed in the fragment shader, simply a
+// quad is passed through.
 void main() {
-  // points = position;
-  // gl_PointSize = particleRadius * float(screenHeight) / float(domainHeight);
-//   color = uniformColor;
-
-  interpolatedTextureCoordinates = backgroundQuad;
   gl_Position = mat4(viewProjectionMatrix) * vec4(backgroundQuad, 0, 1.0);
 }
