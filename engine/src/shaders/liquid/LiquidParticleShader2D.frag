@@ -34,7 +34,7 @@
 #define numberPoints 1024
 #define backCol vec3(.4, .4, .4)
 #define liqCol vec3(.2, .5, 1.)
-#define blobSize .015
+#define blobSize .0015
 
 uniform highp int screenHeight;
 uniform highp int screenWidth;
@@ -109,7 +109,7 @@ void main() {
   // highp float f = 1. - distSquaredSum;
 
   // clamp colour
-  highp vec3 col = (f > 1.) ? liqCol : backCol;
+  highp vec3 col = (f > .5) ? liqCol : backCol;
   // highp vec3 col = (f > .999999) ? liqCol : backCol;
   fragmentColor = vec4(col, 1.);
   // fragmentColor = vec4(vec3(f), 1.);
