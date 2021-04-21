@@ -1,6 +1,6 @@
 // fixed settings for shader
 #define gridSize 64
-#define massScalingFactor 2000.
+#define massScalingFactor 4000.
 #define numberPoints 2048
 #define backCol vec3(.4, .4, .4)
 #define liqCol vec3(.2, .5, 1.)
