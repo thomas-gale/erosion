@@ -92,7 +92,8 @@ Engine::Engine(const Arguments &arguments)
   // bind view to grid data
   _massGridView = Containers::ArrayView<const float>(
       reinterpret_cast<const float *>(Ti_ctx.root->S17), _gridSize * _gridSize);
-  _massGridImageView.emplace(PixelFormat::R32F, Vector2i{_gridSize * _gridSize, 1}, _massGridView);
+
+  _massGridImageView.emplace(PixelFormat::R32F, Vector2i{_gridSize, _gridSize}, _massGridView);
 
   // GL::Texture2D particlesTexture;
   // particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
@@ -132,7 +133,7 @@ Engine::Engine(const Arguments &arguments)
   // setup mpm sim data
   _pointPositions = std::vector<Vector2>(_numParticles);
   updateParticles();
-  _drawableParticles.emplace(_pointPositions);
+  _drawableParticles.emplace(_pointPositions, *_massGridImageView);
 
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
 }
@@ -144,6 +145,9 @@ void Engine::drawEvent() {
     Tk_substep_c4_0(&Ti_ctx);
   }
   updateParticles();
+
+  // Test
+  // std::cout << "MASS GRID VIEW: " << *(_massGridView.data() + 2000)  << std::endl;
 
   // drawing code
   GL::defaultFramebuffer.clear(GL::FramebufferClear::Color |

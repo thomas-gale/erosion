@@ -40,7 +40,6 @@
 #include <Magnum/GL/AbstractShaderProgram.h>
 #include <Magnum/GL/Renderer.h>
 #include <Magnum/GL/TextureFormat.h>
-#include <Magnum/ImageView.h>
 #include <Magnum/Math/Functions.h>
 #include <Magnum/MeshTools/CompressIndices.h>
 #include <Magnum/MeshTools/Interleave.h>
@@ -57,8 +56,8 @@ namespace erosion {
 
 using namespace Math::Literals;
 
-LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points)
-    : _points{points} {
+LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points, ImageView2D massGrid)
+    : _points(points), _massGrid(massGrid) {
 
   _particleShader.reset(new LiquidParticleShader2D);
 
@@ -76,20 +75,29 @@ LiquidParticleGroup2D &
 LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
                             Int screenHeight, Int screenWidth,
                             Int projectionHeight) {
+
+  // set texture from massgrid data
+  GL::Texture2D massGridTexture;
+  massGridTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
+      .setStorage(1, GL::textureFormat(PixelFormat::R32F),
+                  _massGrid.size())
+      .setSubImage(0, {}, _massGrid);
+                            
   // create a view on the underlying point data and bind to a 2D texture
-  Containers::ArrayView<const float> data(
-      reinterpret_cast<const float *>(&_points[0]), _points.size() * 4);
-  ImageView2D pointsData{
-      PixelFormat::RG32F, Vector2i{int(_points.size() * 2), 1}, data};
-  GL::Texture2D particlesTexture;
-  particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
-      .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
-                  Vector2i{int(_points.size() * 2), 1})
-      .setSubImage(0, {}, pointsData);
+//   Containers::ArrayView<const float> data(
+//       reinterpret_cast<const float *>(&_points[0]), _points.size() * 4);
+//   ImageView2D pointsData{
+//       PixelFormat::RG32F, Vector2i{int(_points.size() * 2), 1}, data};
+//   GL::Texture2D particlesTexture;
+//   particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
+//       .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
+//                   Vector2i{int(_points.size() * 2), 1})
+//       .setSubImage(0, {}, pointsData);
 
   // configuring the shader and draw.
   (*_particleShader)
-      .bindMPMPointsTexture(particlesTexture)
+      .bindMassGridTexture(massGridTexture)
+    //   .bindMPMPointsTexture(particlesTexture)
       .setViewProjectionMatrix(camera->projectionMatrix() *
                                camera->cameraMatrix())
       .setScreenHeight(screenHeight)

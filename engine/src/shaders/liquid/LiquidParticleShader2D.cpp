@@ -65,6 +65,13 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
 }
 
 LiquidParticleShader2D &
+LiquidParticleShader2D::bindMassGridTexture(GL::Texture2D &texture) {
+  texture.bind(MassGridTextureUnit);
+  setUniform(uniformLocation("massGridTexture"), MassGridTextureUnit);
+  return *this;
+}
+
+LiquidParticleShader2D &
 LiquidParticleShader2D::bindMPMPointsTexture(GL::Texture2D &texture) {
   texture.bind(ParticlesTextureUnit);
   setUniform(uniformLocation("mpmPointsTexture"), ParticlesTextureUnit);

@@ -43,6 +43,7 @@ class LiquidParticleShader2D : public GL::AbstractShaderProgram {
 public:
   explicit LiquidParticleShader2D();
 
+  LiquidParticleShader2D &bindMassGridTexture(GL::Texture2D &texture);
   LiquidParticleShader2D &bindMPMPointsTexture(GL::Texture2D &texture);
   LiquidParticleShader2D &setViewport(const Vector2i &viewport);
   LiquidParticleShader2D &setViewProjectionMatrix(const Matrix3 &matrix);
@@ -50,7 +51,7 @@ public:
   LiquidParticleShader2D &setScreenWidth(Int width);
 
 private:
-  enum : Int { ParticlesTextureUnit = 0 };
+  enum : Int { MassGridTextureUnit = 0, ParticlesTextureUnit = 1 };
 
   // UnsignedInt _uMpm;
   Int _uViewProjectionMatrix, _uScreenHeight, _uScreenWidth;
