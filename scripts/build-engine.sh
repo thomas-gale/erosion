@@ -2,7 +2,7 @@
 set -e
 
 export BUILD_TYPE=$1
-if [ ${BUILD_TYPE} = Debug ]; then
+if [ "${BUILD_TYPE}" = "Debug" ]; then
 # export EMCC_DEBUG=1
 echo "Maybe enable verbose debug output"
 fi
