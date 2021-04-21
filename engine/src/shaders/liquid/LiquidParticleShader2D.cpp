@@ -60,8 +60,8 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
   _uViewProjectionMatrix = uniformLocation("viewProjectionMatrix");
   std::cout << "_uViewProjectionMatrix: " << _uViewProjectionMatrix
             << std::endl;
-  _uScreenHeight = uniformLocation("screenHeight");
-  _uScreenWidth = uniformLocation("screenWidth");
+  // _uScreenHeight = uniformLocation("screenHeight");
+  // _uScreenWidth = uniformLocation("screenWidth");
 }
 
 LiquidParticleShader2D &
@@ -71,12 +71,12 @@ LiquidParticleShader2D::bindMassGridTexture(GL::Texture2D &texture) {
   return *this;
 }
 
-LiquidParticleShader2D &
-LiquidParticleShader2D::bindMPMPointsTexture(GL::Texture2D &texture) {
-  texture.bind(ParticlesTextureUnit);
-  setUniform(uniformLocation("mpmPointsTexture"), ParticlesTextureUnit);
-  return *this;
-}
+// LiquidParticleShader2D &
+// LiquidParticleShader2D::bindMPMPointsTexture(GL::Texture2D &texture) {
+//   texture.bind(ParticlesTextureUnit);
+//   setUniform(uniformLocation("mpmPointsTexture"), ParticlesTextureUnit);
+//   return *this;
+// }
 
 LiquidParticleShader2D &
 LiquidParticleShader2D::setViewProjectionMatrix(const Matrix3 &matrix) {
@@ -84,13 +84,13 @@ LiquidParticleShader2D::setViewProjectionMatrix(const Matrix3 &matrix) {
   return *this;
 }
 
-LiquidParticleShader2D &LiquidParticleShader2D::setScreenHeight(Int height) {
-  setUniform(_uScreenHeight, height);
-  return *this;
-}
+// LiquidParticleShader2D &LiquidParticleShader2D::setScreenHeight(Int height) {
+//   setUniform(_uScreenHeight, height);
+//   return *this;
+// }
 
-LiquidParticleShader2D &LiquidParticleShader2D::setScreenWidth(Int width) {
-  setUniform(_uScreenWidth, width);
-  return *this;
-}
+// LiquidParticleShader2D &LiquidParticleShader2D::setScreenWidth(Int width) {
+//   setUniform(_uScreenWidth, width);
+//   return *this;
+// }
 } // namespace erosion

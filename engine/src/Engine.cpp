@@ -63,50 +63,24 @@ private:
   Containers::Pointer<SceneGraph::Camera2D> _camera;
 
   // engine entities
-  int _gridSize;
-  Containers::ArrayView<const float> _massGridView;
-  Containers::Pointer<ImageView2D> _massGridImageView;
+  // int _gridSize;
+  // Containers::ArrayView<const float> _massGridView;
+  // Containers::Pointer<ImageView2D> _massGridImageView;
 
-  int _numParticles;
-  std::vector<Vector2> _pointPositions;
+  // int _numParticles;
+  // std::vector<Vector2> _pointPositions;
   Containers::Pointer<LiquidParticleGroup2D> _drawableParticles;
   Timeline timeline_;
 };
 
 Engine::Engine(const Arguments &arguments)
     : Platform::Application{arguments, NoCreate} {
-
-  // setup taichi
-  std::cout << "Initialising taichi..." << std::endl;
-  Tk_reset_c6_0(&Ti_ctx);
-  std::cout << "Initialised taichi!" << std::endl;
-
-  Tk_get_num_particles_c10_0(&Ti_ctx);
-  _numParticles = Ti_ctx.args[0].val_i32;
-  std::cout << "Number of particles: " << _numParticles << std::endl;
-
-  Tk_get_grid_size_c8_0(&Ti_ctx);
-  _gridSize = Ti_ctx.args[0].val_i32;
-  std::cout << "Grid Size: " << _gridSize << " x " << _gridSize << std::endl;
-
-  // bind view to grid data
-  _massGridView = Containers::ArrayView<const float>(
-      reinterpret_cast<const float *>(Ti_ctx.root->S17), _gridSize * _gridSize);
-
-  _massGridImageView.emplace(PixelFormat::R32F, Vector2i{_gridSize, _gridSize}, _massGridView);
-
-  // GL::Texture2D particlesTexture;
-  // particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
-  //     .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
-  //                 Vector2i{int(_points.size() * 2), 1})
-  //     .setSubImage(0, {}, pointsData);
-
   // setup window
   std::cout << "Setting up window..." << std::endl;
   {
     const Vector2 dpiScaling = this->dpiScaling({});
     Configuration conf;
-    conf.setTitle("Magnum 2D Fluid Simulation Example")
+    conf.setTitle("erosion")
         .setSize(conf.size(), dpiScaling)
         .setWindowFlags(Configuration::WindowFlag::Resizable);
     GLConfiguration glConf;
@@ -130,10 +104,35 @@ Engine::Engine(const Arguments &arguments)
       .setProjectionMatrix(Matrix3::projection(Vector2(1.0f, 1.0f)))
       .setViewport(GL::defaultFramebuffer.viewport().size());
 
+   // setup taichi
+  std::cout << "Initialising taichi..." << std::endl;
+  Tk_reset_c6_0(&Ti_ctx);
+  std::cout << "Initialised taichi!" << std::endl;
+
+  // Tk_get_num_particles_c10_0(&Ti_ctx);
+  // _numParticles = Ti_ctx.args[0].val_i32;
+  // std::cout << "Number of particles: " << _numParticles << std::endl;
+
+  Tk_get_grid_size_c8_0(&Ti_ctx);
+  int gridSize = Ti_ctx.args[0].val_i32;
+  std::cout << "Grid Size: " << gridSize << " x " << gridSize << std::endl;
+
+  // bind mass grid view data
+  Containers::ArrayView<const float> massGridView(
+      reinterpret_cast<const float *>(Ti_ctx.root->S17), gridSize * gridSize);
+  ImageView2D massGridImageView(PixelFormat::R32F, Vector2i{gridSize, gridSize}, massGridView);
+
+  // GL::Texture2D particlesTexture;
+  // particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
+  //     .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
+  //                 Vector2i{int(_points.size() * 2), 1})
+  //     .setSubImage(0, {}, pointsData);
+
   // setup mpm sim data
-  _pointPositions = std::vector<Vector2>(_numParticles);
-  updateParticles();
-  _drawableParticles.emplace(_pointPositions, *_massGridImageView);
+  // _pointPositions = std::vector<Vector2>(_numParticles);
+  // updateParticles();
+
+  _drawableParticles.emplace(massGridImageView);
 
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
 }
@@ -144,7 +143,7 @@ void Engine::drawEvent() {
   for (int i = 0; i < SIMULATION_SUBSTEP; ++i) {
     Tk_substep_c4_0(&Ti_ctx);
   }
-  updateParticles();
+  // updateParticles();
 
   // Test
   // std::cout << "MASS GRID VIEW: " << *(_massGridView.data() + 2000)  << std::endl;
@@ -165,13 +164,13 @@ void Engine::drawEvent() {
   redraw();
 }
 
-void Engine::updateParticles() {
-  // Tk_hub_get_particles_c14_0(&Ti_ctx);
-  for (auto i = 0; i < _numParticles; ++i) {
-    _pointPositions[i] =
-        Vector2(Ti_ctx.root->S1[i].S2 - 0.5, Ti_ctx.root->S1[i].S3 - 0.5);
-  }
-}
+// void Engine::updateParticles() {
+//   // Tk_hub_get_particles_c14_0(&Ti_ctx);
+//   for (auto i = 0; i < _numParticles; ++i) {
+//     _pointPositions[i] =
+//         Vector2(Ti_ctx.root->S1[i].S2 - 0.5, Ti_ctx.root->S1[i].S3 - 0.5);
+//   }
+// }
 
 } // namespace erosion
 

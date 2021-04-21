@@ -56,8 +56,8 @@ namespace erosion {
 
 using namespace Math::Literals;
 
-LiquidParticleGroup2D::LiquidParticleGroup2D(const std::vector<Vector2> &points, ImageView2D massGrid)
-    : _points(points), _massGrid(massGrid) {
+LiquidParticleGroup2D::LiquidParticleGroup2D(ImageView2D massGrid)
+    : _massGrid(massGrid) {
 
   _particleShader.reset(new LiquidParticleShader2D);
 
@@ -101,8 +101,8 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
     //   .bindMPMPointsTexture(particlesTexture)
       .setViewProjectionMatrix(camera->projectionMatrix() *
                                camera->cameraMatrix())
-      .setScreenHeight(screenHeight)
-      .setScreenWidth(screenWidth)
+      // .setScreenHeight(screenHeight)
+      // .setScreenWidth(screenWidth)
       .draw(_meshBackgroudQuad);
 
   return *this;

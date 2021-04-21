@@ -44,7 +44,7 @@ public:
   explicit LiquidParticleShader2D();
 
   LiquidParticleShader2D &bindMassGridTexture(GL::Texture2D &texture);
-  LiquidParticleShader2D &bindMPMPointsTexture(GL::Texture2D &texture);
+  // LiquidParticleShader2D &bindMPMPointsTexture(GL::Texture2D &texture);
   LiquidParticleShader2D &setViewport(const Vector2i &viewport);
   LiquidParticleShader2D &setViewProjectionMatrix(const Matrix3 &matrix);
   LiquidParticleShader2D &setScreenHeight(Int height);
@@ -54,7 +54,7 @@ private:
   enum : Int { MassGridTextureUnit = 0, ParticlesTextureUnit = 1 };
 
   // UnsignedInt _uMpm;
-  Int _uViewProjectionMatrix, _uScreenHeight, _uScreenWidth;
+  Int _uViewProjectionMatrix;
 };
 
 } // namespace erosion

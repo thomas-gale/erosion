@@ -7,8 +7,8 @@
 #define blobSize .01
 #define blobThres 1.
 
-uniform highp int screenHeight;
-uniform highp int screenWidth;
+// uniform highp int screenHeight;
+// uniform highp int screenWidth;
 uniform sampler2D massGridTexture; // Bound to texture unit 0
 // uniform sampler2D mpmPointsTexture; // Bound to texture unit 1
 

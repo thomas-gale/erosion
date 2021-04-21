@@ -40,8 +40,7 @@ namespace erosion {
 
 class LiquidParticleGroup2D {
 public:
-  explicit LiquidParticleGroup2D(const std::vector<Vector2> &points,
-                                 ImageView2D massGrid);
+  explicit LiquidParticleGroup2D(ImageView2D massGrid);
 
   LiquidParticleGroup2D &draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
                               Int screenHeight, Int screenWidth,
@@ -50,8 +49,8 @@ public:
 private:
   ImageView2D _massGrid;
 
-  GL::Buffer _bufferParticles;
-  const std::vector<Vector2> &_points;
+  // GL::Buffer _bufferParticles;
+  // const std::vector<Vector2> &_points;
   GL::Mesh _meshBackgroudQuad;
   Containers::Pointer<LiquidParticleShader2D> _particleShader;
 };
