@@ -1,11 +1,11 @@
 // fixed settings for shader
-#define gridSize 64
+// #define gridSize 64
 #define massScalingFactor 4000.
-#define numberPoints 2048
+// #define numberPoints 2048
 #define backCol vec3(.4, .4, .4)
 #define liqCol vec3(.2, .5, 1.)
-#define blobSize .01
-#define blobThres 1.
+// #define blobSize .01
+// #define blobThres 1.
 
 // uniform highp int screenHeight;
 // uniform highp int screenWidth;
