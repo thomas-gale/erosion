@@ -74,7 +74,7 @@ Engine::Engine(const Arguments &arguments)
   Tk_reset_c6_0(&Ti_ctx);
   std::cout << "Initialised taichi!" << std::endl;
 
-  Tk_hub_get_num_particles_c12_0(&Ti_ctx);
+  Tk_get_num_particles_c10_0(&Ti_ctx);
   _numParticles = Ti_ctx.args[0].val_i32;
   std::cout << "Number of particles: " << _numParticles << std::endl;
 
@@ -145,7 +145,7 @@ void Engine::drawEvent() {
 }
 
 void Engine::updateParticles() {
-  Tk_hub_get_particles_c14_0(&Ti_ctx);
+  // Tk_hub_get_particles_c14_0(&Ti_ctx);
   for (auto i = 0; i < _numParticles; ++i) {
     _pointPositions[i] =
         Vector2(Ti_ctx.root->S1[i].S2 - 0.5, Ti_ctx.root->S1[i].S3 - 0.5);

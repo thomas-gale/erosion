@@ -81,8 +81,9 @@ def reset():
 @hub.kernel
 def get_grid_size() -> ti.i32:
     return n_grid
+get_grid_size()
 
-hub.substep_nr(50)
-hub.bind_particles(x)
-
-
+@hub.kernel
+def get_num_particles() -> ti.i32:
+    return n_particles
+get_num_particles()
