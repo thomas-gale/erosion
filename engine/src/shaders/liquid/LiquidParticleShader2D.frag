@@ -1,12 +1,12 @@
 // fixed settings for shader
 // #define gridSize 64
-#define massScalingFactor 4000.
+// #define massScalingFactor 4000.
 // #define numberPoints 2048
-#define backCol vec3(.4, .4, .4)
-#define liqCol vec3(.2, .5, 1.)
+// #define backCol vec3(.4, .4, .4)
+// #define liqCol vec3(.2, .5, 1.)
 // #define blobSize .01
 // #define blobThres 1.
-precision highp float;
+// precision highp float;
 
 // uniform highp int screenHeight;
 // uniform highp int screenWidth;
@@ -17,7 +17,9 @@ in highp vec2 textureCoords;
 out highp vec4 fragmentColor;
 
 void main() {
-  fragmentColor = vec4(backCol + texture(massGridTexture, textureCoords).rrr * massScalingFactor * liqCol, 1.);
+  fragmentColor = vec4(vec3(.4, .4, .4) + texture(massGridTexture, textureCoords).rrr *
+                                     4000. * vec3(.2, .5, 1.),
+                       1.);
 }
 
 // MetaBall Impl
@@ -32,12 +34,13 @@ void main() {
 //   // metaball sum
 //   highp float f = 0.;
 //   for (int i = 0; i < numberPoints/2; ++i) {
-//     // todo: test sample range - I belive that the second half of texture is garbage
+//     // todo: test sample range - I belive that the second half of texture is
+//     garbage
 //     // read mpm point coords from rg channel of data texture (2D of dimension
 //     // [pointNumber,1])
 //     highp vec2 point =
-//         texture(mpmPointsTexture, vec2(float(i) / (2. * float(numberPoints)), .5)).rg +
-//         vec2(.5, .5);
+//         texture(mpmPointsTexture, vec2(float(i) / (2. * float(numberPoints)),
+//         .5)).rg + vec2(.5, .5);
 
 //     // sum up metaball contribution to this fragment from each point.
 //     f = f + metaball(blobSize, uv, point);
