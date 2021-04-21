@@ -1,6 +1,6 @@
 // fixed settings for shader
 #define gridSize 64
-#define massScalingFactor 1000.
+#define massScalingFactor 2000.
 #define numberPoints 2048
 #define backCol vec3(.4, .4, .4)
 #define liqCol vec3(.2, .5, 1.)
@@ -16,8 +16,7 @@ in highp vec2 textureCoords;
 out highp vec4 fragmentColor;
 
 void main() {
-  // highp vec2 uv = gl_FragCoord.xy / vec2(float(screenWidth), float(screenHeight));
-  fragmentColor = vec4(texture(massGridTexture, textureCoords).rrr * massScalingFactor, 1.);
+  fragmentColor = vec4(backCol + texture(massGridTexture, textureCoords).rrr * massScalingFactor * liqCol, 1.);
 }
 
 // MetaBall Impl
