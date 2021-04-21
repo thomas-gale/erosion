@@ -60,7 +60,8 @@ private:
 
   // engine entities
   int _numParticles;
-  std::vector<Vector2> _testParticles;
+  int _gridSize;
+  std::vector<Vector2> _pointPositions;
   Containers::Pointer<LiquidParticleGroup2D> _drawableParticles;
   Timeline timeline_;
 };
@@ -73,9 +74,14 @@ Engine::Engine(const Arguments &arguments)
   Tk_reset_c6_0(&Ti_ctx);
   std::cout << "Initialised taichi!" << std::endl;
 
-  Tk_hub_get_num_particles_c10_0(&Ti_ctx);
+  Tk_hub_get_num_particles_c12_0(&Ti_ctx);
   _numParticles = Ti_ctx.args[0].val_i32;
   std::cout << "Number of particles: " << _numParticles << std::endl;
+
+
+  Tk_get_grid_size_c8_0(&Ti_ctx);
+  _gridSize = Ti_ctx.args[0].val_i32;
+  std::cout << "Grid Size: " << _gridSize << " x " << _gridSize << std::endl;
 
   // setup window
   std::cout << "Setting up window..." << std::endl;
@@ -107,9 +113,9 @@ Engine::Engine(const Arguments &arguments)
       .setViewport(GL::defaultFramebuffer.viewport().size());
 
   // setup mpm sim data
-  _testParticles = std::vector<Vector2>(_numParticles);
+  _pointPositions = std::vector<Vector2>(_numParticles);
   updateParticles();
-  _drawableParticles.emplace(_testParticles);
+  _drawableParticles.emplace(_pointPositions);
 
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
 }
@@ -139,9 +145,9 @@ void Engine::drawEvent() {
 }
 
 void Engine::updateParticles() {
-  Tk_hub_get_particles_c12_0(&Ti_ctx);
+  Tk_hub_get_particles_c14_0(&Ti_ctx);
   for (auto i = 0; i < _numParticles; ++i) {
-    _testParticles[i] =
+    _pointPositions[i] =
         Vector2(Ti_ctx.root->S1[i].S2 - 0.5, Ti_ctx.root->S1[i].S3 - 0.5);
   }
 }

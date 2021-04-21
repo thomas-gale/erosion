@@ -78,5 +78,11 @@ def reset():
         v[i] = [0, -1]
         J[i] = 1
 
+@hub.kernel
+def get_grid_size() -> ti.i32:
+    return n_grid
+
 hub.substep_nr(50)
 hub.bind_particles(x)
+
+
