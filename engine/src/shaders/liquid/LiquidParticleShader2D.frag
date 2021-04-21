@@ -6,6 +6,7 @@
 #define liqCol vec3(.2, .5, 1.)
 // #define blobSize .01
 // #define blobThres 1.
+precision highp float;
 
 // uniform highp int screenHeight;
 // uniform highp int screenWidth;
