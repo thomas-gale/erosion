@@ -80,7 +80,7 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
   Containers::ArrayView<const float> data(
       reinterpret_cast<const float *>(&_points[0]), _points.size() * 4);
   ImageView2D pointsData{
-      PixelFormat::RG32F, {int(_points.size() * 2), 1}, data};
+      PixelFormat::RG32F, Vector2i{int(_points.size() * 2), 1}, data};
   GL::Texture2D particlesTexture;
   particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
       .setStorage(1, GL::textureFormat(PixelFormat::RG32F),

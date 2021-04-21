@@ -2,6 +2,7 @@
 #include <iostream>
 #include <memory>
 
+#include <Corrade/Containers/ArrayView.h>
 #include <Corrade/Containers/Pointer.h>
 #include <Corrade/Utility/StlMath.h>
 #include <Magnum/GL/Context.h>
@@ -9,6 +10,7 @@
 #include <Magnum/GL/PixelFormat.h>
 #include <Magnum/GL/Renderer.h>
 #include <Magnum/GL/Version.h>
+#include <Magnum/ImageView.h>
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/FunctionsBatch.h>
 #include <Magnum/MeshTools/Compile.h>
@@ -17,6 +19,8 @@
 #else
 #include <Magnum/Platform/Sdl2Application.h>
 #endif
+#include <Magnum/Magnum.h>
+#include <Magnum/PixelFormat.h>
 #include <Magnum/Primitives/Circle.h>
 #include <Magnum/SceneGraph/Camera.h>
 #include <Magnum/SceneGraph/Drawable.h>
@@ -59,8 +63,11 @@ private:
   Containers::Pointer<SceneGraph::Camera2D> _camera;
 
   // engine entities
-  int _numParticles;
   int _gridSize;
+  Containers::ArrayView<const float> _massGridView;
+  Containers::Pointer<ImageView2D> _massGridImageView;
+
+  int _numParticles;
   std::vector<Vector2> _pointPositions;
   Containers::Pointer<LiquidParticleGroup2D> _drawableParticles;
   Timeline timeline_;
@@ -78,10 +85,20 @@ Engine::Engine(const Arguments &arguments)
   _numParticles = Ti_ctx.args[0].val_i32;
   std::cout << "Number of particles: " << _numParticles << std::endl;
 
-
   Tk_get_grid_size_c8_0(&Ti_ctx);
   _gridSize = Ti_ctx.args[0].val_i32;
   std::cout << "Grid Size: " << _gridSize << " x " << _gridSize << std::endl;
+
+  // bind view to grid data
+  _massGridView = Containers::ArrayView<const float>(
+      reinterpret_cast<const float *>(Ti_ctx.root->S17), _gridSize * _gridSize);
+  _massGridImageView.emplace(PixelFormat::R32F, Vector2i{_gridSize * _gridSize, 1}, _massGridView);
+
+  // GL::Texture2D particlesTexture;
+  // particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
+  //     .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
+  //                 Vector2i{int(_points.size() * 2), 1})
+  //     .setSubImage(0, {}, pointsData);
 
   // setup window
   std::cout << "Setting up window..." << std::endl;
