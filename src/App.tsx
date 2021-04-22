@@ -1,11 +1,5 @@
 import { Engine } from './engine/Engine';
-import {
-  Backdrop,
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-} from '@material-ui/core';
+import { Backdrop, Box, CircularProgress, Grid } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TopNav } from './views/TopNav';
@@ -52,21 +46,12 @@ const useStyles = makeStyles((theme) => ({
 
 const App = (): JSX.Element => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleToggle = () => {
-    setOpen(!open);
-  };
+  const [loading, setLoading] = React.useState(false);
 
   return (
     <Box className={classes.fullScreen}>
-      <Engine />
-      <Button variant="outlined" color="primary" onClick={handleToggle}>
-        Show backdrop
-      </Button>
-      <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
+      <Engine setLoaded={(loaded: boolean) => setLoading(!loaded)} />
+      <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Box className={classes.uiOverlay}>
