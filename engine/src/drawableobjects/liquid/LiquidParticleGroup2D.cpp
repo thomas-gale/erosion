@@ -79,6 +79,8 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
   // set texture from massgrid data
   GL::Texture2D massGridTexture;
   massGridTexture
+      .setMinificationFilter(GL::SamplerFilter::Nearest)
+      .setMagnificationFilter(GL::SamplerFilter::Nearest)
       .setWrapping(GL::SamplerWrapping::ClampToEdge)
       .setStorage(1, GL::textureFormat(PixelFormat::R32F),
                   _massGrid.size())
