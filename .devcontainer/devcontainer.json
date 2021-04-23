@@ -3,6 +3,8 @@
 	"dockerFile": "Dockerfile",
 	"context": ".",
 	"runArgs": [
+		// Allow local network debugging on devices such as my android
+		"--network", "host",
 		//  Allow use of Docker from the container. See the docker-in-docker definition for details.
 		"-v","/var/run/docker.sock:/var/run/docker.sock"
 	],
