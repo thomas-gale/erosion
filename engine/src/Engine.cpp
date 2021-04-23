@@ -14,12 +14,6 @@
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/FunctionsBatch.h>
 #include <Magnum/MeshTools/Compile.h>
-#ifdef CORRADE_TARGET_EMSCRIPTEN
-#include <Magnum/Platform/EmscriptenApplication.h>
-#else
-#include <Magnum/Platform/Sdl2Application.h>
-#endif
-#include <Magnum/Magnum.h>
 #include <Magnum/PixelFormat.h>
 #include <Magnum/Primitives/Circle.h>
 #include <Magnum/SceneGraph/Camera.h>
@@ -28,6 +22,12 @@
 #include <Magnum/SceneGraph/Scene.h>
 #include <Magnum/Timeline.h>
 #include <Magnum/Trade/MeshData.h>
+
+#ifdef CORRADE_TARGET_EMSCRIPTEN
+#include <Magnum/Platform/EmscriptenApplication.h>
+#else
+#include <Magnum/Platform/Sdl2Application.h>
+#endif
 
 #include "drawableobjects/liquid/LiquidParticleGroup2D.h"
 
@@ -104,14 +104,10 @@ Engine::Engine(const Arguments &arguments)
       .setProjectionMatrix(Matrix3::projection(Vector2(1.0f, 1.0f)))
       .setViewport(GL::defaultFramebuffer.viewport().size());
 
-   // setup taichi
+  // setup taichi
   std::cout << "Initialising taichi..." << std::endl;
   Tk_reset_c6_0(&Ti_ctx);
   std::cout << "Initialised taichi!" << std::endl;
-
-  // Tk_get_num_particles_c10_0(&Ti_ctx);
-  // _numParticles = Ti_ctx.args[0].val_i32;
-  // std::cout << "Number of particles: " << _numParticles << std::endl;
 
   Tk_get_grid_size_c8_0(&Ti_ctx);
   int gridSize = Ti_ctx.args[0].val_i32;
@@ -120,17 +116,8 @@ Engine::Engine(const Arguments &arguments)
   // bind mass grid view data
   Containers::ArrayView<const float> massGridView(
       reinterpret_cast<const float *>(Ti_ctx.root->S17), gridSize * gridSize);
-  ImageView2D massGridImageView(PixelFormat::R32F, Vector2i{gridSize, gridSize}, massGridView);
-
-  // GL::Texture2D particlesTexture;
-  // particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
-  //     .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
-  //                 Vector2i{int(_points.size() * 2), 1})
-  //     .setSubImage(0, {}, pointsData);
-
-  // setup mpm sim data
-  // _pointPositions = std::vector<Vector2>(_numParticles);
-  // updateParticles();
+  ImageView2D massGridImageView(PixelFormat::R32F, Vector2i{gridSize, gridSize},
+                                massGridView);
 
   _drawableParticles.emplace(massGridImageView);
 
@@ -143,10 +130,6 @@ void Engine::drawEvent() {
   for (int i = 0; i < SIMULATION_SUBSTEP; ++i) {
     Tk_substep_c4_0(&Ti_ctx);
   }
-  // updateParticles();
-
-  // Test
-  // std::cout << "MASS GRID VIEW: " << *(_massGridView.data() + 2000)  << std::endl;
 
   // drawing code
   GL::defaultFramebuffer.clear(GL::FramebufferClear::Color |
@@ -163,14 +146,6 @@ void Engine::drawEvent() {
   // run next frame immediately (emscripten pauses otherwise)
   redraw();
 }
-
-// void Engine::updateParticles() {
-//   // Tk_hub_get_particles_c14_0(&Ti_ctx);
-//   for (auto i = 0; i < _numParticles; ++i) {
-//     _pointPositions[i] =
-//         Vector2(Ti_ctx.root->S1[i].S2 - 0.5, Ti_ctx.root->S1[i].S3 - 0.5);
-//   }
-// }
 
 } // namespace erosion
 
