@@ -1,4 +1,3 @@
-// Set all default precisions to high.
 precision highp float;
 precision highp int;
 precision highp sampler2D;
