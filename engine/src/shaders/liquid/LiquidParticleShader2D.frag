@@ -1,24 +1,27 @@
 // fixed settings for shader
 // #define gridSize 64
-// #define massScalingFactor 4000.
+#define massScalingFactor 4000.
 // #define numberPoints 2048
-// #define backCol vec3(.4, .4, .4)
-// #define liqCol vec3(.2, .5, 1.)
+#define backCol vec3(1., 1., 1.)
+#define liqInvCol vec3(.8, .5, 0.)
 // #define blobSize .01
 // #define blobThres 1.
-// precision highp float;
+precision highp float;
+precision highp int;
+precision highp sampler2D;
+
 
 // uniform highp int screenHeight;
 // uniform highp int screenWidth;
-uniform sampler2D massGridTexture; // Bound to texture unit 0
+uniform highp sampler2D massGridTexture; // Bound to texture unit 0
 // uniform sampler2D mpmPointsTexture; // Bound to texture unit 1
 
 in highp vec2 textureCoords;
 out highp vec4 fragmentColor;
 
 void main() {
-  fragmentColor = vec4(vec3(.4, .4, .4) + texture(massGridTexture, textureCoords).rrr *
-                                     4000. * vec3(.2, .5, 1.),
+  fragmentColor = vec4(backCol - texture(massGridTexture, textureCoords).rrr *
+                                     massScalingFactor * liqInvCol,
                        1.);
 }
 
