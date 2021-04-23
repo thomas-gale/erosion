@@ -2,10 +2,10 @@
 import taichi as ti
 import hub
 
-n_particles = 2048
-n_grid = 64
+n_particles = 1024
+n_grid = 32
 dx = 1 / n_grid
-dt = 2e-4
+dt = 1e-3
 
 p_rho = 1
 p_vol = (dx * 0.5)**2
