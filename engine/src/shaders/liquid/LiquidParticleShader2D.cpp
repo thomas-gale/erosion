@@ -42,6 +42,7 @@
 #include <Magnum/GL/Version.h>
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/Matrix3.h>
+#include <Magnum/Math/Vector2.h>
 
 namespace erosion {
 
@@ -57,9 +58,20 @@ LiquidParticleShader2D::LiquidParticleShader2D() {
   attachShaders({vertShader, fragShader});
   CORRADE_INTERNAL_ASSERT(link());
 
+  _uGridSize = uniformLocation("gridSize");
   _uViewProjectionMatrix = uniformLocation("viewProjectionMatrix");
-  std::cout << "_uViewProjectionMatrix: " << _uViewProjectionMatrix
-            << std::endl;
+}
+
+LiquidParticleShader2D &
+LiquidParticleShader2D::setViewProjectionMatrix(const Matrix3 &matrix) {
+  setUniform(_uViewProjectionMatrix, matrix);
+  return *this;
+}
+
+LiquidParticleShader2D &
+LiquidParticleShader2D::setGridSize(const Vector2i &gridSize) {
+  setUniform(_uGridSize, gridSize);
+  return *this;
 }
 
 LiquidParticleShader2D &
@@ -73,12 +85,6 @@ LiquidParticleShader2D &
 LiquidParticleShader2D::bindVelGridTexture(GL::Texture2D &texture) {
   texture.bind(VelGridTextureUnit);
   setUniform(uniformLocation("velGridTexture"), VelGridTextureUnit);
-  return *this;
-}
-
-LiquidParticleShader2D &
-LiquidParticleShader2D::setViewProjectionMatrix(const Matrix3 &matrix) {
-  setUniform(_uViewProjectionMatrix, matrix);
   return *this;
 }
 

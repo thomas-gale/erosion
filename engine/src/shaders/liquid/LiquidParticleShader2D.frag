@@ -3,13 +3,15 @@ precision highp int;
 precision highp sampler2D;
 
 // fixed settings for liquid shader
-#define massScalingFactor 5000.
-#define gridSize 32.
+#define massScalingFactor                                                      \
+  5000. // Mass seems to be SI units (e.g. value is very small and needs
+        // scaling)
 #define threshold .5
 #define backCol vec3(.6, .6, .6)
 #define liqCol vec3(.2, .5, 1.)
 #define foamCol vec3(.8, .9, 1.)
 
+uniform highp ivec2 gridSize;
 uniform highp sampler2D massGridTexture; // Bound to texture unit 0
 uniform highp sampler2D velGridTexture;  // Bound to texture unit 1
 
@@ -36,12 +38,12 @@ float triangular(float f) {
 // attribution:
 // https://www.codeproject.com/Articles/236394/Bi-Cubic-and-Bi-Linear-Interpolation-with-GLSL
 vec4 biCubic(sampler2D textureSampler, vec2 texCoord) {
-  float texelSizeX = 1. / gridSize; // size of one texel
-  float texelSizeY = 1. / gridSize; // size of one texel
+  float texelSizeX = 1. / float(gridSize.x); // size of one texel
+  float texelSizeY = 1. / float(gridSize.y); // size of one texel
   vec4 nSum = vec4(0., 0., 0., 0.);
   vec4 nDenom = vec4(0., 0., 0., 0.);
-  float a = fract(texCoord.x * gridSize); // get the decimal part
-  float b = fract(texCoord.y * gridSize); // get the decimal part
+  float a = fract(texCoord.x * float(gridSize.x)); // get the decimal part
+  float b = fract(texCoord.y * float(gridSize.y)); // get the decimal part
   for (int m = -1; m <= 2; m++) {
     for (int n = -1; n <= 2; n++) {
       vec4 vecData =
@@ -65,11 +67,16 @@ void main() {
 
   // use step to threshold if background/fluid visible
   // add additional whitness if the fluid has velocity
-  // increased boundary threshold randomness based on velocity (to simulate spray)
+  // increased boundary threshold randomness based on velocity (to simulate
+  // spray)
   vec3 backFragColor = step(mass, threshold) * backCol;
-  vec3 liqFragColor = (1.-step(mass, threshold * (1. - (length(vel) * rand(textureCoords))))) * (liqCol + length(vel));
+  vec3 liqFragColor =
+      (1. -
+       step(mass, threshold * (1. - (length(vel) * rand(textureCoords))))) *
+      (liqCol + length(vel));
 
-  // additive combination of frag colors (they self mask/step threshold themselves)
+  // additive combination of frag colors (they self mask/step threshold
+  // themselves)
   vec3 finalFragColor = min(foamCol, backFragColor + liqFragColor);
   fragmentColor = vec4(finalFragColor, 1.);
 }

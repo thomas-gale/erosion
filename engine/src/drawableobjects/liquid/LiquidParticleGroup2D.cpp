@@ -95,10 +95,11 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
 
   // configuring the shader and draw.
   (*_particleShader)
-      .bindMassGridTexture(massGridTexture)
-      .bindVelGridTexture(velGridTexture)
       .setViewProjectionMatrix(camera->projectionMatrix() *
                                camera->cameraMatrix())
+      .setGridSize(_velGrid.size())
+      .bindMassGridTexture(massGridTexture)
+      .bindVelGridTexture(velGridTexture)
       .draw(_meshBackgroudQuad);
 
   return *this;

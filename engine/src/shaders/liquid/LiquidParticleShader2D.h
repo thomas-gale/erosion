@@ -33,6 +33,7 @@
 #include <Magnum/GL/AbstractShaderProgram.h>
 #include <Magnum/GL/Buffer.h>
 #include <Magnum/GL/GL.h>
+#include <Magnum/Math/Vector2.h>
 #include <Magnum/Types.h>
 
 namespace erosion {
@@ -43,17 +44,15 @@ class LiquidParticleShader2D : public GL::AbstractShaderProgram {
 public:
   explicit LiquidParticleShader2D();
 
+  LiquidParticleShader2D &setViewProjectionMatrix(const Matrix3 &matrix);
+  LiquidParticleShader2D &setGridSize(const Vector2i &gridSize);
   LiquidParticleShader2D &bindMassGridTexture(GL::Texture2D &texture);
   LiquidParticleShader2D &bindVelGridTexture(GL::Texture2D &texture);
-  LiquidParticleShader2D &setViewport(const Vector2i &viewport);
-  LiquidParticleShader2D &setViewProjectionMatrix(const Matrix3 &matrix);
-  LiquidParticleShader2D &setScreenHeight(Int height);
-  LiquidParticleShader2D &setScreenWidth(Int width);
 
 private:
   enum : Int { MassGridTextureUnit = 0, VelGridTextureUnit = 1 };
 
-  Int _uViewProjectionMatrix;
+  Int _uGridSize, _uViewProjectionMatrix;
 };
 
 } // namespace erosion
