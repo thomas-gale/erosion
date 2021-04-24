@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -9,34 +9,31 @@ const useStyles = makeStyles((_) => ({
   },
 }));
 
-export interface EngineModule {
+export interface Engine {
   setGravity: (x: number, y: number) => void;
 }
 
-export interface EngineProps {
+export interface EngineCanvasProps {
+  setEngine: (engine: Engine) => void;
   setLoaded: (loaded: boolean) => void;
 }
 
-export const Engine = (props: EngineProps): JSX.Element => {
+export const EngineCanvas = (props: EngineCanvasProps): JSX.Element => {
   const classes = useStyles();
-  const { setLoaded } = props;
+  const { setLoaded, setEngine } = props;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setMod] = useState<undefined | EngineModule>(undefined);
-  const canvasRef = useRef(null);
-
-  console.log('Engine loading...');
   useEffect(() => {
+    console.log('Engine loading...');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-var-requires
     const factory: any = require('./engine');
-    factory().then((engineMod: EngineModule) => {
-      setMod(engineMod);
+    factory().then((engineMod: Engine) => {
+      setEngine(engineMod);
       console.log('Engine loaded!');
       engineMod.setGravity(4.0, 4.0);
       setLoaded(true);
     });
     setLoaded(false);
-  }, [setMod]);
+  }, []);
 
-  return <canvas ref={canvasRef} className={classes.canvas} id="canvas" />;
+  return <canvas className={classes.canvas} id="canvas" />;
 };

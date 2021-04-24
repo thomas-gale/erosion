@@ -1,4 +1,4 @@
-import { Engine } from '../engine/Engine';
+import { Engine, EngineCanvas } from '../engine/Engine';
 import { Backdrop, Box, CircularProgress, Grid } from '@material-ui/core';
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
@@ -48,12 +48,16 @@ const useStyles = makeStyles((theme) => ({
 const App = (): JSX.Element => {
   const classes = useStyles();
 
+  const [engine, setEngine] = useState<undefined | Engine>(undefined);
   const [loading, setLoading] = useState(false);
   const [mainMenuOpen, setMainMenuOpen] = useState(false);
 
   return (
     <Box className={classes.fullScreen}>
-      <Engine setLoaded={(loaded: boolean) => setLoading(!loaded)} />
+      <EngineCanvas
+        setEngine={setEngine}
+        setLoaded={(loaded: boolean) => setLoading(!loaded)}
+      />
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -67,6 +71,7 @@ const App = (): JSX.Element => {
           <MainMenuDrawer
             open={mainMenuOpen}
             onClose={() => setMainMenuOpen(false)}
+            engine={engine}
           />
         </Grid>
       </Box>
