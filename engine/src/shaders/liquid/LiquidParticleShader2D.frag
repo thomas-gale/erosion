@@ -3,7 +3,7 @@ precision highp int;
 precision highp sampler2D;
 
 // fixed settings for liquid shader
-#define massScalingFactor 3000.
+#define massScalingFactor 5000.
 #define gridSize 32.
 #define threshold .5
 #define backCol vec3(1., 1., 1.)
@@ -14,33 +14,48 @@ uniform highp sampler2D massGridTexture; // Bound to texture unit 0
 in highp vec2 textureCoords;
 out highp vec4 fragmentColor;
 
+// attribution: https://www.codeproject.com/Articles/236394/Bi-Cubic-and-Bi-Linear-Interpolation-with-GLSL
+float triangular(float f) {
+  f = f / 2.0;
+  if (f < 0.0) {
+    return (f + 1.0);
+  } else {
+    return (1.0 - f);
+  }
+  return 0.0;
+}
+
+// attribution: https://www.codeproject.com/Articles/236394/Bi-Cubic-and-Bi-Linear-Interpolation-with-GLSL
+vec4 biCubic(sampler2D textureSampler, vec2 texCoord) {
+  float texelSizeX = 1.0 / gridSize; // size of one texel
+  float texelSizeY = 1.0 / gridSize; // size of one texel
+  vec4 nSum = vec4(0.0, 0.0, 0.0, 0.0);
+  vec4 nDenom = vec4(0.0, 0.0, 0.0, 0.0);
+  float a = fract(texCoord.x * gridSize);  // get the decimal part
+  float b = fract(texCoord.y * gridSize); // get the decimal part
+  for (int m = -1; m <= 2; m++) {
+    for (int n = -1; n <= 2; n++) {
+      vec4 vecData =
+          texture(textureSampler, texCoord + vec2(texelSizeX * float(m),
+                                                  texelSizeY *float(n))) *
+          massScalingFactor;
+      float f = triangular(float(m) - a);
+      vec4 vecCooef1 = vec4(f, f, f, f);
+      float f1 = triangular(-(float(n) - b));
+      vec4 vecCoeef2 = vec4(f1, f1, f1, f1);
+      nSum = nSum + (vecData * vecCoeef2 * vecCooef1);
+      nDenom = nDenom + ((vecCoeef2 * vecCooef1));
+    }
+  }
+  return nSum / nDenom;
+}
+
 void main() {
-  // Compute mask based on linear interpolation of corner values
-  vec2 neighbour = vec2(1. / gridSize);
-
-  // sample 4 values about current texture coords (mass grid data stored in red
-  // channel)
-  mat2 c = mat2(
-      texture(massGridTexture, textureCoords).r, // Col 0, Row 0
-      texture(massGridTexture, textureCoords + vec2(neighbour.x, 0.))
-          .r, // Col 0, Row 1
-      texture(massGridTexture, textureCoords + vec2(0., neighbour.y))
-          .r, // Col 1, Row 0
-      texture(massGridTexture,
-              textureCoords + vec2(neighbour.x, neighbour.y)) // Col 1, Row 1
-          .r);
-
-  // scale up intensity
-  c *= massScalingFactor;
-
-  // bilinear interpolation
-  vec2 interp =
-      fract(vec2(textureCoords.x / neighbour.x, textureCoords.y / neighbour.y));
-  vec2 biX = mix(vec2(c[0][0], c[1][0]), vec2(c[0][1], c[1][1]), interp.x);
-  float biRes = mix(biX[0], biX[1], interp.y);
+  // bicubic interpolation
+  vec4 val = biCubic(massGridTexture, textureCoords);
 
   // threshold if fluid visible
-  if (biRes > threshold) {
+  if (val.r > threshold) {
     fragmentColor = vec4(liqCol, 1.);
   } else {
     fragmentColor = vec4(backCol, 1.);
