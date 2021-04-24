@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import GitHubIcon from '@material-ui/icons/GitHub';
-import { config } from '../env/config';
+import { config } from '../../env/config';
 
 const useStyles = makeStyles((theme) => ({
   container: {

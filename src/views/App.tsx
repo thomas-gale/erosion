@@ -1,8 +1,8 @@
-import { Engine } from './engine/Engine';
+import { Engine } from '../engine/Engine';
 import { Backdrop, Box, CircularProgress, Grid } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { TopNav } from './views/TopNav';
+import { TopNav } from './surfaces/TopNav';
 
 const useStyles = makeStyles((theme) => ({
   '@global': {
