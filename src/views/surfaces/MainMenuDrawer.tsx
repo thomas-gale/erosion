@@ -12,6 +12,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
 import { Engine } from '../../engine/Engine';
+import { config } from '../../env/config';
 
 const useStyles = makeStyles({
   list: {
@@ -30,8 +31,12 @@ export const MainMenuDrawer = (props: MainMenuDrawerProps): JSX.Element => {
   const { open, onClose, engine } = props;
 
   // State values for engine
-  const [gravityX, setGravityX] = useState<number>(4);
-  const [gravityY, setGravityY] = useState<number>(9.81);
+  const [gravityX, setGravityX] = useState<number>(
+    config.engine.gravity.defaultX
+  );
+  const [gravityY, setGravityY] = useState<number>(
+    config.engine.gravity.defaultY
+  );
 
   // Set engine values
   useEffect(() => {

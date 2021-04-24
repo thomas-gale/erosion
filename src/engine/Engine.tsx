@@ -29,7 +29,6 @@ export const EngineCanvas = (props: EngineCanvasProps): JSX.Element => {
     factory().then((engineMod: Engine) => {
       setEngine(engineMod);
       console.log('Engine loaded!');
-      engineMod.setGravity(4.0, 4.0);
       setLoaded(true);
     });
     setLoaded(false);
