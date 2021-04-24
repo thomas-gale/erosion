@@ -56,8 +56,9 @@ namespace erosion {
 
 using namespace Math::Literals;
 
-LiquidParticleGroup2D::LiquidParticleGroup2D(ImageView2D massGrid)
-    : _massGrid(massGrid) {
+LiquidParticleGroup2D::LiquidParticleGroup2D(ImageView2D massGrid,
+                                             ImageView2D velGrid)
+    : _massGrid(massGrid), _velGrid(velGrid) {
 
   _particleShader.reset(new LiquidParticleShader2D);
 
@@ -76,35 +77,28 @@ LiquidParticleGroup2D::draw(Containers::Pointer<SceneGraph::Camera2D> &camera,
                             Int screenHeight, Int screenWidth,
                             Int projectionHeight) {
 
-  // set texture from massgrid data
+  // set R32F texture from mass grid data
   GL::Texture2D massGridTexture;
-  massGridTexture
-      .setMinificationFilter(GL::SamplerFilter::Nearest)
+  massGridTexture.setMinificationFilter(GL::SamplerFilter::Nearest)
       .setMagnificationFilter(GL::SamplerFilter::Nearest)
       .setWrapping(GL::SamplerWrapping::ClampToEdge)
-      .setStorage(1, GL::textureFormat(PixelFormat::R32F),
-                  _massGrid.size())
+      .setStorage(1, GL::textureFormat(PixelFormat::R32F), _massGrid.size())
       .setSubImage(0, {}, _massGrid);
-                            
-  // create a view on the underlying point data and bind to a 2D texture
-//   Containers::ArrayView<const float> data(
-//       reinterpret_cast<const float *>(&_points[0]), _points.size() * 4);
-//   ImageView2D pointsData{
-//       PixelFormat::RG32F, Vector2i{int(_points.size() * 2), 1}, data};
-//   GL::Texture2D particlesTexture;
-//   particlesTexture.setWrapping(GL::SamplerWrapping::ClampToEdge)
-//       .setStorage(1, GL::textureFormat(PixelFormat::RG32F),
-//                   Vector2i{int(_points.size() * 2), 1})
-//       .setSubImage(0, {}, pointsData);
+
+  // set RG32F texture from vel grid data
+  GL::Texture2D velGridTexture;
+  velGridTexture.setMinificationFilter(GL::SamplerFilter::Nearest)
+      .setMagnificationFilter(GL::SamplerFilter::Nearest)
+      .setWrapping(GL::SamplerWrapping::ClampToEdge)
+      .setStorage(1, GL::textureFormat(PixelFormat::RG32F), _velGrid.size())
+      .setSubImage(0, {}, _velGrid);
 
   // configuring the shader and draw.
   (*_particleShader)
       .bindMassGridTexture(massGridTexture)
-    //   .bindMPMPointsTexture(particlesTexture)
+      .bindVelGridTexture(velGridTexture)
       .setViewProjectionMatrix(camera->projectionMatrix() *
                                camera->cameraMatrix())
-      // .setScreenHeight(screenHeight)
-      // .setScreenWidth(screenWidth)
       .draw(_meshBackgroudQuad);
 
   return *this;

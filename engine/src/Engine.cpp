@@ -113,13 +113,19 @@ Engine::Engine(const Arguments &arguments)
   int gridSize = Ti_ctx.args[0].val_i32;
   std::cout << "Grid Size: " << gridSize << " x " << gridSize << std::endl;
 
-  // bind mass grid view data
+  // bind mass scalar grid view data
   Containers::ArrayView<const float> massGridView(
       reinterpret_cast<const float *>(Ti_ctx.root->S17), gridSize * gridSize);
   ImageView2D massGridImageView(PixelFormat::R32F, Vector2i{gridSize, gridSize},
                                 massGridView);
 
-  _drawableParticles.emplace(massGridImageView);
+  // bind vel vec2 grid view data
+  Containers::ArrayView<const float> velGridView(
+      reinterpret_cast<const float *>(Ti_ctx.root->S14), 2 * gridSize * gridSize);
+  ImageView2D velGridImageView(PixelFormat::RG32F, Vector2i{gridSize, gridSize},
+                                velGridView);
+
+  _drawableParticles.emplace(massGridImageView, velGridImageView);
 
   GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
 }

@@ -70,6 +70,13 @@ LiquidParticleShader2D::bindMassGridTexture(GL::Texture2D &texture) {
 }
 
 LiquidParticleShader2D &
+LiquidParticleShader2D::bindVelGridTexture(GL::Texture2D &texture) {
+  texture.bind(VelGridTextureUnit);
+  setUniform(uniformLocation("velGridTexture"), VelGridTextureUnit);
+  return *this;
+}
+
+LiquidParticleShader2D &
 LiquidParticleShader2D::setViewProjectionMatrix(const Matrix3 &matrix) {
   setUniform(_uViewProjectionMatrix, matrix);
   return *this;
