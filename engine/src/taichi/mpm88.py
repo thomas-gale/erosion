@@ -81,9 +81,7 @@ def reset():
 @hub.kernel
 def get_grid_size() -> ti.i32:
     return n_grid
-get_grid_size()
 
 @hub.kernel
 def get_num_particles() -> ti.i32:
     return n_particles
-get_num_particles()
