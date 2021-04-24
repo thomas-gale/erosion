@@ -1,8 +1,9 @@
 import { Engine } from '../engine/Engine';
 import { Backdrop, Box, CircularProgress, Grid } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TopNav } from './surfaces/TopNav';
+import { MainMenuDrawer } from './surfaces/MainMenuDrawer';
 
 const useStyles = makeStyles((theme) => ({
   '@global': {
@@ -46,7 +47,9 @@ const useStyles = makeStyles((theme) => ({
 
 const App = (): JSX.Element => {
   const classes = useStyles();
-  const [loading, setLoading] = React.useState(false);
+
+  const [loading, setLoading] = useState(false);
+  const [mainMenuOpen, setMainMenuOpen] = useState(false);
 
   return (
     <Box className={classes.fullScreen}>
@@ -58,9 +61,13 @@ const App = (): JSX.Element => {
         <Grid container className={classes.uiPrimaryGridContainer}>
           <Grid item xs={12}>
             <div className={classes.uiPrimaryGridElement}>
-              <TopNav />
+              <TopNav menuClicked={() => setMainMenuOpen(!mainMenuOpen)} />
             </div>
           </Grid>
+          <MainMenuDrawer
+            open={mainMenuOpen}
+            onClose={() => setMainMenuOpen(false)}
+          />
         </Grid>
       </Box>
     </Box>

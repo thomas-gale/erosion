@@ -2,6 +2,11 @@
 #include <iostream>
 #include <memory>
 
+
+#ifdef WITH_EMBIND
+#include <emscripten/bind.h>
+#endif
+
 #include <Corrade/Containers/ArrayView.h>
 #include <Corrade/Containers/Pointer.h>
 #include <Corrade/Utility/StlMath.h>
@@ -46,12 +51,13 @@ using Object2D = SceneGraph::Object<SceneGraph::MatrixTransformation2D>;
 class Engine : public Platform::Application {
 public:
   explicit Engine(const Arguments &arguments);
+  static void setGravity(float x, float y);
 
 private:
   static int constexpr SIMULATION_SUBSTEP = 10;
+  static Vector2 GRAVITY;
 
   void drawEvent() override;
-  void setGravity(const Vector2& gravity);
 
   // scene and drawable group must be constructed before camera and other
   // drawable objects
@@ -107,8 +113,8 @@ Engine::Engine(const Arguments &arguments)
   int gridSize = Ti_ctx.args[0].val_i32;
   std::cout << "Grid Size: " << gridSize << " x " << gridSize << std::endl;
 
-  // test modifyable gravity
-  setGravity({4.0, 0.0});
+  // test modifyable gravity - set initial value
+  setGravity(4.0, 0.0);
 
   // bind mass scalar grid view data
   Containers::ArrayView<const float> massGridView(
@@ -150,12 +156,18 @@ void Engine::drawEvent() {
   redraw();
 }
 
-void Engine::setGravity(const Vector2& gravity) {
-  std::cout << "Setting gravity to [" << gravity.x() << ", " << gravity.y() << "]..." << std::endl;
-  Ti_ctx.root->S19[0].S20 = gravity.x();
-  Ti_ctx.root->S19[0].S21 = gravity.y();
+void Engine::setGravity(float x, float y) {
+  std::cout << "Setting gravity to [" << x << ", " << y << "]..." << std::endl;
+  Ti_ctx.root->S19[0].S20 = x;
+  Ti_ctx.root->S19[0].S21 = y;
 }
 
 } // namespace erosion
+
+#ifdef WITH_EMBIND
+EMSCRIPTEN_BINDINGS(erosion_module) {
+    emscripten::function("setGravity", &erosion::Engine::setGravity);
+}
+#endif
 
 MAGNUM_EMSCRIPTENAPPLICATION_MAIN(erosion::Engine)

@@ -9,6 +9,7 @@ import {
 import React from 'react';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import { config } from '../../env/config';
+import MenuIcon from '@material-ui/icons/Menu';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -23,13 +24,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TopNav = (): JSX.Element => {
+export interface TopNavProps {
+  menuClicked: () => void;
+}
+
+export const TopNav = (props: TopNavProps): JSX.Element => {
   const classes = useStyles();
+  const { menuClicked } = props;
 
   return (
     <Box className={classes.container}>
       <AppBar position="static">
         <Toolbar>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="main menu"
+            onClick={menuClicked}
+          >
+            <MenuIcon />
+          </IconButton>
           <Typography variant="h6" className={classes.title}>
             {config.topNav.name}
           </Typography>
