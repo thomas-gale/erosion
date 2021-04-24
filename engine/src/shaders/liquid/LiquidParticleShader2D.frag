@@ -59,16 +59,17 @@ vec4 biCubic(sampler2D textureSampler, vec2 texCoord) {
 }
 
 void main() {
-  // bicubic interpolation
+  // bicubic interpolation of field data
   float mass = biCubic(massGridTexture, textureCoords).r * massScalingFactor;
   vec2 vel = biCubic(velGridTexture, textureCoords).rg;
 
   // use step to threshold if background/fluid visible
-  // add additional whitness if the fluid has velocity.
+  // add additional whitness if the fluid has velocity
   // increased boundary threshold randomness based on velocity (to simulate spray)
   vec3 backFragColor = step(mass, threshold) * backCol;
   vec3 liqFragColor = (1.-step(mass, threshold * (1. - (length(vel) * rand(textureCoords))))) * (liqCol + length(vel));
 
-  // additive combination of frag colors (they self mask/step threshold themselves).
-  fragmentColor = vec4(backFragColor + liqFragColor, 1.);
+  // additive combination of frag colors (they self mask/step threshold themselves)
+  vec3 finalFragColor = min(foamCol, backFragColor + liqFragColor);
+  fragmentColor = vec4(finalFragColor, 1.);
 }
