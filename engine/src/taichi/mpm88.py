@@ -10,7 +10,6 @@ dt = 1e-3
 p_rho = 1
 p_vol = (dx * 0.5)**2
 p_mass = p_vol * p_rho
-gravity = 9.8
 bound = 3
 E = 400
 
@@ -21,6 +20,8 @@ J = ti.field(ti.f32, n_particles)
 
 grid_v = ti.Vector.field(2, ti.f32, (n_grid, n_grid))
 grid_m = ti.field(ti.f32, (n_grid, n_grid))
+
+gravity = ti.Vector.field(2, ti.f32, 1)
 
 @hub.kernel
 def substep():
@@ -43,7 +44,7 @@ def substep():
     for i, j in grid_m:
         if grid_m[i, j] > 0:
             grid_v[i, j] /= grid_m[i, j]
-        grid_v[i, j][1] -= dt * gravity
+        grid_v[i, j] += dt * gravity[0]
         if i < bound and grid_v[i, j].x < 0:
             grid_v[i, j].x = 0
         if i > n_grid - bound and grid_v[i, j].x > 0:
@@ -73,6 +74,8 @@ def substep():
 
 @hub.kernel
 def reset():
+    gravity[0][0] = 0
+    gravity[0][1] = -9.81
     for i in range(n_particles):
         x[i] = [ti.random() * 0.4 + 0.2, ti.random() * 0.4 + 0.2]
         v[i] = [0, -1]

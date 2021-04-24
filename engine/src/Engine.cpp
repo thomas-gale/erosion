@@ -51,7 +51,7 @@ private:
   static int constexpr SIMULATION_SUBSTEP = 10;
 
   void drawEvent() override;
-  void updateParticles();
+  void setGravity(const Vector2& gravity);
 
   // scene and drawable group must be constructed before camera and other
   // drawable objects
@@ -63,12 +63,6 @@ private:
   Containers::Pointer<SceneGraph::Camera2D> _camera;
 
   // engine entities
-  // int _gridSize;
-  // Containers::ArrayView<const float> _massGridView;
-  // Containers::Pointer<ImageView2D> _massGridImageView;
-
-  // int _numParticles;
-  // std::vector<Vector2> _pointPositions;
   Containers::Pointer<LiquidParticleGroup2D> _drawableParticles;
   Timeline timeline_;
 };
@@ -113,6 +107,9 @@ Engine::Engine(const Arguments &arguments)
   int gridSize = Ti_ctx.args[0].val_i32;
   std::cout << "Grid Size: " << gridSize << " x " << gridSize << std::endl;
 
+  // test modifyable gravity
+  setGravity({4.0, 0.0});
+
   // bind mass scalar grid view data
   Containers::ArrayView<const float> massGridView(
       reinterpret_cast<const float *>(Ti_ctx.root->S17), gridSize * gridSize);
@@ -151,6 +148,12 @@ void Engine::drawEvent() {
 
   // run next frame immediately (emscripten pauses otherwise)
   redraw();
+}
+
+void Engine::setGravity(const Vector2& gravity) {
+  std::cout << "Setting gravity to [" << gravity.x() << ", " << gravity.y() << "]..." << std::endl;
+  Ti_ctx.root->S19[0].S20 = gravity.x();
+  Ti_ctx.root->S19[0].S21 = gravity.y();
 }
 
 } // namespace erosion
