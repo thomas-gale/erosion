@@ -2,7 +2,7 @@
 import taichi as ti
 import hub
 
-n_particles = 1024
+n_particles = 512
 n_grid = 32
 dx = 1 / n_grid
 dt = 1e-3
