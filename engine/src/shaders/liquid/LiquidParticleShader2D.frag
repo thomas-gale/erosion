@@ -7,6 +7,8 @@ precision highp sampler2D;
   5000. // Mass seems to be SI units (e.g. value is very small and needs
         // scaling)
 #define threshold .5
+#define foamScalingFactor 5.
+#define foamCutoff .3
 #define backCol vec3(.6, .6, .6)
 #define liqCol vec3(.2, .5, 1.)
 #define foamCol vec3(.8, .9, 1.)
@@ -72,7 +74,7 @@ void main() {
   vec3 backFragColor = step(mass, threshold) * backCol;
   vec3 liqFragColor =
       (1. -
-       step(mass, threshold * (1. - (length(vel) * rand(textureCoords))))) *
+       step(mass, threshold * (1. - min(foamCutoff, (foamScalingFactor * length(vel) * rand(textureCoords)))))) *
       (liqCol + length(vel));
 
   // additive combination of frag colors (they self mask/step threshold
