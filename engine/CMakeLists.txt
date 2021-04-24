@@ -25,7 +25,6 @@ endif()
 
 # enable binding for use in react
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-    # set(WITH_EMBIND ON CACHE BOOL "" FORCE)
     add_definitions(-DWITH_EMBIND)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s ENVIRONMENT=web -s MODULARIZE=1 --bind")
 endif()
