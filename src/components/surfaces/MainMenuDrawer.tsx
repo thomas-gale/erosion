@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Divider,
   Drawer,
@@ -6,19 +7,11 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  makeStyles,
   Slider,
-} from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
-import { Engine } from '../../engine/Engine';
-import { config } from '../../env/config';
-
-const useStyles = makeStyles({
-  list: {
-    width: 250,
-  },
-});
+} from "@mui/material";
+import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
+import { Engine } from "../../engine/Engine";
+import { config } from "../../env/config";
 
 export interface MainMenuDrawerProps {
   open: boolean;
@@ -27,7 +20,6 @@ export interface MainMenuDrawerProps {
 }
 
 export const MainMenuDrawer = (props: MainMenuDrawerProps): JSX.Element => {
-  const classes = useStyles();
   const { open, onClose, engine } = props;
 
   // State values for engine
@@ -47,18 +39,18 @@ export const MainMenuDrawer = (props: MainMenuDrawerProps): JSX.Element => {
 
   return (
     <Drawer anchor="left" open={open} onClose={onClose}>
-      <div className={classes.list}>
+      <div style={{ width: 250 }}>
         <List>
-          <ListItem key={'gravity-title'}>
+          <ListItem key={"gravity-title"}>
             <ListItemIcon>
               <VerticalAlignBottomIcon />
             </ListItemIcon>
-            <ListItemText primary={'gravity'} />
+            <ListItemText primary={"gravity"} />
           </ListItem>
-          <ListItem key={'gravity-x'}>
+          <ListItem key={"gravity-x"}>
             <Grid container spacing={4}>
               <Grid item>
-                <ListItemText primary={'x'} />
+                <ListItemText primary={"x"} />
               </Grid>
               <Grid item xs>
                 <Slider
@@ -75,10 +67,10 @@ export const MainMenuDrawer = (props: MainMenuDrawerProps): JSX.Element => {
               </Grid>
             </Grid>
           </ListItem>
-          <ListItem key={'gravity-y'}>
+          <ListItem key={"gravity-y"}>
             <Grid container spacing={4}>
               <Grid item>
-                <ListItemText primary={'y'} />
+                <ListItemText primary={"y"} />
               </Grid>
               <Grid item xs>
                 <Slider

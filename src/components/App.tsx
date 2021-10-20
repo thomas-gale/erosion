@@ -1,6 +1,6 @@
-import { Engine, EngineCanvas } from "../engine/Engine";
-import { Backdrop, Box, CircularProgress, Grid } from "@material-ui/core";
 import React, { useState } from "react";
+import { Backdrop, Box, CircularProgress, Grid, Theme } from "@mui/material";
+import { Engine, EngineCanvas } from "../engine/Engine";
 import { TopNav } from "./surfaces/TopNav";
 import { MainMenuDrawer } from "./surfaces/MainMenuDrawer";
 
@@ -23,7 +23,6 @@ const App = (): JSX.Element => {
       />
       <Backdrop
         style={{
-          // zIndex: 'zIndex.drawer' + 1,
           color: "#fff",
           pointerEvents: "auto",
         }}
