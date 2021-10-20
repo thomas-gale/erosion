@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "Checking... ${{ steps.computehash.outputs.hash }}"
           export DOCKER_CLI_EXPERIMENTAL=enabled
-          if [[ "$(docker manifest inspect ghcr.io/${{ env.REPO_OWNER }}/erosion-devcontainer:${{ steps.computehash.outputs.hash }} > /dev/null; echo $?)" == "0" ]]; then
+          if [[ "$(docker manifest inspect ghcr.io/${{ env.PACKAGE_PAT_OWNER }}/erosion-devcontainer:${{ steps.computehash.outputs.hash }} > /dev/null; echo $?)" == "0" ]]; then
             echo "::set-output name=exists::true"
           else
             echo "::set-output name=exists::false"
@@ -52,5 +52,5 @@ jobs:
           context: .
           file: ./.devcontainer/Dockerfile
           tags: |
-            ghcr.io/${{ env.REPO_OWNER }}/erosion-devcontainer:${{ steps.computehash.outputs.hash }}
-            ghcr.io/${{ env.REPO_OWNER }}/erosion-devcontainer:latest
+            ghcr.io/${{ env.PACKAGE_PAT_OWNER }}/erosion-devcontainer:${{ steps.computehash.outputs.hash }}
+            ghcr.io/${{ env.PACKAGE_PAT_OWNER }}/erosion-devcontainer:latest
