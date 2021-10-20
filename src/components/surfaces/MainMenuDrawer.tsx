@@ -19,7 +19,7 @@ export interface MainMenuDrawerProps {
   engine: Engine | undefined;
 }
 
-export const MainMenuDrawer = (props: MainMenuDrawerProps): JSX.Element => {
+export const MainMenuDrawer = (props: MainMenuDrawerProps) => {
   const { open, onClose, engine } = props;
 
   // State values for engine

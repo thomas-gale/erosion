@@ -9,7 +9,7 @@ export interface TopNavProps {
   menuClicked: () => void;
 }
 
-export const TopNav = (props: TopNavProps): JSX.Element => {
+export const TopNav = (props: TopNavProps) => {
   const { menuClicked } = props;
 
   return (

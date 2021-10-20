@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Backdrop, Box, CircularProgress, Grid, Theme } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Grid } from "@mui/material";
 import { Engine, EngineCanvas } from "../engine/Engine";
 import { TopNav } from "./surfaces/TopNav";
 import { MainMenuDrawer } from "./surfaces/MainMenuDrawer";
 
-const App = (): JSX.Element => {
+const App = () => {
   const [engine, setEngine] = useState<undefined | Engine>(undefined);
   const [loading, setLoading] = useState(false);
   const [mainMenuOpen, setMainMenuOpen] = useState(false);

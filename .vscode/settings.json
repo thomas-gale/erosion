@@ -1,8 +1,6 @@
 {
     "cmake.sourceDirectory": "${workspaceFolder}/src-engine",
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    },
+    "editor.formatOnSave": true,
     "eslint.validate": [
         "javascript"
     ]
