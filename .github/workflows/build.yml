@@ -9,7 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     env:
-      NEXT_PUBLIC_BASE_PATH: /erosion
       PAGES_DOMAIN: erosion.thomasjamesgale.com
       BUILD_DIR: out
 
@@ -42,6 +41,9 @@ jobs:
 
       - name: configure the cname for github pages
         run: echo ${{ env.PAGES_DOMAIN }} > ${{ env.BUILD_DIR }}/CNAME
+
+      - name: disable jekyll
+        run: touch ${{ env.BUILD_DIR }}/.nojekyll
 
       - name: deploy github pages
         uses: crazy-max/ghaction-github-pages@v2.5.0
