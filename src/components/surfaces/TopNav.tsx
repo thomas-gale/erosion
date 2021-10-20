@@ -1,51 +1,33 @@
-import {
-  AppBar,
-  Box,
-  IconButton,
-  makeStyles,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
 import React from 'react';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import { config } from '../../env/config';
+import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import GitHubIcon from '@mui/icons-material/GitHub';
 import MenuIcon from '@material-ui/icons/Menu';
+import { config } from '../../env/config';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    padding: theme.spacing(2),
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
 
 export interface TopNavProps {
   menuClicked: () => void;
 }
 
-export const TopNav = (props: TopNavProps): JSX.Element => {
-  const classes = useStyles();
+export const TopNav = (props: TopNavProps) => {
   const { menuClicked } = props;
 
   return (
-    <Box className={classes.container}>
+    <Box sx={{ padding: 2, flexGrow: 1}}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
             edge="start"
-            className={classes.menuButton}
             color="inherit"
             aria-label="main menu"
             onClick={menuClicked}
+            sx={{
+              marginRight: 2
+            }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" sx={{ flexGrow: 1}}>
             {config.topNav.name}
           </Typography>
           <IconButton
