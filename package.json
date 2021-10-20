@@ -3,17 +3,17 @@
   "version": "0.2.0",
   "private": true,
   "dependencies": {
-    "@emotion/cache": "^11.5.0",
-    "@emotion/react": "^11.5.0",
-    "@emotion/server": "^11.4.0",
-    "@emotion/styled": "^11.3.0",
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
-    "@mui/icons-material": "^5.0.4",
-    "@mui/material": "^5.0.4",
-    "next": "^11.1.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "@emotion/cache": "11.5.0",
+    "@emotion/react": "11.5.0",
+    "@emotion/server": "11.4.0",
+    "@emotion/styled": "11.3.0",
+    "@material-ui/core": "4.11.3",
+    "@material-ui/icons": "4.11.2",
+    "@mui/icons-material": "5.0.4",
+    "@mui/material": "5.0.4",
+    "next": "11.1.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   },
   "scripts": {
     "dev": "./scripts/build-engine.sh Release && next dev",
@@ -24,12 +24,12 @@
     "lint:fix": "next lint --fix"
   },
   "devDependencies": {
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "eslint": "^7.32.0",
+    "@types/react": "17.0.3",
+    "@types/react-dom": "17.0.3",
+    "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
-    "eslint-config-prettier": "^7.2.0",
+    "eslint-config-prettier": "7.2.0",
     "prettier": "2.4.1",
-    "typescript": "^4.4.4"
+    "typescript": "4.4.4"
   }
 }
