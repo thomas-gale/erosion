@@ -7,7 +7,7 @@ jobs:
   devcontainer:
     runs-on: ubuntu-18.04
     env:
-      REPO_OWNER: thomas-gale
+      PACKAGE_PAT_OWNER: thomas-gale
 
     steps:
       - name: checkout
@@ -21,7 +21,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ env.REPO_OWNER }}
+          username: ${{ env.PACKAGE_PAT_OWNER }}
           password: ${{ secrets.PACKAGE_PAT }}
 
       - name: check if registry contains devcontainer with image hash

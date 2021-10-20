@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-18.04
+    env:
+      PAGES_DOMAIN: erosion.thomasjamesgale.com
+      BUILD_DIR: out
 
     steps:
       - name: checkout
@@ -34,9 +37,12 @@ jobs:
       - name: build
         run: yarn build:ci
 
-      - name: vercel deploy
-        uses: amondnet/vercel-action@v20
+      - name: configure the cname for github pages
+        run: echo ${{ env.PAGES_DOMAIN }} > ${{ env.BUILD_DIR }}/CNAME
+
+      - name: deploy github pages
+        uses: crazy-max/ghaction-github-pages@v2.3.0
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          build_dir: ${{ env.BUILD_DIR }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
