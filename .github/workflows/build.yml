@@ -34,12 +34,9 @@ jobs:
       - name: build
         run: yarn build:ci
 
-      - name: configure the cname for github pages
-        run: echo erosion.thomasjamesgale.com > build/CNAME
-
-      - name: deploy github pages
-        uses: crazy-max/ghaction-github-pages@v2.3.0
+      - name: vercel deploy
+      - uses: amondnet/vercel-action@v20
         with:
-          build_dir: build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
