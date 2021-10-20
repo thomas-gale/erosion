@@ -9,6 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     env:
+      NEXT_PUBLIC_BASE_PATH: /erosion
       PAGES_DOMAIN: erosion.thomasjamesgale.com
       BUILD_DIR: out
 
