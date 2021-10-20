@@ -18,6 +18,7 @@
   "scripts": {
     "dev": "./scripts/build-engine.sh Release && next dev",
     "build": "./scripts/build-engine.sh Release && next build",
+    "build:ci": "next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix"
