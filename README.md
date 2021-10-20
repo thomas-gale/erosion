@@ -1,5 +1,6 @@
-[![master build](https://github.com/thomas-gale/erosion/workflows/.github/workflows/build.yml/badge.svg?branch=main "main build")](https://github.com/thomas-gale/erosion/actions/workflows/build.yml?query=workflow%3A.github/workflows/build.yml)
 # erosion
+[![build](https://github.com/thomas-gale/erosion/actions/workflows/build.yml/badge.svg)](https://github.com/thomas-gale/erosion/actions/workflows/build.yml)
+[![devcontainer](https://github.com/thomas-gale/erosion/actions/workflows/devcontainer.yml/badge.svg)](https://github.com/thomas-gale/erosion/actions/workflows/devcontainer.yml)
 
 🚜 particle physics based erosion game
 
