@@ -24,7 +24,7 @@
     "lint:fix": "next lint --fix"
   },
   "devDependencies": {
-    "@types/react": "17.0.30",
+    "@types/react": "17.0.31",
     "@types/react-dom": "17.0.10",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
