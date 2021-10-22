@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { Backdrop, Box, CircularProgress, Grid } from "@mui/material";
-import { Engine, EngineCanvas } from "../engine/Engine";
+import { Box, Grid } from "@mui/material";
+import { Canvas } from "@react-three/fiber";
 import { TopNav } from "./surfaces/TopNav";
 import { MainMenuDrawer } from "./surfaces/MainMenuDrawer";
 
 const App = () => {
-  const [engine, setEngine] = useState<undefined | Engine>(undefined);
-  const [loading, setLoading] = useState(false);
   const [mainMenuOpen, setMainMenuOpen] = useState(false);
 
   return (
@@ -17,19 +15,15 @@ const App = () => {
         width: "100vw",
       }}
     >
-      <EngineCanvas
-        setEngine={setEngine}
-        setLoaded={(loaded: boolean) => setLoading(!loaded)}
-      />
-      <Backdrop
-        style={{
-          color: "#fff",
-          pointerEvents: "auto",
-        }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <Canvas>
+        <ambientLight />
+        <pointLight position={[10, 10, 10]} />
+        <mesh>
+          <boxGeometry />
+          <meshStandardMaterial color={"orange"} />
+        </mesh>
+      </Canvas>
+
       <Box
         style={{
           position: "fixed",
@@ -50,7 +44,6 @@ const App = () => {
           <MainMenuDrawer
             open={mainMenuOpen}
             onClose={() => setMainMenuOpen(false)}
-            engine={engine}
           />
         </Grid>
       </Box>
