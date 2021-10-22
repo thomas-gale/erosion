@@ -26,8 +26,8 @@ jobs:
       - name: resolve dependencies
         run: yarn
 
-      - name: build
-        run: yarn build:ci
+      - name: build and export static
+        run: yarn export
 
       - name: configure the cname for github pages
         run: echo ${{ env.PAGES_DOMAIN }} > ${{ env.BUILD_DIR }}/CNAME
