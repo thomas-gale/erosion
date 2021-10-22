@@ -18,16 +18,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: build corrade resource compiler
-        uses: ./.github/actions/devcontainer-eval
-        with:
-          cmd: "./scripts/build-corrade-rc.sh"
-
-      - name: build engine
-        uses: ./.github/actions/devcontainer-eval
-        with:
-          cmd: "source /home/vscode/emsdk/emsdk_env.sh && ./scripts/build-engine.sh Release"
-
       - name: setup node
         uses: actions/setup-node@v2-beta
         with:

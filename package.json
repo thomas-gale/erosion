@@ -11,13 +11,15 @@
     "@material-ui/icons": "4.11.2",
     "@mui/icons-material": "5.0.4",
     "@mui/material": "5.0.4",
+    "@react-three/fiber": "^7.0.17",
     "next": "11.1.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "three": "^0.133.1"
   },
   "scripts": {
-    "dev": "./scripts/build-engine.sh Release && next dev",
-    "build": "./scripts/build-engine.sh Release && next build",
+    "dev": "next dev",
+    "build": "next build",
     "build:ci": "next build && next export",
     "start": "next start",
     "lint": "next lint",
