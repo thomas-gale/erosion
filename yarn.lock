@@ -532,7 +532,7 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.10.2.tgz#0798c03351f0dea1a5a4cabddf26a55a7cbee590"
   integrity sha512-IXf3XA7+XyN7CP9gGh/XB0UxVMlvARGEgGXLubFICsUMGz6Q+DU+i4gGlpOxTjKvXjkJDJC8YdqdKkDj9qZHEQ==
 
-"@react-three/drei@^7.17.1":
+"@react-three/drei@7.17.1":
   version "7.17.1"
   resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.17.1.tgz#42c85bb7f5348a5aa4340f5e608492d6ff3aa555"
   integrity sha512-LKNze1U5TF6QGhyPo/1BRXK4XRZASLfzUEYahsMxq7b4vdenlLcqPMm50A619gZwHxreVkDF8LjMNeiW9koW/g==
@@ -677,7 +677,7 @@
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.1.tgz#18845205e86ff0038517aab7a18a62a6b9f71275"
   integrity sha512-EaCxbanVeyxDRTQBkdLb3Bvl/HK7PBK6UJjsSixB0iHKoWxE5uu2Q/DgtpOhPIojN0Zl1whvOd7PoHs2P0s5eA==
 
-"@types/three@^0.133.1":
+"@types/three@0.133.1":
   version "0.133.1"
   resolved "https://registry.yarnpkg.com/@types/three/-/three-0.133.1.tgz#6007faaf7f6b53339150a2a1fe57121e4c6607c1"
   integrity sha512-XqBrP/+kbs+o0CYRhCVVE95v7FaL2bO5Z7+3VQJE0nEyjo+9LoLfeNgZITOnndKHxM+7ltEciAIR7uE0SZlsOg==
