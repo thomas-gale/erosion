@@ -4,8 +4,8 @@ export const FlatTerrain = () => {
   useGenerateTerrain();
   return (
     <mesh>
-      <boxGeometry />
-      <meshStandardMaterial color={"orange"} />
+      <planeGeometry args={[20, 20]} />
+      <meshStandardMaterial color={"white"} />
     </mesh>
   );
 };
