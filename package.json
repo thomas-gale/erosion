@@ -11,6 +11,7 @@
     "@material-ui/icons": "4.11.2",
     "@mui/icons-material": "5.0.4",
     "@mui/material": "5.0.4",
+    "@react-three/drei": "^7.17.1",
     "@react-three/fiber": "7.0.17",
     "@reduxjs/toolkit": "1.6.2",
     "next": "11.1.2",
@@ -22,7 +23,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:ci": "next build && next export",
+    "export": "next build && next export",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix"
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@types/react": "17.0.31",
     "@types/react-dom": "17.0.10",
+    "@types/three": "^0.133.1",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
     "eslint-config-prettier": "7.2.0",

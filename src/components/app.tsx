@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { Box, Grid } from "@mui/material";
-import { Canvas } from "@react-three/fiber";
-import useGenerateTerrain from "../hooks/terrain/useGenerateTerrain";
 import { TopNav } from "./surfaces/topNav";
 import { MainMenuDrawer } from "./surfaces/mainMenuDrawer";
+import { ErosionCanvas } from "./viewport/erosionCanvas";
 
 const App = () => {
   const [mainMenuOpen, setMainMenuOpen] = useState(false);
-  useGenerateTerrain();
 
   return (
     <Box
@@ -17,14 +15,7 @@ const App = () => {
         width: "100vw",
       }}
     >
-      <Canvas>
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
-        <mesh>
-          <boxGeometry />
-          <meshStandardMaterial color={"orange"} />
-        </mesh>
-      </Canvas>
+      <ErosionCanvas />
 
       <Box
         style={{
