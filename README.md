@@ -5,8 +5,8 @@
 🚜👷 mining and erosion game
 
 ## plan
-- inspired by motherlode, factorio.
-- hack around trying stuff.
+- inspired by motherload, factorio.
+- hack around trying concepts related to mining, digging landscape, selling resources.
 
 ## current implementation stack
 - [next.js](https://nextjs.org/)
