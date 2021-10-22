@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Grid } from "@mui/material";
 import { TopNav } from "./surfaces/topNav";
 import { MainMenuDrawer } from "./surfaces/mainMenuDrawer";
-import { ErosionCanvas } from "./three/erosionCanvas";
+import { ErosionCanvas } from "./viewport/erosionCanvas";
 
 const App = () => {
   const [mainMenuOpen, setMainMenuOpen] = useState(false);
