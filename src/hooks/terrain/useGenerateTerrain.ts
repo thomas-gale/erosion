@@ -1,8 +1,8 @@
-import { useEffect } from "react-transition-group/node_modules/@types/react";
+import { useEffect } from "react";
 import { useAppDispatch } from "../state";
 import { setGenerating, setOctree } from "../../state/terrain/terrainSlice";
 
-const useGenerate = () => {
+const useGenerateTerrain = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     const generate = async () => {
@@ -24,4 +24,4 @@ const useGenerate = () => {
   }, [dispatch]);
 };
 
-export default useGenerate;
+export default useGenerateTerrain;
