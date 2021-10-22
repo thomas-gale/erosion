@@ -1,13 +1,15 @@
 # erosion
 [![build](https://github.com/thomas-gale/erosion/actions/workflows/build.yml/badge.svg)](https://github.com/thomas-gale/erosion/actions/workflows/build.yml)
-[![devcontainer](https://github.com/thomas-gale/erosion/actions/workflows/devcontainer.yml/badge.svg)](https://github.com/thomas-gale/erosion/actions/workflows/devcontainer.yml)
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 
 🚜 particle physics based erosion game (WIP)
+
+## plan
+- hack around
 
 ## current implementation stack
 - [next.js](https://nextjs.org/)
 - [mui](https://material-ui.com/)
-- [magnum.graphics](https://magnum.graphics/)
 
 ## running
 ```
