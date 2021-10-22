@@ -4,16 +4,13 @@
 	"context": ".",
 	"runArgs": [
 		// Allow local network debugging on devices such as my android
-		"--network", "host",
+		"--network",
+		"host",
 		//  Allow use of Docker from the container. See the docker-in-docker definition for details.
-		"-v","/var/run/docker.sock:/var/run/docker.sock"
+		"-v",
+		"/var/run/docker.sock:/var/run/docker.sock"
 	],
 	"extensions": [
-		"twxs.cmake",
-		"ms-vscode.cmake-tools",
-		"ms-vscode.cpptools",
-		"xaver.clang-format",
-		"ms-python.python",
 		"slevesque.shader",
 		"esbenp.prettier-vscode",
 		"dbaeumer.vscode-eslint",
@@ -21,7 +18,6 @@
 		"msjsdiag.debugger-for-chrome",
 		"firefox-devtools.vscode-firefox-debug"
 	],
-​
 	// To overcome quirks with file permissions.
 	// See https://code.visualstudio.com/docs/remote/containers-advanced#_adding-a-nonroot-user-to-your-dev-container.
 	"remoteUser": "vscode"

@@ -18,7 +18,7 @@
     "three": "^0.133.1"
   },
   "scripts": {
-    "dev": ".next dev",
+    "dev": "next dev",
     "build": "next build",
     "build:ci": "next build && next export",
     "start": "next start",
