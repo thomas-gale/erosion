@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Box, Grid } from "@mui/material";
 import { Canvas } from "@react-three/fiber";
-import { TopNav } from "./surfaces/TopNav";
-import { MainMenuDrawer } from "./surfaces/MainMenuDrawer";
+import useGenerateTerrain from "../hooks/terrain/useGenerateTerrain";
+import { TopNav } from "./surfaces/topNav";
+import { MainMenuDrawer } from "./surfaces/mainMenuDrawer";
 
 const App = () => {
   const [mainMenuOpen, setMainMenuOpen] = useState(false);
+  useGenerateTerrain();
 
   return (
     <Box
