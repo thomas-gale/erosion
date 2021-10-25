@@ -10,6 +10,7 @@ import { EmotionCache } from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { theme } from "../env/theme";
 import { createEmotionCache } from "../env/createEmotionCache";
+import { config } from "../env/config";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -26,7 +27,7 @@ export default function MyApp({
     <ReduxProvider store={store}>
       <CacheProvider value={emotionCache}>
         <Head>
-          <title>My page</title>
+          <title>{config.topNav.name}</title>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <ThemeProvider theme={theme}>
