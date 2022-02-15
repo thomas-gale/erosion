@@ -1,0 +1,19 @@
+{
+  "name": "engine",
+  "version": "0.1.0",
+  "description": "Erosion terrain engine",
+  "author": "Thomas Gale",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "config": "*",
+    "tsconfig": "*",
+    "typescript": "^4.5.5"
+  }
+}

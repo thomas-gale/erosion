@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid } from "@mui/material";
 import { TopNav } from "./surfaces/topNav";
 import { MainMenuDrawer } from "./surfaces/mainMenuDrawer";
 import { ErosionCanvas } from "./viewport/erosionCanvas";
+import { CreateEngine } from "engine";
 
 const App = () => {
   const [mainMenuOpen, setMainMenuOpen] = useState(false);
+
+  // TEST
+  useEffect(() => {
+    const engine = CreateEngine();
+    console.log(engine.quadTree);
+  }, []);
 
   return (
     <Box
