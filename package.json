@@ -1,6 +1,6 @@
 {
-  "name": "turborepo-basic-shared",
-  "version": "0.0.0",
+  "name": "erosion",
+  "version": "0.1.0",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -13,8 +13,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "prettier": "^2.5.1",
-    "turbo": "latest"
+    "prettier": "^2.4.1",
+    "turbo": "^1.1.2"
   },
   "engines": {
     "npm": ">=7.0.0",

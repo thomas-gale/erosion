@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface TerrainState {
+export interface TerrainState {
   generating: boolean;
 }
 
