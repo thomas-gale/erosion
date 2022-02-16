@@ -7,15 +7,12 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-18.04
+    uses: thomas-gale/erosion/.github/workflows/build.yml@main
     env:
       PAGES_DOMAIN: erosion.thomasjamesgale.com
       BUILD_DIR: apps/web/out
 
     steps:
-      - name: build
-        uses: thomas-gale/erosion/.github/workflows/build.yml@main
-
       - name: export static build
         run: yarn export
 
