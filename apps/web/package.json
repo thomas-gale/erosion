@@ -20,7 +20,7 @@
     "@mui/icons-material": "5.2.5",
     "@mui/material": "5.2.6",
     "@react-three/drei": "7.17.2",
-    "@react-three/fiber": "7.0.17",
+    "@react-three/fiber": "7.0.26",
     "@reduxjs/toolkit": "1.6.2",
     "next": "11.1.2",
     "react": "17.0.2",
