@@ -9,7 +9,15 @@ export const PerspectiveControlledCamera = () => {
         up={[0, 0, 1]}
         zoom={1}
       />
-      <MapControls panSpeed={1} rotateSpeed={1} zoomSpeed={1} minDistance={5} maxDistance={20} target={[0, 0, 0]} maxPolarAngle={Math.PI / 4} />
+      <MapControls
+        panSpeed={1}
+        rotateSpeed={1}
+        zoomSpeed={1}
+        minDistance={5}
+        maxDistance={20}
+        target={[0, 0, 0]}
+        maxPolarAngle={Math.PI / 4}
+      />
     </>
   );
 };

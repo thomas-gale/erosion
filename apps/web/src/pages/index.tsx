@@ -1,5 +1,5 @@
-import App from "../components/app";
+import { ErosionCanvas } from "../components/viewport/erosionCanvas";
 
 export default function Index() {
-  return <App />;
+  return <ErosionCanvas />;
 }
