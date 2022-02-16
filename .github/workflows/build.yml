@@ -1,9 +1,10 @@
 name: build
 
 on:
-  push:
+  pull_request:
     branches:
       - main
+  workflow_call:
 
 jobs:
   build:
@@ -26,18 +27,5 @@ jobs:
       - name: resolve dependencies
         run: yarn
 
-      - name: build and export static
-        run: yarn export
-
-      - name: configure the cname for github pages
-        run: echo ${{ env.PAGES_DOMAIN }} > ${{ env.BUILD_DIR }}/CNAME
-
-      - name: disable jekyll
-        run: touch ${{ env.BUILD_DIR }}/.nojekyll
-
-      - name: deploy github pages
-        uses: crazy-max/ghaction-github-pages@v2.6.0
-        with:
-          build_dir: ${{ env.BUILD_DIR }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: build
+        run: yarn build
