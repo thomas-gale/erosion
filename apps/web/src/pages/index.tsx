@@ -1,5 +1,5 @@
-import { ErosionCanvas } from "../components/viewport/erosionCanvas";
+import { ErosionCanvas } from "../components/viewport/ErosionCanvas";
 
-export default function Index() {
+export default function Index(): JSX.Element {
   return <ErosionCanvas />;
 }

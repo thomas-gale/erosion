@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { config } from "../../env/config";
 import { Button } from "./Button";
 
-export const TopNav = () => {
+export const TopNav = (): JSX.Element => {
   const router = useRouter();
 
   return (

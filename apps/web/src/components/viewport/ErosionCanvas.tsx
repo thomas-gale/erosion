@@ -1,11 +1,11 @@
 import { Canvas } from "@react-three/fiber";
 import { useContextBridge } from "@react-three/drei";
 import { ReactReduxContext } from "react-redux";
-import { Gizmo } from "./debug/gizmo";
-import { Sky } from "./terrain/sky";
-import { PerspectiveControlledCamera } from "./camera/perspectiveControlledCamera";
-import { FlatTerrain } from "./terrain/flatTerrain";
-import { TestCube } from "./player/testCube";
+import { Gizmo } from "./debug/Gizmo";
+import { Sky } from "./terrain/Sky";
+import { PerspectiveControlledCamera } from "./camera/PerspectiveControlledCamera";
+import { FlatTerrain } from "./terrain/FlatTerrain";
+import { TestCube } from "./player/TestCube";
 
 export const ErosionCanvas = () => {
   const ContextBridge = useContextBridge(ReactReduxContext);
