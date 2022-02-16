@@ -29,9 +29,16 @@ const useGenerateTerrainOctree = (min_m: Vector3, max_m: Vector3) => {
       for (let x = min_m.x; x < max_m.x; x += step) {
         for (let y = min_m.y; y < max_m.y; y += step) {
           for (let z = min_m.z; z < max_m.z; z += step) {
-            const noiseValue = noise.perlin3((x - min_m.x) / (max_m.x - min_m.x), (y - min_m.y) / (max_m.y - min_m.y), (z - min_m.z) / (max_m.z - min_m.z));
+            const noiseValue = noise.perlin3(
+              (x - min_m.x) / (max_m.x - min_m.x),
+              (y - min_m.y) / (max_m.y - min_m.y),
+              (z - min_m.z) / (max_m.z - min_m.z)
+            );
             // Assign terrain block to the tree
-            terrainTree.current.set(new Vector3(x, y, z), { density: noiseValue, ore: 'none' });
+            terrainTree.current.set(new Vector3(x, y, z), {
+              density: noiseValue,
+              ore: "none",
+            });
           }
         }
       }

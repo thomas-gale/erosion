@@ -1,1 +1,1 @@
-export type Ore = 'none' | 'iron' | 'copper'
+export type Ore = "none" | "iron" | "copper";
