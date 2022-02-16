@@ -1,5 +1,5 @@
 # erosion
-[![build](https://github.com/thomas-gale/erosion/actions/workflows/build.yml/badge.svg)](https://github.com/thomas-gale/erosion/actions/workflows/build.yml)
+[![pipeline](https://github.com/thomas-gale/erosion/actions/workflows/pipeline.yml/badge.svg)](https://github.com/thomas-gale/erosion/actions/workflows/pipeline.yml)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 
 🚜👷 mining and erosion game
