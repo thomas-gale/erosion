@@ -1,5 +1,5 @@
-import App from "../components/app";
+import { ErosionCanvas } from "../components/viewport/ErosionCanvas";
 
-export default function Index() {
-  return <App />;
+export default function Index(): JSX.Element {
+  return <ErosionCanvas />;
 }
