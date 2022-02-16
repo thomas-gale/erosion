@@ -12,6 +12,11 @@
         ".next/**"
       ]
     },
+    "test": {
+      "dependsOn": [
+        "build"
+      ]
+    },
     "start": {
       "dependsOn": [
         "build"
