@@ -1,11 +1,11 @@
-name: build
+name: pipeline
 
 on:
   pull_request:
   push:
 
 jobs:
-  build:
+  pipeline:
     runs-on: ubuntu-18.04
     env:
       PAGES_DOMAIN: erosion.thomasjamesgale.com
