@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-18.04
     env:
       PAGES_DOMAIN: erosion.thomasjamesgale.com
-      BUILD_DIR: out
+      BUILD_DIR: apps/web/out
 
     steps:
       - name: checkout
@@ -26,6 +26,9 @@ jobs:
       - name: resolve dependencies
         run: yarn
 
+      - name: run turbo build
+        run: echo TODO
+
       - name: build and export static
         run: yarn export
 
@@ -36,7 +39,7 @@ jobs:
         run: touch ${{ env.BUILD_DIR }}/.nojekyll
 
       - name: deploy github pages
-        uses: crazy-max/ghaction-github-pages@v2.5.0
+        uses: crazy-max/ghaction-github-pages@v2.6.0
         with:
           build_dir: ${{ env.BUILD_DIR }}
         env:
