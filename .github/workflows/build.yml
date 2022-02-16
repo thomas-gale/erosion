@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-18.04
     env:
       PAGES_DOMAIN: erosion.thomasjamesgale.com
-      BUILD_DIR: out
+      BUILD_DIR: apps/web/out
 
     steps:
       - name: checkout
@@ -29,18 +29,18 @@ jobs:
       - name: run turbo build
         run: echo TODO
 
-      # - name: build and export static
-      #   run: yarn export
+      - name: build and export static
+        run: yarn export
 
-      # - name: configure the cname for github pages
-      #   run: echo ${{ env.PAGES_DOMAIN }} > ${{ env.BUILD_DIR }}/CNAME
+      - name: configure the cname for github pages
+        run: echo ${{ env.PAGES_DOMAIN }} > ${{ env.BUILD_DIR }}/CNAME
 
-      # - name: disable jekyll
-      #   run: touch ${{ env.BUILD_DIR }}/.nojekyll
+      - name: disable jekyll
+        run: touch ${{ env.BUILD_DIR }}/.nojekyll
 
-      # - name: deploy github pages
-      #   uses: crazy-max/ghaction-github-pages@v2.5.0
-      #   with:
-      #     build_dir: ${{ env.BUILD_DIR }}
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: deploy github pages
+        uses: crazy-max/ghaction-github-pages@v2.6.0
+        with:
+          build_dir: ${{ env.BUILD_DIR }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
