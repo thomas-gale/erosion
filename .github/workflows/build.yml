@@ -2,9 +2,7 @@ name: build
 
 on:
   pull_request:
-    branches:
-      - main
-  workflow_call:
+  push:
 
 jobs:
   build:
@@ -29,3 +27,23 @@ jobs:
 
       - name: build
         run: yarn build
+
+      - name: export static build
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: yarn export
+
+      - name: configure the cname for github pages
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: echo ${{ env.PAGES_DOMAIN }} > ${{ env.BUILD_DIR }}/CNAME
+
+      - name: disable jekyll
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: touch ${{ env.BUILD_DIR }}/.nojekyll
+
+      - name: deploy github pages
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: crazy-max/ghaction-github-pages@v2.6.0
+        with:
+          build_dir: ${{ env.BUILD_DIR }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
