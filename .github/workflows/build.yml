@@ -26,9 +26,6 @@ jobs:
       - name: resolve dependencies
         run: yarn
 
-      - name: run turbo build
-        run: echo TODO
-
       - name: build and export static
         run: yarn export
 
