@@ -17,6 +17,14 @@
         "build"
       ]
     },
+    "export": {
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": [
+        "out/**"
+      ]
+    },
     "lint": {
       "outputs": []
     }
