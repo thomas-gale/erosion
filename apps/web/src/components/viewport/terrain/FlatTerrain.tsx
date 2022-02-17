@@ -17,7 +17,7 @@ export const FlatTerrain = () => {
       {generated && terrainOctree.current && (
         <mesh>
           <planeGeometry args={[20, 20]} />
-          <meshStandardMaterial color={"white"} />
+          <meshStandardMaterial color={"grey"} />
         </mesh>
       )}
     </group>

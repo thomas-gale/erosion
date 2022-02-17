@@ -6,6 +6,7 @@ import { Sky } from "./terrain/Sky";
 import { PerspectiveControlledCamera } from "./camera/PerspectiveControlledCamera";
 import { FlatTerrain } from "./terrain/FlatTerrain";
 import { TestCube } from "./player/TestCube";
+import { TestSphere } from "./terrain/TestSphere";
 
 export const ErosionCanvas = () => {
   const ContextBridge = useContextBridge(ReactReduxContext);
@@ -15,6 +16,7 @@ export const ErosionCanvas = () => {
         <Sky />
         <PerspectiveControlledCamera />
         <FlatTerrain />
+        <TestSphere />
         <TestCube />
         <Gizmo />
       </ContextBridge>

@@ -13,7 +13,7 @@ export class Terrain {
     return this.noise.noise3D(x, y, z);
   }
 
-  generateTestSphere(): THREE.BufferGeometry {
+  generateRedTestSphere(): THREE.Mesh {
     // Compute mesh of sphere
     let mesh = isosurface.surfaceNets(
       [64, 64, 64],
@@ -40,6 +40,9 @@ export class Terrain {
       "position",
       new THREE.BufferAttribute(sphereVertices, 3)
     );
-    return sphereGeometry;
+
+    // Create red material and finally mesh
+    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    return new THREE.Mesh(sphereGeometry, material);
   }
 }

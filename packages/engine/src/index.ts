@@ -7,3 +7,5 @@ export const CreateEngine = (): Engine => {
     quadTree: "New Engine Quadtree :)",
   };
 };
+
+export { Terrain } from "./terrain"
