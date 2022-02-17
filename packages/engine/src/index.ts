@@ -8,4 +8,4 @@ export const CreateEngine = (): Engine => {
   };
 };
 
-export { Terrain } from "./terrain"
+export { Terrain } from "./terrain";

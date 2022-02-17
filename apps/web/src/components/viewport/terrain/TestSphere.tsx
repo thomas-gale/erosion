@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
 import { Terrain } from "engine";
-import { DoubleSide } from "three";
 
 export const TestSphere = () => {
   // const sphereBufferGeometry = useRef<THREE.BufferGeometry>();
