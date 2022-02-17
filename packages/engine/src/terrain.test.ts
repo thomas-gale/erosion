@@ -12,5 +12,6 @@ test("sample terrain", () => {
 
 test("create terrain test sphere", () => {
   const terrainSampler = new Terrain(1234);
-  expect(terrainSampler.generateTestSphere()).toBeDefined();
+  const testSphere = terrainSampler.generateTestSphere();
+  expect(testSphere).toBeDefined();
 });

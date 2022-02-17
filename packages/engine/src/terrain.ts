@@ -1,5 +1,6 @@
 import isosurface from "isosurface";
 import SimplexNoise from "simplex-noise";
+import * as THREE from "three";
 
 export class Terrain {
   private noise: SimplexNoise;
@@ -12,7 +13,8 @@ export class Terrain {
     return this.noise.noise3D(x, y, z);
   }
 
-  generateTestSphere() {
+  generateTestSphere(): THREE.BufferGeometry {
+    // Compute mesh of sphere
     let mesh = isosurface.surfaceNets(
       [64, 64, 64],
       function (x: number, y: number, z: number) {
@@ -23,6 +25,21 @@ export class Terrain {
         [11, 11, 11],
       ]
     );
-    return mesh;
+
+    // Convert to three buffer geometry
+    const sphereGeometry = new THREE.BufferGeometry();
+
+    const sphereVertices = new Float32Array(mesh.positions.length * 3);
+    mesh.positions.forEach(([x, y, z], i) => {
+      sphereVertices[i * 3] = x;
+      sphereVertices[i * 3 + 1] = y;
+      sphereVertices[i * 3 + 2] = z;
+    });
+
+    sphereGeometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(sphereVertices, 3)
+    );
+    return sphereGeometry;
   }
 }
