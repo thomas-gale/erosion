@@ -27,6 +27,9 @@ jobs:
       - name: build
         run: yarn build
 
+      - name: test
+        run: yarn test
+
       - name: export static build
         if: ${{ github.ref == 'refs/heads/main' }}
         run: yarn export

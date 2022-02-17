@@ -1,6 +1,6 @@
-import { Ore } from './ores';
+import { Ore } from "./ores";
 
 export interface Block {
-	density: number;
-	ore: Ore;
+  density: number;
+  ore: Ore;
 }

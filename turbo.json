@@ -12,6 +12,11 @@
         ".next/**"
       ]
     },
+    "test": {
+      "dependsOn": [
+        "build"
+      ]
+    },
     "start": {
       "dependsOn": [
         "build"
@@ -26,6 +31,9 @@
       ]
     },
     "lint": {
+      "outputs": []
+    },
+    "lint:fix": {
       "outputs": []
     }
   }

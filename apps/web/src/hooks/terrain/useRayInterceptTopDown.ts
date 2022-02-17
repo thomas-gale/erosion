@@ -1,3 +1,3 @@
 export const useRayInterceptTopDown = () => {
-	return null;
-}
+  return null;
+};
