@@ -31,7 +31,10 @@ export const Chunk = ({ seed, x, y, z, size = 32 }: ChunkProps) => {
     <>
       {chunkReady && (
         <mesh>
-          <bufferGeometry attach="geometry">
+          <bufferGeometry
+            attach="geometry"
+            onUpdate={(self) => self.computeVertexNormals()}
+          >
             <bufferAttribute
               attach="index"
               array={cells.current}
@@ -45,7 +48,7 @@ export const Chunk = ({ seed, x, y, z, size = 32 }: ChunkProps) => {
               itemSize={3}
             />
           </bufferGeometry>
-          <meshStandardMaterial attach="material" color={0x999999} />
+          <meshStandardMaterial attach="material" color="green" />
         </mesh>
       )}
     </>

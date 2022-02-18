@@ -1,7 +1,6 @@
-import { Canvas } from "@react-three/fiber";
-import { useContextBridge } from "@react-three/drei";
 import { ReactReduxContext } from "react-redux";
-import { Sky } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { useContextBridge, Sky } from "@react-three/drei";
 import { PerspectiveControlledCamera } from "./camera/PerspectiveControlledCamera";
 import { Chunk } from "./terrain/Chunk";
 import { config } from "../../env/config";
@@ -13,6 +12,8 @@ export const ErosionCanvas = () => {
     <Canvas>
       <ContextBridge>
         <Sky />
+        <directionalLight position={[20, 50, 20]} />
+        <ambientLight intensity={0.75} />
         <PerspectiveControlledCamera />
         <Gizmo />
         <Chunk seed={config.testSeed} x={0} y={-16} z={0} size={32} />

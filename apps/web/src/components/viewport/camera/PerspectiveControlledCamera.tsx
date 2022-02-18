@@ -16,7 +16,7 @@ export const PerspectiveControlledCamera = () => {
         minDistance={5}
         maxDistance={100}
         target={[32, 0, 32]}
-        // maxPolarAngle={Math.PI / 4}
+        maxPolarAngle={Math.PI / 4}
       />
     </>
   );
