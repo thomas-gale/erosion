@@ -7,13 +7,8 @@
 
 ## plan
 
-- inspired by motherload, factorio.
+- inspired by minecraft, motherload, factorio.
 - hack around trying concepts related to mining, digging landscape, selling resources.
-
-## current implementation stack
-
-- [next.js](https://nextjs.org/)
-- [mui](https://material-ui.com/)
 
 ## running ([turborepo](https://turborepo.org/) stack)
 
