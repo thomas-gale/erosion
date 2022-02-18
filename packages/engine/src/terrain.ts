@@ -19,12 +19,7 @@ export class Terrain {
     this.deltaOctree = d3.octree();
   }
 
-  private sample(x: number, y: number, z: number): number {
-    return this.noise.noise3D(x, y, z);
-  }
-
-  generateTestSphere(): Mesh {
-    // Compute mesh of sphere
+  generateSphereMesh(): Mesh {
     return isosurface.surfaceNets(
       [64, 64, 64],
       function (x: number, y: number, z: number) {
@@ -37,11 +32,15 @@ export class Terrain {
     );
   }
 
-  loadChunk(x: number, y: number, z: number, size = 32): Mesh {
+  loadChunkMesh(x: number, y: number, z: number, size = 32): Mesh {
     return isosurface.surfaceNets(
       [size, size, size],
       (x: number, y: number, z: number) => {
-        return this.noise.noise2D(0.1 * x, 0.1 * y) * 2 - z;
+        // TODO - look up position in deltaOctree (to see if there is a change)
+
+        // Else use base procedural noise
+        // TODO - compose with different frequencies - https://www.redblobgames.com/maps/terrain-from-noise/
+        return y - this.noise.noise2D(0.1 * x, 0.1 * z) * 2;
       },
       [
         [x, y, z],

@@ -7,14 +7,14 @@ test("creates terrain", () => {
   expect(terrainSampler).toBeDefined();
 });
 
-test("create terrain test sphere", () => {
+test("create sphere mesh", () => {
   const terrainSampler = new Terrain(TEST_SEED);
-  const testSphere = terrainSampler.generateTestSphere();
+  const testSphere = terrainSampler.generateSphereMesh();
   expect(testSphere).toBeDefined();
 });
 
-test("load terrain chunk", () => {
+test("load chunk mesh", () => {
   const terrainSampler = new Terrain(TEST_SEED);
-  const testSphere = terrainSampler.loadChunk(0, 0, 0);
+  const testSphere = terrainSampler.loadChunkMesh(0, 0, 0);
   expect(testSphere).toBeDefined();
 });

@@ -17,7 +17,7 @@ export const Chunk = ({ seed, x, y, z, size = 32 }: ChunkProps) => {
   const loadChunk = useCallback(() => {
     setChunkReady(false);
     const terrain = new Terrain(seed);
-    const chunk = terrain.loadChunk(x, y, z, size);
+    const chunk = terrain.loadChunkMesh(x, y, z, size);
     verts.current = new Float32Array(chunk.positions.flat());
     cells.current = new Uint32Array(chunk.cells.flat());
     setChunkReady(true);
@@ -45,7 +45,7 @@ export const Chunk = ({ seed, x, y, z, size = 32 }: ChunkProps) => {
               itemSize={3}
             />
           </bufferGeometry>
-          <meshBasicMaterial attach="material" wireframe color="grey" />
+          <meshStandardMaterial attach="material" color={0x999999} />
         </mesh>
       )}
     </>

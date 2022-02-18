@@ -8,7 +8,7 @@ export const TestSphere = () => {
   const [sphereReady, setSphereReady] = useState(false);
   useEffect(() => {
     const terrain = new Terrain();
-    const testSphere = terrain.generateTestSphere();
+    const testSphere = terrain.generateSphereMesh();
 
     verts.current = new Float32Array(testSphere.positions.flat());
     tris.current = new Uint32Array(testSphere.cells.flat());
