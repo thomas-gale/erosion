@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Terrain } from "engine";
 
 export const TestSphere = () => {
-  // const sphereBufferGeometry = useRef<THREE.BufferGeometry>();
   const verts = useRef<Float32Array>();
   const tris = useRef<Uint32Array>();
 

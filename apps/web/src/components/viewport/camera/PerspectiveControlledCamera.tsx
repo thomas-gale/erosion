@@ -10,7 +10,7 @@ export const PerspectiveControlledCamera = () => {
         zoom={1}
       />
       <MapControls
-        panSpeed={1}
+        panSpeed={2}
         rotateSpeed={1}
         zoomSpeed={1}
         minDistance={5}

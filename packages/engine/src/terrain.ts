@@ -41,7 +41,7 @@ export class Terrain {
     return isosurface.surfaceNets(
       [size, size, size],
       (x: number, y: number, z: number) => {
-        return this.sample(x, y, z);
+        return (this.noise.noise2D(0.025 * x, 0.025 * y) + 1) * 2 - z;
       },
       [
         [x, y, z],
