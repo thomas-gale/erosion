@@ -2,32 +2,33 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Terrain } from "engine";
 
 export interface ChunkProps {
+  seed: number;
   x: number;
   y: number;
   z: number;
   size: number;
 }
 
-export const Chunk = ({ x, y, z, size = 32 }: ChunkProps) => {
+export const Chunk = ({ seed, x, y, z, size = 32 }: ChunkProps) => {
   const verts = useRef<Float32Array>();
   const cells = useRef<Uint32Array>();
   const [chunkReady, setChunkReady] = useState(false);
 
   const loadChunk = useCallback(() => {
     setChunkReady(false);
-    const terrain = new Terrain();
+    const terrain = new Terrain(seed);
     const chunk = terrain.loadChunk(x, y, z, size);
     verts.current = new Float32Array(chunk.positions.flat());
     cells.current = new Uint32Array(chunk.cells.flat());
     setChunkReady(true);
-  }, [size, x, y, z]);
+  }, [seed, size, x, y, z]);
 
   useEffect(() => {
     loadChunk();
   }, [loadChunk]);
 
   return (
-    <group position={[-16, -16, -16]}>
+    <>
       {chunkReady && (
         <mesh>
           <bufferGeometry attach="geometry">
@@ -47,6 +48,6 @@ export const Chunk = ({ x, y, z, size = 32 }: ChunkProps) => {
           <meshBasicMaterial attach="material" wireframe color="grey" />
         </mesh>
       )}
-    </group>
+    </>
   );
 };
