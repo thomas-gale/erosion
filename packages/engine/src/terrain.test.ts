@@ -1,17 +1,20 @@
 import { Terrain } from "./terrain";
 
+const TEST_SEED = 0;
+
 test("creates terrain", () => {
   const terrainSampler = new Terrain();
   expect(terrainSampler).toBeDefined();
 });
 
-test("sample terrain", () => {
-  const terrainSampler = new Terrain(1234);
-  expect(terrainSampler.sample(-0.5, 0, 0.5)).toBe(-0.32173333333333315);
+test("create terrain test sphere", () => {
+  const terrainSampler = new Terrain(TEST_SEED);
+  const testSphere = terrainSampler.generateTestSphere();
+  expect(testSphere).toBeDefined();
 });
 
-test("create terrain test sphere", () => {
-  const terrainSampler = new Terrain(1234);
-  const testSphere = terrainSampler.generateTestSphere();
+test("load terrain chunk", () => {
+  const terrainSampler = new Terrain(TEST_SEED);
+  const testSphere = terrainSampler.loadChunk(0, 0, 0);
   expect(testSphere).toBeDefined();
 });
