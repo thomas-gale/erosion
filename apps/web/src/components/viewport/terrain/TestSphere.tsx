@@ -2,14 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { Terrain } from "engine";
 
 export const TestSphere = () => {
-  // const sphereBufferGeometry = useRef<THREE.BufferGeometry>();
   const verts = useRef<Float32Array>();
   const tris = useRef<Uint32Array>();
 
   const [sphereReady, setSphereReady] = useState(false);
   useEffect(() => {
     const terrain = new Terrain();
-    const testSphere = terrain.generateTestSphere();
+    const testSphere = terrain.generateSphereMesh();
 
     verts.current = new Float32Array(testSphere.positions.flat());
     tris.current = new Uint32Array(testSphere.cells.flat());

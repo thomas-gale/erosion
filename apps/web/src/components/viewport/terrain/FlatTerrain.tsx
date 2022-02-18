@@ -15,9 +15,9 @@ export const FlatTerrain = () => {
   return (
     <group>
       {generated && terrainOctree.current && (
-        <mesh position={[0, 0, -10]}>
+        <mesh position={[0, 0, 0]}>
           <planeGeometry args={[20, 20]} />
-          <meshStandardMaterial wireframe color={"grey"} />
+          <meshStandardMaterial color={"grey"} />
         </mesh>
       )}
     </group>

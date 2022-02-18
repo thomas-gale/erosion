@@ -1,12 +1,10 @@
-import { Canvas } from "@react-three/fiber";
-import { useContextBridge } from "@react-three/drei";
 import { ReactReduxContext } from "react-redux";
-import { Gizmo } from "./debug/Gizmo";
-import { Sky } from "./terrain/Sky";
+import { Canvas } from "@react-three/fiber";
+import { useContextBridge, Sky } from "@react-three/drei";
 import { PerspectiveControlledCamera } from "./camera/PerspectiveControlledCamera";
-import { FlatTerrain } from "./terrain/FlatTerrain";
-import { TestCube } from "./player/TestCube";
-import { TestSphere } from "./terrain/TestSphere";
+import { Chunk } from "./terrain/Chunk";
+import { config } from "../../env/config";
+import { Gizmo } from "./debug/Gizmo";
 
 export const ErosionCanvas = () => {
   const ContextBridge = useContextBridge(ReactReduxContext);
@@ -14,11 +12,14 @@ export const ErosionCanvas = () => {
     <Canvas>
       <ContextBridge>
         <Sky />
+        <directionalLight position={[20, 50, 20]} />
+        <ambientLight intensity={0.75} />
         <PerspectiveControlledCamera />
-        <FlatTerrain />
-        <TestSphere />
-        <TestCube />
         <Gizmo />
+        <Chunk seed={config.testSeed} x={0} y={-16} z={0} size={32} />
+        <Chunk seed={config.testSeed} x={32} y={-16} z={0} size={32} />
+        <Chunk seed={config.testSeed} x={32} y={-16} z={32} size={32} />
+        <Chunk seed={config.testSeed} x={0} y={-16} z={32} size={32} />
       </ContextBridge>
     </Canvas>
   );

@@ -20,6 +20,7 @@
     "typescript": "4.5.5"
   },
   "dependencies": {
+    "d3-octree": "^0.2.2",
     "isosurface": "1.0.0",
     "simplex-noise": "3.0.1"
   }
