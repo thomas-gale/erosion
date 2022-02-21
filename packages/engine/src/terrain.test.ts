@@ -1,5 +1,4 @@
 import { Terrain } from "./terrain";
-import * as THREE from "three";
 
 const TEST_SEED = 0;
 
@@ -22,7 +21,7 @@ test("load chunk mesh", () => {
 
 test("erode terrain", () => {
   const terrainSampler = new Terrain(TEST_SEED);
-  terrainSampler.erode(new THREE.Vector3(16, 0, 16));
+  terrainSampler.erode(16, 0, 16);
   const testMesh = terrainSampler.loadMesh(0, 0, 0, 32, 32, 32);
   expect(testMesh).toBeDefined();
 });

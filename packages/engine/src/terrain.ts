@@ -1,7 +1,6 @@
 import isosurface from "isosurface";
 import SimplexNoise from "simplex-noise";
-import * as THREE from "three";
-import { PointOctree } from "sparse-octree";
+import * as d3 from "d3-octree";
 import { Mesh } from "./mesh";
 import { State } from "./state";
 
@@ -13,17 +12,12 @@ export class Terrain {
   private leafSize: number;
 
   // State storage for changes made by players away from the base terrain state
-  private deltaOctree: PointOctree<State>;
+  private deltaOctree: any; // TODO
 
   constructor(seed?: number, leafSize = 1) {
     this.noise = new SimplexNoise(seed);
     this.leafSize = leafSize;
-
-    const min = new THREE.Vector3(-32768, -32768, -32768);
-    const max = new THREE.Vector3(32768, 32768, 32768);
-    this.deltaOctree = new PointOctree<State>(min, max, 0.0, 8, 16);
-
-    this.deposit(new THREE.Vector3(0, 16, 0));
+    this.deltaOctree = d3.octree();
   }
 
   generateSphereMesh(): Mesh {
@@ -63,11 +57,11 @@ export class Terrain {
     );
   }
 
-  erode(p: THREE.Vector3): void {
-    this.deltaOctree.set(p, { soil: 0 });
+  erode(x: number, y: number, z: number): void {
+    this.deltaOctree.x(x).y(y).z(z).add({ soil: 0 });
   }
 
-  deposit(p: THREE.Vector3): void {
-    this.deltaOctree.set(p, { soil: 1 });
+  deposit(x: number, y: number, z: number): void {
+    this.deltaOctree.x(x).y(y).z(z).add({ soil: 1 });
   }
 }
