@@ -39,7 +39,7 @@ export const Terrain = ({
     <>
       {chunkCoordsToLoad.map(({ x, z }, i) => (
         <Chunk
-          key={`${x}-${z}-${i}`}
+          key={`${x}-${z}`}
           seed={config.testSeed}
           xMin={x - config.chunkPadding}
           zMin={z - config.chunkPadding}
