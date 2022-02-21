@@ -32,9 +32,9 @@ export class Terrain {
     );
   }
 
-  loadChunkMesh(x: number, y: number, z: number, size = 32): Mesh {
+  loadMesh(xMin: number, yMin: number, zMin: number, xMax: number, yMax: number, zMax: number): Mesh {
     return isosurface.surfaceNets(
-      [size, size, size],
+      [xMax-xMin, yMax-yMin, zMax-zMin],
       (x: number, y: number, z: number) => {
         // TODO - look up position in deltaOctree (to see if there is a change)
 
@@ -43,8 +43,8 @@ export class Terrain {
         return y - this.noise.noise2D(0.1 * x, 0.1 * z) * 2;
       },
       [
-        [x, y, z],
-        [x + size, y + size, z + size],
+        [xMin, yMin, zMin],
+        [xMax, yMax, zMax],
       ]
     );
   }

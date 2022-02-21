@@ -1,15 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Terrain } from "engine";
+import * as THREE from "three";
+import { config } from "../../../env/config";
 
 export interface ChunkProps {
   seed: number;
-  x: number;
-  y: number;
-  z: number;
-  size: number;
+  xMin: number;
+  zMin: number;
+  xMax: number;
+  zMax: number;
 }
 
-export const Chunk = ({ seed, x, y, z, size = 32 }: ChunkProps) => {
+// TODO - this does not gracefully handle the change of parameters (e.g. re-rendering without unmounting)
+export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
   const verts = useRef<Float32Array>();
   const cells = useRef<Uint32Array>();
   const [chunkReady, setChunkReady] = useState(false);
@@ -17,11 +20,18 @@ export const Chunk = ({ seed, x, y, z, size = 32 }: ChunkProps) => {
   const loadChunk = useCallback(() => {
     setChunkReady(false);
     const terrain = new Terrain(seed);
-    const chunk = terrain.loadChunkMesh(x, y, z, size);
+    const chunk = terrain.loadMesh(
+      xMin,
+      config.minY,
+      zMin,
+      xMax,
+      config.maxY,
+      zMax
+    );
     verts.current = new Float32Array(chunk.positions.flat());
     cells.current = new Uint32Array(chunk.cells.flat());
     setChunkReady(true);
-  }, [seed, size, x, y, z]);
+  }, [seed, xMax, xMin, zMax, zMin]);
 
   useEffect(() => {
     loadChunk();
@@ -43,8 +53,8 @@ export const Chunk = ({ seed, x, y, z, size = 32 }: ChunkProps) => {
             />
             <bufferAttribute
               attachObject={["attributes", "position"]}
-              count={verts.current.length / 3}
               array={verts.current}
+              count={verts.current.length / 3}
               itemSize={3}
             />
           </bufferGeometry>
