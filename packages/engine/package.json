@@ -12,6 +12,7 @@
     "test": "jest src/**"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.16.7",
     "@types/jest": "27.4.0",
     "config": "*",
     "jest": "27.5.1",

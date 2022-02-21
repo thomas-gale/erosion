@@ -22,6 +22,8 @@ export class Terrain {
     const min = new THREE.Vector3(-32768, -32768, -32768);
     const max = new THREE.Vector3(32768, 32768, 32768);
     this.deltaOctree = new PointOctree<State>(min, max, 0.0, 8, 16);
+
+    this.deposit(new THREE.Vector3(0, 16, 0));
   }
 
   generateSphereMesh(): Mesh {
