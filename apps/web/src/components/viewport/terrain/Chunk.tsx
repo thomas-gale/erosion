@@ -1,12 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Terrain } from "engine";
-import * as THREE from "three";
-import { config } from "../../../env/config";
+import { useEffect, useRef, useState } from "react";
 import {
   InitResponse,
   LoadMeshResponse,
   TerrainInputData,
-  TerrainOutputData,
   TerrainPostMessageEvent,
 } from "../../../engine/terrain.worker";
 
@@ -74,7 +70,7 @@ export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
       console.log(`Triggering web worker init for ${xMin}, ${zMin} ...`);
       await terrainWorker.current.postMessage({
         type: "init",
-        payload: { seed: config.testSeed },
+        payload: { seed },
       } as TerrainInputData);
       console.log(`Triggered web worker init for ${xMin}, ${zMin}!`);
     })();
@@ -82,7 +78,7 @@ export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
       console.log(`Terminating web worker for ${xMin}, ${zMin}...`);
       terrainWorker.current.terminate();
     };
-  }, [xMax, xMin, zMax, zMin]);
+  }, [seed, xMax, xMin, zMax, zMin]);
 
   return (
     <>
