@@ -2,9 +2,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Terrain } from "engine";
 import * as THREE from "three";
 import { config } from "../../../env/config";
+import {
+  InitResponse,
+  LoadMeshResponse,
+  TerrainInputData,
+  TerrainOutputData,
+  TerrainPostMessageEvent,
+} from "../../../engine/terrain.worker";
 
 export interface ChunkProps {
-  engine: Terrain;
+  seed: number;
   xMin: number;
   zMin: number;
   xMax: number;
@@ -13,44 +20,73 @@ export interface ChunkProps {
 
 // TODO - this does not gracefully handle the change of parameters (e.g. re-rendering without unmounting)
 // Probably need to interface with the three mesh directly.
-export const Chunk = ({ engine, xMin, zMin, xMax, zMax }: ChunkProps) => {
+// Each chunk has its own web worker - to make callback worker easier (TODO - check if this is a problem!)
+export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
+  const terrainWorker = useRef<Worker>();
   const verts = useRef<Float32Array>();
   const cells = useRef<Uint32Array>();
-  const [chunkReady, setChunkReady] = useState(false);
+  const [ready, setReady] = useState(false);
 
-  const loadChunk = useCallback(() => {
-    setChunkReady(false);
-    // Run async
-    // Test
-    engine.deposit(0, 10, 0);
-    engine.deposit(1, 10, 0);
-    engine.deposit(1, 10, 1);
-    engine.deposit(0, 10, 1);
-    engine.deposit(0, 9, 0);
-    engine.deposit(1, 9, 0);
-    engine.deposit(1, 9, 1);
-    engine.deposit(0, 9, 1);
-
-    const chunk = engine.loadMesh(
-      xMin,
-      config.minY,
-      zMin,
-      xMax,
-      config.maxY,
-      zMax
-    );
-    verts.current = new Float32Array(chunk.positions.flat());
-    cells.current = new Uint32Array(chunk.cells.flat());
-    setChunkReady(true);
-  }, [engine, xMax, xMin, zMax, zMin]);
-
+  // Init the web worker
   useEffect(() => {
-    loadChunk();
-  }, [loadChunk]);
+    (async () => {
+      console.log(
+        `Creating and initializing web worker for ${xMin}, ${zMin}...`
+      );
+      terrainWorker.current = new Worker(
+        new URL("../../../engine/terrain.worker", import.meta.url)
+      );
+
+      // Configure the callbacks
+      terrainWorker.current.onmessage = async (
+        evt: TerrainPostMessageEvent
+      ) => {
+        if (evt.data.type === "init") {
+          const resp = evt.data.payload as InitResponse;
+          // Now trigger the loadMesh
+          if (resp) {
+            console.log(`Triggering web worker mesh for ${xMin}, ${zMin}...`);
+            await terrainWorker.current.postMessage({
+              type: "loadMesh",
+              payload: {
+                xMin,
+                zMin,
+                xMax,
+                zMax,
+              },
+            } as TerrainInputData);
+            console.log(`Triggered web worker mesh for ${xMin}, ${zMin}!`);
+          } else {
+            console.warn(`WebWorker init response for ${xMin}, ${zMin}`, resp);
+          }
+        } else if (evt.data.type === "loadMesh") {
+          const resp = evt.data.payload as LoadMeshResponse;
+          console.log(`Loading terrain mesh for ${xMin}, ${zMin}...`);
+          verts.current = new Float32Array(resp.positions.flat());
+          cells.current = new Uint32Array(resp.cells.flat());
+          setReady(true);
+          console.log(`Loaded terrain mesh for ${xMin}, ${zMin}!`);
+        }
+      };
+
+      console.log(`Created and initialized web worker for ${xMin}, ${zMin}!`);
+
+      console.log(`Triggering web worker init for ${xMin}, ${zMin} ...`);
+      await terrainWorker.current.postMessage({
+        type: "init",
+        payload: { seed: config.testSeed },
+      } as TerrainInputData);
+      console.log(`Triggered web worker init for ${xMin}, ${zMin}!`);
+    })();
+    return () => {
+      console.log(`Terminating web worker for ${xMin}, ${zMin}...`);
+      terrainWorker.current.terminate();
+    };
+  }, [xMax, xMin, zMax, zMin]);
 
   return (
     <>
-      {chunkReady && (
+      {ready && (
         <mesh>
           <bufferGeometry
             attach="geometry"
