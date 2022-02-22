@@ -1,5 +1,6 @@
 // This is a module worker, so we can use imports (in the browser too!)
-import { Terrain } from "engine";
+import { Terrain, Mesh } from "engine";
+import { initScriptLoader } from "next/script";
 import { config } from "../env/config";
 
 let terrain: Terrain;
@@ -8,6 +9,8 @@ export interface InitPayload {
   seed: number;
 }
 
+export type InitResponse = boolean;
+
 export interface LoadMeshPayload {
   xMin: number;
   zMin: number;
@@ -15,22 +18,38 @@ export interface LoadMeshPayload {
   zMax: number;
 }
 
-export interface TerrainData {
+export type LoadMeshResponse = Mesh;
+
+export interface TerrainInputData {
   type: "init" | "loadMesh";
   payload: InitPayload | LoadMeshPayload;
 }
 
-class TerrainMessageEvent extends Event {
-  data: TerrainData;
+export type ErrorResponse = string;
+
+export interface TerrainOutputData {
+  type: "init" | "loadMesh" | "error";
+  payload: InitResponse | LoadMeshResponse | ErrorResponse;
+}
+
+export class TerrainPostMessageEvent extends Event {
+  data: TerrainOutputData;
+}
+
+class TerrainListenerMessageEvent extends Event {
+  data: TerrainInputData;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-addEventListener("message", (event: TerrainMessageEvent) => {
-  console.log("message received", event.data);
+addEventListener("message", (event: TerrainListenerMessageEvent) => {
+  console.log("(web worker) message received", event.data);
   if (event.data.type === "init") {
     const { seed } = event.data.payload as InitPayload;
     terrain = new Terrain(seed);
-    postMessage("ready");
+    postMessage({
+      type: "init",
+      payload: true,
+    } as TerrainOutputData);
   } else if (event.data.type === "loadMesh") {
     const { xMin, zMin, xMax, zMax } = event.data.payload as LoadMeshPayload;
     const chunk = terrain.loadMesh(
@@ -41,8 +60,15 @@ addEventListener("message", (event: TerrainMessageEvent) => {
       config.maxY,
       zMax
     );
+    postMessage({
+      type: "loadMesh",
+      payload: chunk,
+    } as TerrainOutputData);
     postMessage(chunk);
   } else {
-    postMessage("error");
+    postMessage({
+      type: "error",
+      payload: "unknown message type",
+    } as TerrainOutputData);
   }
 });

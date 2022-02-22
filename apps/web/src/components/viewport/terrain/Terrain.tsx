@@ -2,7 +2,13 @@ import { Chunk } from "./Chunk";
 import { config } from "../../../env/config";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Terrain as TerrainEngine } from "engine";
-import { TerrainData } from "../../../engine/terrain.worker";
+import {
+  InitResponse,
+  LoadMeshResponse,
+  TerrainInputData,
+  TerrainOutputData,
+  TerrainPostMessageEvent,
+} from "../../../engine/terrain.worker";
 
 export interface TerrainProps {
   nearestChunk: {
@@ -17,9 +23,7 @@ export const Terrain = ({
   const [terrainEngine] = useState<TerrainEngine>(
     () => new TerrainEngine(config.testSeed)
   );
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tsWorkerRef = useRef<any>();
+  const terrainWorker = useRef<Worker>();
 
   const chunkCoordsToLoad = useMemo(() => {
     console.log(x, z);
@@ -43,14 +47,21 @@ export const Terrain = ({
   // Test making web worker
   useEffect(() => {
     console.log("Starting web worker");
-    tsWorkerRef.current = new Worker(
+    terrainWorker.current = new Worker(
       new URL("../../../engine/terrain.worker", import.meta.url)
     );
     // Test responding web worker
-    tsWorkerRef.current.onmessage = (evt) =>
-      console.log("WebWorker Response => ", evt.data);
+    terrainWorker.current.onmessage = (evt: TerrainPostMessageEvent) => {
+      if (evt.data.type === "init") {
+        const resp = evt.data.payload as InitResponse;
+        console.log("WebWorker init Response => ", resp);
+      } else if (evt.data.type === "loadMesh") {
+        const resp = evt.data.payload as LoadMeshResponse;
+        console.log("WebWorker load mesh Response => ", resp);
+      }
+    };
     return () => {
-      tsWorkerRef.current.terminate();
+      terrainWorker.current.terminate();
     };
   }, []);
 
@@ -60,12 +71,12 @@ export const Terrain = ({
       console.log("Triggering web worker init in 5s");
       await new Promise((resolve) => setTimeout(resolve, 5000));
       console.log("Triggering web worker init");
-      await tsWorkerRef.current.postMessage({
+      await terrainWorker.current.postMessage({
         type: "init",
         payload: { seed: config.testSeed },
-      } as TerrainData);
+      } as TerrainInputData);
       console.log("Triggering web worker mesh");
-      await tsWorkerRef.current.postMessage({
+      await terrainWorker.current.postMessage({
         type: "loadMesh",
         payload: {
           xMin: -10,
@@ -73,13 +84,13 @@ export const Terrain = ({
           xMax: 10,
           zMax: 10,
         },
-      } as TerrainData);
+      } as TerrainInputData);
     })();
   }, []);
 
   return (
     <>
-      {chunkCoordsToLoad.map(({ x, z }, i) => (
+      {chunkCoordsToLoad.map(({ x, z }) => (
         <Chunk
           key={`${x}-${z}`}
           engine={terrainEngine}
