@@ -1,11 +1,19 @@
 import { MapControls, PerspectiveCamera } from "@react-three/drei";
+import { MutableRefObject } from "react";
+import { MapControls as MapControlsImpl } from "three-stdlib";
 
-export const PerspectiveControlledCamera = () => {
+export interface PerspectiveControlledCameraProps {
+  mapControls: MutableRefObject<MapControlsImpl>;
+}
+
+export const PerspectiveControlledCamera = ({
+  mapControls,
+}: PerspectiveControlledCameraProps) => {
   return (
     <>
       <PerspectiveCamera
         makeDefault
-        position={[-25, 50, -25]}
+        position={[0, 50, 0]}
         up={[0, 1, 0]}
         zoom={1}
       />
@@ -15,8 +23,9 @@ export const PerspectiveControlledCamera = () => {
         zoomSpeed={1}
         minDistance={5}
         maxDistance={100}
-        target={[32, 0, 32]}
+        target={[16, 0, 16]}
         maxPolarAngle={Math.PI / 4}
+        ref={mapControls}
       />
     </>
   );

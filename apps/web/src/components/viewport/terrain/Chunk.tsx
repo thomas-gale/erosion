@@ -1,35 +1,88 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Terrain } from "engine";
+import { useEffect, useRef, useState } from "react";
+import {
+  InitResponse,
+  LoadMeshResponse,
+  TerrainInputData,
+  TerrainPostMessageEvent,
+} from "../../../engine/terrain.worker";
 
 export interface ChunkProps {
   seed: number;
-  x: number;
-  y: number;
-  z: number;
-  size: number;
+  xMin: number;
+  zMin: number;
+  xMax: number;
+  zMax: number;
 }
 
-export const Chunk = ({ seed, x, y, z, size = 32 }: ChunkProps) => {
+// TODO - this does not gracefully handle the change of parameters (e.g. re-rendering without unmounting)
+// Probably need to interface with the three mesh directly.
+// Each chunk has its own web worker - to make callback worker easier (TODO - check if this is a problem!)
+export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
+  const terrainWorker = useRef<Worker>();
   const verts = useRef<Float32Array>();
   const cells = useRef<Uint32Array>();
-  const [chunkReady, setChunkReady] = useState(false);
+  const [ready, setReady] = useState(false);
 
-  const loadChunk = useCallback(() => {
-    setChunkReady(false);
-    const terrain = new Terrain(seed);
-    const chunk = terrain.loadChunkMesh(x, y, z, size);
-    verts.current = new Float32Array(chunk.positions.flat());
-    cells.current = new Uint32Array(chunk.cells.flat());
-    setChunkReady(true);
-  }, [seed, size, x, y, z]);
-
+  // Init the web worker
   useEffect(() => {
-    loadChunk();
-  }, [loadChunk]);
+    (async () => {
+      console.log(
+        `Creating and initializing web worker for ${xMin}, ${zMin}...`
+      );
+      terrainWorker.current = new Worker(
+        new URL("../../../engine/terrain.worker", import.meta.url)
+      );
+
+      // Configure the callbacks
+      terrainWorker.current.onmessage = async (
+        evt: TerrainPostMessageEvent
+      ) => {
+        if (evt.data.type === "init") {
+          const resp = evt.data.payload as InitResponse;
+          // Now trigger the loadMesh
+          if (resp) {
+            console.log(`Triggering web worker mesh for ${xMin}, ${zMin}...`);
+            await terrainWorker.current.postMessage({
+              type: "loadMesh",
+              payload: {
+                xMin,
+                zMin,
+                xMax,
+                zMax,
+              },
+            } as TerrainInputData);
+            console.log(`Triggered web worker mesh for ${xMin}, ${zMin}!`);
+          } else {
+            console.warn(`WebWorker init response for ${xMin}, ${zMin}`, resp);
+          }
+        } else if (evt.data.type === "loadMesh") {
+          const resp = evt.data.payload as LoadMeshResponse;
+          console.log(`Loading terrain mesh for ${xMin}, ${zMin}...`);
+          verts.current = new Float32Array(resp.positions.flat());
+          cells.current = new Uint32Array(resp.cells.flat());
+          setReady(true);
+          console.log(`Loaded terrain mesh for ${xMin}, ${zMin}!`);
+        }
+      };
+
+      console.log(`Created and initialized web worker for ${xMin}, ${zMin}!`);
+
+      console.log(`Triggering web worker init for ${xMin}, ${zMin} ...`);
+      await terrainWorker.current.postMessage({
+        type: "init",
+        payload: { seed },
+      } as TerrainInputData);
+      console.log(`Triggered web worker init for ${xMin}, ${zMin}!`);
+    })();
+    return () => {
+      console.log(`Terminating web worker for ${xMin}, ${zMin}...`);
+      terrainWorker.current.terminate();
+    };
+  }, [seed, xMax, xMin, zMax, zMin]);
 
   return (
     <>
-      {chunkReady && (
+      {ready && (
         <mesh>
           <bufferGeometry
             attach="geometry"
@@ -43,8 +96,8 @@ export const Chunk = ({ seed, x, y, z, size = 32 }: ChunkProps) => {
             />
             <bufferAttribute
               attachObject={["attributes", "position"]}
-              count={verts.current.length / 3}
               array={verts.current}
+              count={verts.current.length / 3}
               itemSize={3}
             />
           </bufferGeometry>
