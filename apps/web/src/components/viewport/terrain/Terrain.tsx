@@ -12,6 +12,15 @@ export interface TerrainProps {
 export const Terrain = ({
   nearestChunk: { x, z },
 }: TerrainProps): JSX.Element => {
+  /* 
+  Notes.
+  Move the terrain engine worker back here?
+  Or keep the terrain engine workers in the chunks?
+
+  create a higher order filtered callback in the mapping function which will tell the chunks when to re-render (and will provide update mesh)
+  */
+
+  // Using the nearest chunk to the camera focus, we can determine the chunks to render (this approximation relies on the camera elevation having a finite limit (of 45 degrees) - the chunk region is a hardcoded heuristic.)
   const chunkCoordsToLoad = useMemo(() => {
     console.log(x, z);
     const chunkCoords: { x: number; z: number }[] = [];

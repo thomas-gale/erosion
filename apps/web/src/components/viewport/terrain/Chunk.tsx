@@ -101,7 +101,7 @@ export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
               itemSize={3}
             />
           </bufferGeometry>
-          <meshStandardMaterial attach="material" color="green" />
+          <meshStandardMaterial attach="material" wireframe color="green" />
         </mesh>
       )}
     </>

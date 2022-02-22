@@ -54,7 +54,21 @@ export class Terrain {
 
         // Else use base procedural noise
         // TODO - compose with different frequencies - https://www.redblobgames.com/maps/terrain-from-noise/
-        return y - this.noise.noise2D(0.1 * x, 0.1 * z) * 2; // Isosurface renders positive side of the surface
+
+        // Base noise
+        let elevation =
+          32 * this.noise.noise2D(0.01 * x, 0.01 * z) +
+          16 * this.noise.noise2D(0.02 * x, 0.02 * z) +
+          8 * this.noise.noise2D(0.04 * x, 0.04 * z) +
+          4 * this.noise.noise2D(0.08 * x, 0.08 * z) +
+          2 * this.noise.noise2D(0.16 * x, 0.16 * z) +
+          1 * this.noise.noise2D(0.32 * x, 0.32 * z);
+
+        // elevation = elevation / (32 + 16 + 8 + 4 + 2 + 1);
+        // Redistribution
+        // elevation = Math.pow(elevation, 2);
+
+        return y - elevation; // Isosurface renders positive side of the surface
       },
       [
         [xMin, yMin, zMin],
