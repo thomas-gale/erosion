@@ -1,4 +1,4 @@
 {
   "extends": "tsconfig/nextjs.json",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/engine/terrain.worker.js", "src/engine/terrain.worker.js"],
 }
