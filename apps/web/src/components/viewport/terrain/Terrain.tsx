@@ -5,6 +5,7 @@ import { Terrain as TerrainEngine } from "engine";
 
 // TEST
 import { Html } from "@react-three/drei";
+import { TerrainMessageData } from "../../../engine/terrain.worker";
 
 export interface TerrainProps {
   nearestChunk: {
@@ -42,25 +43,40 @@ export const Terrain = ({
     return chunkCoords;
   }, [x, z]);
 
-  // Test web worker
+  // Test making web worker
   useEffect(() => {
     console.log("Starting web worker");
     tsWorkerRef.current = new Worker(
       new URL("../../../engine/terrain.worker", import.meta.url)
     );
+    // Test responding web worker
     tsWorkerRef.current.onmessage = (evt) =>
-      alert(`WebWorker Response => ${evt.data}`);
+      console.log("WebWorker Response => ", evt.data);
     return () => {
       tsWorkerRef.current.terminate();
     };
   }, []);
 
+  // Test sending message to web worker
   useEffect(() => {
     (async () => {
-      console.log("Triggering web worker calculation in 5s");
+      console.log("Triggering web worker init in 5s");
       await new Promise((resolve) => setTimeout(resolve, 5000));
-      console.log("Triggering web worker calculation");
-      await tsWorkerRef.current.postMessage(100000);
+      console.log("Triggering web worker init");
+      await tsWorkerRef.current.postMessage({
+        type: "init",
+        data: { seed: config.testSeed },
+      } as TerrainMessageData);
+      console.log("Triggering web worker mesh");
+      await tsWorkerRef.current.postMessage({
+        type: "loadMesh",
+        data: {
+          xMin: -10,
+          zMin: -10,
+          xMax: 10,
+          zMax: 10,
+        },
+      } as TerrainMessageData);
     })();
   }, []);
 

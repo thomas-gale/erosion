@@ -1,0 +1,6 @@
+export class TerrainWorkerClient {
+	constructor() {
+
+	}
+
+}
