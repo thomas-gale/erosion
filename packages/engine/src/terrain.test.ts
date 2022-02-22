@@ -19,9 +19,9 @@ test("load chunk mesh", () => {
   expect(testMesh).toBeDefined();
 });
 
-test("erode terrain", () => {
+test("deposit terrain", () => {
   const terrainSampler = new Terrain(TEST_SEED);
-  terrainSampler.erode(16, 0, 16);
+  terrainSampler.deposit(16, 16, 16);
   const testMesh = terrainSampler.loadMesh(0, 0, 0, 32, 32, 32);
   expect(testMesh).toBeDefined();
 });
