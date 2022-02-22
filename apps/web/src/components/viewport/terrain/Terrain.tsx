@@ -2,10 +2,7 @@ import { Chunk } from "./Chunk";
 import { config } from "../../../env/config";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Terrain as TerrainEngine } from "engine";
-
-// TEST
-import { Html } from "@react-three/drei";
-import { TerrainMessageData } from "../../../engine/terrain.worker";
+import { TerrainData } from "../../../engine/terrain.worker";
 
 export interface TerrainProps {
   nearestChunk: {
@@ -65,18 +62,18 @@ export const Terrain = ({
       console.log("Triggering web worker init");
       await tsWorkerRef.current.postMessage({
         type: "init",
-        data: { seed: config.testSeed },
-      } as TerrainMessageData);
+        payload: { seed: config.testSeed },
+      } as TerrainData);
       console.log("Triggering web worker mesh");
       await tsWorkerRef.current.postMessage({
         type: "loadMesh",
-        data: {
+        payload: {
           xMin: -10,
           zMin: -10,
           xMax: 10,
           zMax: 10,
         },
-      } as TerrainMessageData);
+      } as TerrainData);
     })();
   }, []);
 

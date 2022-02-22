@@ -4,27 +4,42 @@ import { config } from "../env/config";
 
 let terrain: Terrain;
 
-export interface TerrainMessageData {
+export interface InitPayload {
+  seed: number;
+}
+
+export interface LoadMeshPayload {
+  xMin: number;
+  zMin: number;
+  xMax: number;
+  zMax: number;
+}
+
+export interface TerrainData {
   type: "init" | "loadMesh";
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+  payload: InitPayload | LoadMeshPayload;
+}
+
+class TerrainMessageEvent extends Event {
+  data: TerrainData;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-addEventListener("message", (event: any) => {
+addEventListener("message", (event: TerrainMessageEvent) => {
   console.log("message received", event.data);
-  const args = event.data as TerrainMessageData;
-  if (args.type === "init") {
-    terrain = new Terrain(event.data.seed);
+  if (event.data.type === "init") {
+    const { seed } = event.data.payload as InitPayload;
+    terrain = new Terrain(seed);
     postMessage("ready");
-  } else if (args.type === "loadMesh") {
+  } else if (event.data.type === "loadMesh") {
+    const { xMin, zMin, xMax, zMax } = event.data.payload as LoadMeshPayload;
     const chunk = terrain.loadMesh(
-      args.data.xMin,
+      xMin,
       config.minY,
-      args.data.zMin,
-      args.data.xMax,
+      zMin,
+      xMax,
       config.maxY,
-      args.data.zMax
+      zMax
     );
     postMessage(chunk);
   } else {
