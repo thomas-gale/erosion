@@ -57,16 +57,20 @@ export class Terrain {
 
         // Base noise
         let elevation =
-          32 * this.noise.noise2D(0.01 * x, 0.01 * z) +
-          16 * this.noise.noise2D(0.02 * x, 0.02 * z) +
-          8 * this.noise.noise2D(0.04 * x, 0.04 * z) +
-          4 * this.noise.noise2D(0.08 * x, 0.08 * z) +
-          2 * this.noise.noise2D(0.16 * x, 0.16 * z) +
-          1 * this.noise.noise2D(0.32 * x, 0.32 * z);
+          1 * this.noise.noise2D(0.01 * x, 0.01 * z) +
+          0.5 * this.noise.noise2D(0.02 * x, 0.02 * z) +
+          0.25 * this.noise.noise2D(0.04 * x, 0.04 * z) +
+          0.125 * this.noise.noise2D(0.08 * x, 0.08 * z) +
+          0.0625 * this.noise.noise2D(0.16 * x, 0.16 * z) +
+          0.03125 * this.noise.noise2D(0.32 * x, 0.32 * z);
 
-        // elevation = elevation / (32 + 16 + 8 + 4 + 2 + 1);
+        elevation = elevation / (1 + 0.5 + 0.25 + 0.125 + 0.0625 + 0.03125);
+
         // Redistribution
-        // elevation = Math.pow(elevation, 2);
+        elevation = Math.pow(elevation, 2);
+
+        // Rescale
+        elevation = elevation * 16;
 
         return y - elevation; // Isosurface renders positive side of the surface
       },

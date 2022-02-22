@@ -21,6 +21,7 @@ export const Terrain = ({
   */
 
   // Using the nearest chunk to the camera focus, we can determine the chunks to render (this approximation relies on the camera elevation having a finite limit (of 45 degrees) - the chunk region is a hardcoded heuristic.)
+  // TODO - change this to a spiral about the point: https://stackoverflow.com/questions/3706219/algorithm-for-iterating-over-an-outward-spiral-on-a-discrete-2d-grid-from-the-or
   const chunkCoordsToLoad = useMemo(() => {
     console.log(x, z);
     const chunkCoords: { x: number; z: number }[] = [];
