@@ -44,7 +44,14 @@ export const Terrain = ({
 
   return (
     <>
-      {chunkCoordsToLoad.map(({ x, z }) => (
+      <Chunk
+        seed={config.testSeed}
+        xMin={x * config.chunkSize}
+        zMin={z * config.chunkSize}
+        xMax={x * config.chunkSize + config.chunkSize}
+        zMax={z * config.chunkSize + config.chunkSize}
+      />
+      {/* {chunkCoordsToLoad.map(({ x, z }) => (
         <Chunk
           key={`${x}-${z}`}
           seed={config.testSeed}
@@ -53,7 +60,7 @@ export const Terrain = ({
           xMax={x + config.chunkSize + config.chunkPadding}
           zMax={z + config.chunkSize + config.chunkPadding}
         />
-      ))}
+      ))} */}
     </>
   );
 };
