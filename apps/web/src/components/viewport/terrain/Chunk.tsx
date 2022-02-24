@@ -19,8 +19,8 @@ export interface ChunkProps {
 // Each chunk has its own web worker - to make callback worker easier (TODO - check if this is a problem!)
 export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
   const terrainWorker = useRef<Worker>();
-  const verts = useRef<Float32Array>();
-  const cells = useRef<Uint32Array>();
+  const [verts, setVerts] = useState<Float32Array>();
+  const [cells, setCells] = useState<Uint32Array>();
   const [ready, setReady] = useState(false);
 
   // Init the web worker
@@ -58,8 +58,8 @@ export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
         } else if (evt.data.type === "loadMesh") {
           const resp = evt.data.payload as LoadMeshResponse;
           console.log(`Loading terrain mesh for ${xMin}, ${zMin}...`);
-          verts.current = new Float32Array(resp.positions.flat());
-          cells.current = new Uint32Array(resp.cells.flat());
+          setVerts(new Float32Array(resp.positions.flat()));
+          setCells(new Uint32Array(resp.cells.flat()));
           setReady(true);
           console.log(`Loaded terrain mesh for ${xMin}, ${zMin}!`);
         }
@@ -90,14 +90,14 @@ export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
           >
             <bufferAttribute
               attach="index"
-              array={cells.current}
-              count={cells.current.length}
+              array={cells}
+              count={cells.length}
               itemSize={1}
             />
             <bufferAttribute
               attachObject={["attributes", "position"]}
-              array={verts.current}
-              count={verts.current.length / 3}
+              array={verts}
+              count={verts.length / 3}
               itemSize={3}
             />
           </bufferGeometry>
