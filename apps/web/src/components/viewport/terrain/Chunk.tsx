@@ -5,6 +5,7 @@ import {
   TerrainInputData,
   TerrainPostMessageEvent,
 } from "../../../engine/terrain.worker";
+import { ChunkGeometry } from "./chunk/ChunkGeometry";
 
 export interface ChunkProps {
   seed: number;
@@ -14,12 +15,9 @@ export interface ChunkProps {
   zMax: number;
 }
 
-// TODO - this does not gracefully handle the change of parameters (e.g. re-rendering without unmounting)
-// Probably need to interface with the three mesh directly.
 // Each chunk has its own web worker - to make callback worker easier (TODO - check if this is a problem!)
 export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
   const terrainWorker = useRef<Worker>();
-  const geomRef = useRef<THREE.BufferGeometry>();
   const [verts, setVerts] = useState<Float32Array>();
   const [cells, setCells] = useState<Uint32Array>();
 
@@ -60,11 +58,6 @@ export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
           console.log(`Loading terrain mesh for ${xMin}, ${zMin}...`);
           setVerts(new Float32Array(resp.positions.flat()));
           setCells(new Uint32Array(resp.cells.flat()));
-          if (geomRef.current) {
-            geomRef.current.index.needsUpdate = true;
-            geomRef.current.attributes.position.needsUpdate = true;
-            geomRef.current.computeVertexNormals();
-          }
           console.log(`Loaded terrain mesh for ${xMin}, ${zMin}!`);
         }
       };
@@ -84,31 +77,5 @@ export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
     };
   }, [seed, xMax, xMin, zMax, zMin]);
 
-  return (
-    <>
-      {verts && cells && (
-        <mesh>
-          <bufferGeometry
-            attach="geometry"
-            onUpdate={(self) => self.computeVertexNormals()}
-            ref={geomRef}
-          >
-            <bufferAttribute
-              attach="index"
-              array={cells}
-              count={cells.length}
-              itemSize={1}
-            />
-            <bufferAttribute
-              attachObject={["attributes", "position"]}
-              array={verts}
-              count={verts.length / 3}
-              itemSize={3}
-            />
-          </bufferGeometry>
-          <meshStandardMaterial attach="material" wireframe color="green" />
-        </mesh>
-      )}
-    </>
-  );
+  return <ChunkGeometry cells={cells} verts={verts} />;
 };
