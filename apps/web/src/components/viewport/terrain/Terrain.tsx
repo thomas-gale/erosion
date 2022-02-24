@@ -25,17 +25,18 @@ export const Terrain = ({
   const chunkCoordsToLoad = useMemo(() => {
     console.log(x, z);
     const chunkCoords: { x: number; z: number }[] = [];
-    for (
-      let i = x - config.chunksToLoadAroundCamera;
-      i <= x + config.chunksToLoadAroundCamera;
-      i++
-    ) {
-      for (
-        let j = z - config.chunksToLoadAroundCamera;
-        j <= z + config.chunksToLoadAroundCamera;
-        j++
-      ) {
-        chunkCoords.push({ x: i * config.chunkSize, z: j * config.chunkSize });
+
+    // Naive approach for loading rings of chunks around the camera.
+    for (let r = 0; r <= config.chunksToLoadAroundCamera; r++) {
+      for (let i = x - r; i <= x + r; i++) {
+        for (let j = z - r; j <= z + r; j++) {
+          if (i == x - r || j == z - r || i == x + r || j == z + r) {
+            chunkCoords.push({
+              x: i * config.chunkSize,
+              z: j * config.chunkSize,
+            });
+          }
+        }
       }
     }
     return chunkCoords;
