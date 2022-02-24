@@ -61,7 +61,6 @@ export const Chunk = ({ seed, xMin, zMin, xMax, zMax }: ChunkProps) => {
           setVerts(new Float32Array(resp.positions.flat()));
           setCells(new Uint32Array(resp.cells.flat()));
           if (geomRef.current) {
-            // geomRef.current.attributes.
             geomRef.current.index.needsUpdate = true;
             geomRef.current.attributes.position.needsUpdate = true;
             geomRef.current.computeVertexNormals();
