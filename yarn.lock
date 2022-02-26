@@ -4101,10 +4101,10 @@ source-map@^0.7.3:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
   integrity sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
 
-sparse-octree@7.1.4:
-  version "7.1.4"
-  resolved "https://registry.yarnpkg.com/sparse-octree/-/sparse-octree-7.1.4.tgz#e7f56df705b25bb236e6ee1c9cdd1e10dfbf387e"
-  integrity sha512-frc9dtdOM1oUExIKCh2Tkzjj0N/iqL0g85bjMOMMO/YLWHRX82AW2PrstM/I60rAlOvGjEjJOQCeDfbCLggAcg==
+sparse-octree@7.1.5:
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/sparse-octree/-/sparse-octree-7.1.5.tgz#d42284e152bc3aa0ca7deb2fda404365cdd4e93a"
+  integrity sha512-izwtXgOKP+LlHcqmbbRhG1KmMYpTK3fF9yzjF069Ob9zV2ZNxOP84A+QF+cpR6aihXZYhBnTcUs7GMpVEPbWxg==
 
 sprintf-js@~1.0.2:
   version "1.0.3"
