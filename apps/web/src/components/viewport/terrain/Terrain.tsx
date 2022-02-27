@@ -18,6 +18,8 @@ export interface TerrainProps {
 export const Terrain = ({
   nearestChunk: { x, z },
 }: TerrainProps): JSX.Element => {
+  // **TODO - re-add the concentric array render order (and store array in memo here)
+
   const xMin = useMemo(() => (x - 2) * config.chunkSize, [x]);
   const zMin = useMemo(() => (z - 2) * config.chunkSize, [z]);
   const xMax = useMemo(() => (x + 3) * config.chunkSize, [x]);
@@ -69,13 +71,15 @@ export const Terrain = ({
   }, [terrainWorker]);
 
   // TESTING -  Deposit Test (a little pillar :D)
+  // **TODO - determine which chunk to deposit on
   useEffect(() => {
     (async () => {
-      for (let i = 0; i < 10; i++) {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+      for (let i = 0; i < 20; i++) {
+        await new Promise((resolve) => setTimeout(resolve, 200));
         terrainWorker.postMessage({
           type: "depositMesh",
           payload: {
+            // Change to specific chunk
             chunk: { xMin, zMin, xMax, zMax },
             x: 0,
             y: 0 + i,
@@ -88,6 +92,7 @@ export const Terrain = ({
 
   return (
     <>
+      {/* TODO switch back to chunk map (with key generated from xmin/max/zmin/max) */}
       {terrainWorkerInitialized && (
         <Chunk
           terrainWorker={terrainWorker}

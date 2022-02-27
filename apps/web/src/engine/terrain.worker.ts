@@ -142,7 +142,7 @@ addEventListener("message", (event: TerrainListenerMessageEvent) => {
     );
     postMessage({
       type: "erodeMesh",
-      args: event.data.payload as ErodeMeshPayload,
+      args: { xMin, zMin, xMax, zMax } as LoadChunkMeshPayload,
       payload: convertToMeshResponse(chunk),
     } as TerrainOutputData);
     postMessage(chunk);
@@ -164,7 +164,7 @@ addEventListener("message", (event: TerrainListenerMessageEvent) => {
     );
     postMessage({
       type: "depositMesh",
-      args: event.data.payload as DepositMeshPayload,
+      args: { xMin, zMin, xMax, zMax } as LoadChunkMeshPayload,
       payload: convertToMeshResponse(chunk),
     } as TerrainOutputData);
     postMessage(chunk);

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  LoadChunkMeshPayload,
   MeshResponse,
   TerrainInputData,
   TerrainPostMessageEvent,
@@ -52,6 +53,17 @@ export const Chunk = ({
           event.data.type === "erodeMesh" ||
           event.data.type === "depositMesh"
         ) {
+          const args = event.data.args as LoadChunkMeshPayload;
+          // **TODO only update if the event relates to this chunk
+          if (
+            args.xMin === xMin &&
+            args.zMin === zMin &&
+            args.xMax === xMax &&
+            args.zMax === zMax
+          ) {
+            console.log("Updated mesh from this chunk!");
+          }
+
           const resp = event.data.payload as MeshResponse;
           console.log(
             `Loading terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}...`
