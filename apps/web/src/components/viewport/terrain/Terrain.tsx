@@ -26,38 +26,38 @@ export const Terrain = ({
 
   // Using the nearest chunk to the camera focus, we can determine the chunks to render (this approximation relies on the camera elevation having a finite limit (of 45 degrees) - the chunk region is a hardcoded heuristic.)
   // TODO - change this to a spiral about the point: https://stackoverflow.com/questions/3706219/algorithm-for-iterating-over-an-outward-spiral-on-a-discrete-2d-grid-from-the-or
-  const chunkCoordsToLoad = useMemo(() => {
-    console.log(x, z);
-    const chunkCoords: { x: number; z: number }[] = [];
+  // const chunkCoordsToLoad = useMemo(() => {
+  //   console.log(x, z);
+  //   const chunkCoords: { x: number; z: number }[] = [];
 
-    // Naive approach for loading rings of chunks around the camera.
-    for (let r = 0; r <= config.chunksToLoadAroundCamera; r++) {
-      for (let i = x - r; i <= x + r; i++) {
-        for (let j = z - r; j <= z + r; j++) {
-          if (i == x - r || j == z - r || i == x + r || j == z + r) {
-            chunkCoords.push({
-              x: i * config.chunkSize,
-              z: j * config.chunkSize,
-            });
-          }
-        }
-      }
-    }
-    return chunkCoords;
-  }, [x, z]);
+  //   // Naive approach for loading rings of chunks around the camera.
+  //   for (let r = 0; r <= config.chunksToLoadAroundCamera; r++) {
+  //     for (let i = x - r; i <= x + r; i++) {
+  //       for (let j = z - r; j <= z + r; j++) {
+  //         if (i == x - r || j == z - r || i == x + r || j == z + r) {
+  //           chunkCoords.push({
+  //             x: i * config.chunkSize,
+  //             z: j * config.chunkSize,
+  //           });
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return chunkCoords;
+  // }, [x, z]);
 
   return (
     <>
-      {chunkCoordsToLoad.map(({ x, z }) => (
-        <Chunk
-          key={`${x}-${z}`}
-          seed={config.testSeed}
-          xMin={x - config.chunkPadding}
-          zMin={z - config.chunkPadding}
-          xMax={x + config.chunkSize + config.chunkPadding}
-          zMax={z + config.chunkSize + config.chunkPadding}
-        />
-      ))}
+      {/* {chunkCoordsToLoad.map(({ x, z }) => ( */}
+      <Chunk
+        // key={`${x}-${z}`}
+        seed={config.testSeed}
+        xMin={(x - 2) * config.chunkSize}
+        zMin={(z - 2) * config.chunkSize}
+        xMax={(x + 2) * config.chunkSize}
+        zMax={(z + 2) * config.chunkSize}
+      />
+      {/* ))} */}
     </>
   );
 };

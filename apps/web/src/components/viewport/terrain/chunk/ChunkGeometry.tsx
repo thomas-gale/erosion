@@ -2,10 +2,17 @@ import { useEffect, useRef } from "react";
 
 export interface ChunkGeometryProps {
   verts: Float32Array;
+  numVerts: number;
   cells: Uint32Array;
+  numCells: number;
 }
 
-export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
+export const ChunkGeometry = ({
+  verts,
+  numVerts,
+  cells,
+  numCells,
+}: ChunkGeometryProps) => {
   const geomRef = useRef<THREE.BufferGeometry>();
 
   // Ensure that the geometry triggers a re-render if the verts of cells change.
@@ -25,13 +32,13 @@ export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
             <bufferAttribute
               attach="index"
               array={cells}
-              count={cells.length}
+              count={numCells}
               itemSize={1}
             />
             <bufferAttribute
               attachObject={["attributes", "position"]}
               array={verts}
-              count={verts.length / 3}
+              count={numVerts / 3}
               itemSize={3}
             />
           </bufferGeometry>
