@@ -1,6 +1,11 @@
 import { Chunk } from "./Chunk";
 import { config } from "../../../env/config";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+  InitResponse,
+  TerrainInputData,
+  TerrainPostMessageEvent,
+} from "../../../engine/terrain.worker";
 
 export interface TerrainProps {
   nearestChunk: {
@@ -46,18 +51,55 @@ export const Terrain = ({
   //   return chunkCoords;
   // }, [x, z]);
 
+  const [terrainWorker] = useState<Worker>(
+    new Worker(new URL("../../../engine/terrain.worker", import.meta.url))
+  );
+  const [terrainWorkerInitialized, setTerrainWorkerInitialized] =
+    useState(false);
+
+  useEffect(() => {
+    if (!terrainWorkerInitialized) {
+      // Configure the callback
+      terrainWorker.addEventListener(
+        "message",
+        async (event: TerrainPostMessageEvent) => {
+          if (event.data.type === "init") {
+            const resp = event.data.payload as InitResponse;
+            // Now trigger the loadMesh
+            if (resp) {
+              console.log(`Terrain worker initialized!`);
+              setTerrainWorkerInitialized(true);
+            } else {
+              console.warn("Error web worker init response:", resp);
+            }
+          }
+        }
+      );
+
+      (async () => {
+        console.log(`Triggering web worker init...`);
+        await terrainWorker.postMessage({
+          type: "init",
+          payload: { seed: config.testSeed },
+        } as TerrainInputData);
+        console.log(`Triggered web worker init!`);
+      })();
+    }
+  }, [terrainWorker, terrainWorkerInitialized]);
+
   return (
     <>
-      {/* {chunkCoordsToLoad.map(({ x, z }) => ( */}
-      <Chunk
-        // key={`${x}-${z}`}
-        seed={config.testSeed}
-        xMin={(x - 2) * config.chunkSize}
-        zMin={(z - 2) * config.chunkSize}
-        xMax={(x + 2) * config.chunkSize}
-        zMax={(z + 2) * config.chunkSize}
-      />
-      {/* ))} */}
+      {terrainWorkerInitialized && (
+        <Chunk
+          // key={`${x}-${z}`}
+          // seed={config.testSeed}
+          terrainWorker={terrainWorker}
+          xMin={(x - 2) * config.chunkSize}
+          zMin={(z - 2) * config.chunkSize}
+          xMax={(x + 2) * config.chunkSize}
+          zMax={(z + 2) * config.chunkSize}
+        />
+      )}
     </>
   );
 };
