@@ -51,12 +51,16 @@ export const Terrain = ({
         console.log(`Triggered web worker init!`);
       })();
     }
+  }, [terrainWorker, terrainWorkerInitialized]);
+
+  // On unmount, terminate the worker
+  useEffect(() => {
     return () => {
-      console.log(`Terminating terrain web worker}...`);
+      console.log(`Terminating terrain web worker...`);
       setTerrainWorkerInitialized(false);
       terrainWorker.terminate();
     };
-  }, [terrainWorker, terrainWorkerInitialized]);
+  }, [terrainWorker]);
 
   return (
     <>
@@ -65,8 +69,8 @@ export const Terrain = ({
           terrainWorker={terrainWorker}
           xMin={(x - 2) * config.chunkSize}
           zMin={(z - 2) * config.chunkSize}
-          xMax={(x + 2) * config.chunkSize}
-          zMax={(z + 2) * config.chunkSize}
+          xMax={(x + 3) * config.chunkSize}
+          zMax={(z + 3) * config.chunkSize}
         />
       )}
     </>

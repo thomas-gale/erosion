@@ -6,9 +6,9 @@ import {
 } from "../../../engine/terrain.worker";
 import { ChunkGeometry } from "./chunk/ChunkGeometry";
 
-const upperPow2 = (x: number): number => {
-  return Math.pow(2, Math.ceil(Math.log(x) / Math.log(2)));
-};
+// const upperPow2 = (x: number): number => {
+//   return Math.pow(2, Math.ceil(Math.log(x) / Math.log(2)));
+// };
 
 export interface ChunkProps {
   terrainWorker: Worker;
@@ -29,8 +29,8 @@ export const Chunk = ({
   // const terrainWorker = useRef<Worker>();
   const [verts, setVerts] = useState<Float32Array>();
   const [cells, setCells] = useState<Uint32Array>();
-  const [numVerts, setNumVerts] = useState<number>(0);
-  const [numCells, setNumCells] = useState<number>(0);
+  // const [numVerts, setNumVerts] = useState<number>(0);
+  // const [numCells, setNumCells] = useState<number>(0);
 
   // Trigger load mesh when limits change
   useEffect(() => {
@@ -61,26 +61,26 @@ export const Chunk = ({
           );
 
           // DEBUG
-          const verts = resp.positions.flat();
-          const cells = resp.cells.flat();
+          // const verts = resp.positions.flat();
+          // const cells = resp.cells.flat();
 
-          console.log("number verts", verts.length);
-          console.log("number cells", cells.length);
+          // console.log("number verts", verts.length);
+          // console.log("number cells", cells.length);
 
-          console.log("expanding verts", upperPow2(verts.length));
-          console.log("expanding cells", upperPow2(cells.length));
+          // console.log("expanding verts", upperPow2(verts.length));
+          // console.log("expanding cells", upperPow2(cells.length));
 
-          const vertsArray = new Float32Array(upperPow2(verts.length));
-          vertsArray.set(verts);
+          // const vertsArray = new Float32Array(upperPow2(verts.length));
+          // vertsArray.set(verts);
 
-          const cellsArray = new Uint32Array(upperPow2(cells.length));
-          cellsArray.set(cells);
+          // const cellsArray = new Uint32Array(upperPow2(cells.length));
+          // cellsArray.set(cells);
 
-          setVerts(vertsArray);
-          setCells(cellsArray);
+          setVerts(resp.verts);
+          setCells(resp.cells);
 
-          setNumVerts(verts.length);
-          setNumCells(cells.length);
+          // setNumVerts(verts.length);
+          // setNumCells(cells.length);
 
           console.log(
             `Loaded terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}!`
@@ -94,9 +94,7 @@ export const Chunk = ({
     <ChunkGeometry
       key={`${verts?.length ?? 0}-${cells?.length ?? 0}`} // Trigger a re-render if the verts/cells Array length change (buffer geometry requires this)
       cells={cells}
-      numCells={numCells}
       verts={verts}
-      numVerts={numVerts}
     />
   );
 };

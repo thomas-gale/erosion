@@ -6,6 +6,6 @@ export const config = {
   chunkPadding: 2,
   chunksToLoadAroundCamera: 4,
   chunkCheckRateMs: 500,
-  minY: -128,
-  maxY: 128,
+  minY: -32,
+  maxY: 32,
 };

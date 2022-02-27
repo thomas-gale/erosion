@@ -18,7 +18,12 @@ export interface LoadChunkMeshPayload {
   zMax: number;
 }
 
-export type LoadMeshResponse = Mesh;
+export interface MeshResponse {
+  verts: Float32Array;
+  cells: Uint32Array;
+}
+
+export type LoadMeshResponse = MeshResponse;
 
 export interface ErodeMeshPayload {
   chunk: LoadChunkMeshPayload;
@@ -27,7 +32,7 @@ export interface ErodeMeshPayload {
   z: number;
 }
 
-export type ErodeMeshResponse = Mesh;
+export type ErodeMeshResponse = MeshResponse;
 
 export interface DepositMeshPayload {
   chunk: LoadChunkMeshPayload;
@@ -36,7 +41,7 @@ export interface DepositMeshPayload {
   z: number;
 }
 
-export type DepositMeshResponse = Mesh;
+export type DepositMeshResponse = MeshResponse;
 
 export interface TerrainInputData {
   type: "init" | "loadMesh" | "erodeMesh" | "depositMesh";
@@ -72,6 +77,26 @@ class TerrainListenerMessageEvent extends Event {
   data: TerrainInputData;
 }
 
+const upperPow2 = (x: number): number => {
+  return Math.pow(2, Math.ceil(Math.log(x) / Math.log(2)));
+};
+
+const convertToMeshResponse = (mesh: Mesh): MeshResponse => {
+  const verts = mesh.positions.flat();
+  const cells = mesh.cells.flat();
+
+  const vertsArray = new Float32Array(upperPow2(verts.length));
+  vertsArray.set(verts);
+
+  const cellsArray = new Uint32Array(upperPow2(cells.length));
+  cellsArray.set(cells);
+
+  return {
+    verts: vertsArray,
+    cells: cellsArray,
+  };
+};
+
 addEventListener("message", (event: TerrainListenerMessageEvent) => {
   console.log("(web worker) message received", event.data);
   if (event.data.type === "init") {
@@ -96,7 +121,7 @@ addEventListener("message", (event: TerrainListenerMessageEvent) => {
     postMessage({
       type: "loadMesh",
       args: event.data.payload as LoadChunkMeshPayload,
-      payload: chunk,
+      payload: convertToMeshResponse(chunk),
     } as TerrainOutputData);
     postMessage(chunk);
   } else if (event.data.type === "erodeMesh") {
@@ -118,7 +143,7 @@ addEventListener("message", (event: TerrainListenerMessageEvent) => {
     postMessage({
       type: "erodeMesh",
       args: event.data.payload as ErodeMeshPayload,
-      payload: chunk,
+      payload: convertToMeshResponse(chunk),
     } as TerrainOutputData);
     postMessage(chunk);
   } else if (event.data.type === "depositMesh") {
@@ -140,7 +165,7 @@ addEventListener("message", (event: TerrainListenerMessageEvent) => {
     postMessage({
       type: "depositMesh",
       args: event.data.payload as DepositMeshPayload,
-      payload: chunk,
+      payload: convertToMeshResponse(chunk),
     } as TerrainOutputData);
     postMessage(chunk);
   } else {
