@@ -57,6 +57,7 @@ export const Terrain = ({
   const [terrainWorkerInitialized, setTerrainWorkerInitialized] =
     useState(false);
 
+  // Initialize the terrain worker
   useEffect(() => {
     if (!terrainWorkerInitialized) {
       // Configure the callback
@@ -85,6 +86,11 @@ export const Terrain = ({
         console.log(`Triggered web worker init!`);
       })();
     }
+    return () => {
+      console.log(`Terminating terrain web worker}...`);
+      setTerrainWorkerInitialized(false);
+      terrainWorker.terminate();
+    };
   }, [terrainWorker, terrainWorkerInitialized]);
 
   return (

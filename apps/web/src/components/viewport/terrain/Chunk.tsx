@@ -57,7 +57,9 @@ export const Chunk = ({
       async (event: TerrainPostMessageEvent) => {
         if (event.data.type === "loadMesh") {
           const resp = event.data.payload as LoadMeshResponse;
-          console.log(`Loading terrain mesh for ${xMin}, ${zMin}...`);
+          console.log(
+            `Loading terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}...`
+          );
 
           // DEBUG
           const verts = resp.positions.flat();
@@ -69,18 +71,25 @@ export const Chunk = ({
           console.log("expanding verts", upperPow2(verts.length));
           console.log("expanding cells", upperPow2(cells.length));
 
-          // Expand and contract the verts (update the maxVerts/maxCells)
-          // const verts = new Float32Array(resp.positions.flat());
+          const vertsArray = new Float32Array(upperPow2(verts.length));
+          vertsArray.set(verts);
 
-          setVerts(new Float32Array(resp.positions.flat()));
-          setCells(new Uint32Array(resp.cells.flat()));
+          const cellsArray = new Uint32Array(upperPow2(cells.length));
+          cellsArray.set(cells);
+
+          setVerts(vertsArray);
+          setCells(cellsArray);
+
           setNumVerts(verts.length);
           setNumCells(cells.length);
-          console.log(`Loaded terrain mesh for ${xMin}, ${zMin}!`);
+
+          console.log(
+            `Loaded terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}!`
+          );
         }
       }
     );
-  }, [terrainWorker, xMin, zMin]);
+  }, [terrainWorker, xMax, xMin, zMax, zMin]);
 
   // Init (if needed) and request mesh update from the web worker
   // useEffect(() => {
