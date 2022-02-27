@@ -1,41 +1,35 @@
-import * as THREE from "three";
 import { shaderMaterial } from "@react-three/drei";
 import { extend } from "@react-three/fiber";
 import glsl from "glslify";
 
-const ColorShiftMaterial = shaderMaterial(
-  { time: 0, color: new THREE.Color(0.2, 0.0, 0.1) },
+const ChunkMaterial = shaderMaterial(
+  {},
   // vertex shader
   glsl`
-    varying vec2 vUv;
+    out float height;
     void main() {
-      vUv = uv;
+      height = ((position.y + 32.) / 64.);
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
   // fragment shader
   glsl`
-    uniform float time;
-    uniform vec3 color;
-    varying vec2 vUv;
+    in float height;
     void main() {
-      gl_FragColor.rgba = vec4(0.5 + 0.3 * sin(vUv.yxx + time) + color, 1.0);
+      gl_FragColor.rgba = vec4(0.5, height, 0.5, 1.0);
     }
   `
 );
 
-extend({ ColorShiftMaterial });
+extend({ ChunkMaterial });
 
-type ColorShiftMaterialImpl = {
-  time: number;
-  color: THREE.Color;
-} & JSX.IntrinsicElements["shaderMaterial"];
+type ChunkMaterialImpl = JSX.IntrinsicElements["shaderMaterial"];
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
-      colorShiftMaterial: ColorShiftMaterialImpl;
+      chunkMaterial: ChunkMaterialImpl;
     }
   }
 }
