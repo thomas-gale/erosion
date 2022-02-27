@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
 export interface ChunkGeometryProps {
   verts: Float32Array;
@@ -39,7 +40,12 @@ export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
               itemSize={3}
             />
           </bufferGeometry>
-          <meshStandardMaterial attach="material" wireframe color="green" />
+          <colorShiftMaterial
+            attach="material"
+            color={new THREE.Color(0.0, 1.0, 0.0)}
+            time={1}
+          />
+          {/* <meshStandardMaterial attach="material" wireframe color="green" /> */}
         </mesh>
       )}
     </>
