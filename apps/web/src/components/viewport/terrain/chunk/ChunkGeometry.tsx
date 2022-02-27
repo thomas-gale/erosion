@@ -17,6 +17,10 @@ export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
     }
   }, [verts, cells]);
 
+  useEffect(() => {
+    console.log("Re-rendering chunk geometry...");
+  }, []);
+
   return (
     <>
       {verts && cells && (

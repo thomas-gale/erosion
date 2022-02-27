@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import {
-  LoadMeshResponse,
+  MeshResponse,
   TerrainInputData,
   TerrainPostMessageEvent,
 } from "../../../engine/terrain.worker";
 import { ChunkGeometry } from "./chunk/ChunkGeometry";
-
-// const upperPow2 = (x: number): number => {
-//   return Math.pow(2, Math.ceil(Math.log(x) / Math.log(2)));
-// };
 
 export interface ChunkProps {
   terrainWorker: Worker;
@@ -26,11 +22,8 @@ export const Chunk = ({
   xMax,
   zMax,
 }: ChunkProps) => {
-  // const terrainWorker = useRef<Worker>();
   const [verts, setVerts] = useState<Float32Array>();
   const [cells, setCells] = useState<Uint32Array>();
-  // const [numVerts, setNumVerts] = useState<number>(0);
-  // const [numCells, setNumCells] = useState<number>(0);
 
   // Trigger load mesh when limits change
   useEffect(() => {
@@ -54,34 +47,17 @@ export const Chunk = ({
     terrainWorker.addEventListener(
       "message",
       async (event: TerrainPostMessageEvent) => {
-        if (event.data.type === "loadMesh") {
-          const resp = event.data.payload as LoadMeshResponse;
+        if (
+          event.data.type === "loadMesh" ||
+          event.data.type === "erodeMesh" ||
+          event.data.type === "depositMesh"
+        ) {
+          const resp = event.data.payload as MeshResponse;
           console.log(
             `Loading terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}...`
           );
-
-          // DEBUG
-          // const verts = resp.positions.flat();
-          // const cells = resp.cells.flat();
-
-          // console.log("number verts", verts.length);
-          // console.log("number cells", cells.length);
-
-          // console.log("expanding verts", upperPow2(verts.length));
-          // console.log("expanding cells", upperPow2(cells.length));
-
-          // const vertsArray = new Float32Array(upperPow2(verts.length));
-          // vertsArray.set(verts);
-
-          // const cellsArray = new Uint32Array(upperPow2(cells.length));
-          // cellsArray.set(cells);
-
           setVerts(resp.verts);
           setCells(resp.cells);
-
-          // setNumVerts(verts.length);
-          // setNumCells(cells.length);
-
           console.log(
             `Loaded terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}!`
           );
