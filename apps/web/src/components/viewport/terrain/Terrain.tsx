@@ -19,11 +19,6 @@ export interface TerrainProps {
 export const Terrain = ({
   nearestChunk: { x, z },
 }: TerrainProps): JSX.Element => {
-  // const xMin = useMemo(() => (x - 2) * config.chunkSize, [x]);
-  // const zMin = useMemo(() => (z - 2) * config.chunkSize, [z]);
-  // const xMax = useMemo(() => (x + 3) * config.chunkSize, [x]);
-  // const zMax = useMemo(() => (z + 3) * config.chunkSize, [z]);
-
   const chunkCoordsToLoad = useMemo(() => {
     console.log(x, z);
     const chunkCoords: LoadChunkMeshPayload[] = [];
@@ -91,8 +86,7 @@ export const Terrain = ({
     };
   }, [terrainWorker]);
 
-  // TESTING -  Deposit Test (a little pillar :D)
-  // **TODO - determine which chunk to deposit on
+  // **TESTING -  Deposit/Erode Test
   useEffect(() => {
     (async () => {
       for (let i = 0; i < 20; i++) {
@@ -100,7 +94,7 @@ export const Terrain = ({
         terrainWorker.postMessage({
           type: "depositMesh",
           payload: {
-            // Change to specific chunk
+            // TODO - make this more elegant (if deposit is within the padding of a neighboring chunk, request a remesh of that chunk also)
             chunk: {
               xMin: 0 - config.chunkPadding,
               zMin: 0 - config.chunkPadding,
@@ -110,6 +104,22 @@ export const Terrain = ({
             x: 16,
             y: 0 + i,
             z: 16,
+          } as DepositMeshPayload,
+        } as TerrainInputData);
+
+        terrainWorker.postMessage({
+          type: "erodeMesh",
+          payload: {
+            // TODO - make this more elegant (if deposit is within the padding of a neighboring chunk, request a remesh of that chunk also)
+            chunk: {
+              xMin: 0 - config.chunkPadding,
+              zMin: 0 - config.chunkPadding,
+              xMax: config.chunkSize + config.chunkPadding,
+              zMax: config.chunkSize + config.chunkPadding,
+            },
+            x: 20,
+            y: 16 - i,
+            z: 20,
           } as DepositMeshPayload,
         } as TerrainInputData);
       }
