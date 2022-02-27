@@ -6,6 +6,7 @@ import { State } from "./state";
 
 export class Terrain {
   // Base noise function for terrain
+  // TODO - add other noise for ores etc.
   private noise: SimplexNoise;
 
   // Finest detail size (in si units)
@@ -44,7 +45,11 @@ export class Terrain {
     zMax: number
   ): Mesh {
     return isosurface.surfaceNets(
-      [xMax - xMin, yMax - yMin, zMax - zMin],
+      [
+        (xMax - xMin) / this.leafSize,
+        (yMax - yMin) / this.leafSize,
+        (zMax - zMin) / this.leafSize,
+      ],
       (x: number, y: number, z: number) => {
         // Read state from the delta map
         const state = this.deltaMap.get(`${x}-${y}-${z}`);

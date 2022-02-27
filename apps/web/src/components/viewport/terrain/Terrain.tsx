@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   DepositMeshPayload,
   InitResponse,
+  LoadChunkMeshPayload,
   TerrainInputData,
   TerrainPostMessageEvent,
 } from "../../../engine/terrain.worker";
@@ -18,12 +19,32 @@ export interface TerrainProps {
 export const Terrain = ({
   nearestChunk: { x, z },
 }: TerrainProps): JSX.Element => {
-  // **TODO - re-add the concentric array render order (and store array in memo here)
+  // const xMin = useMemo(() => (x - 2) * config.chunkSize, [x]);
+  // const zMin = useMemo(() => (z - 2) * config.chunkSize, [z]);
+  // const xMax = useMemo(() => (x + 3) * config.chunkSize, [x]);
+  // const zMax = useMemo(() => (z + 3) * config.chunkSize, [z]);
 
-  const xMin = useMemo(() => (x - 2) * config.chunkSize, [x]);
-  const zMin = useMemo(() => (z - 2) * config.chunkSize, [z]);
-  const xMax = useMemo(() => (x + 3) * config.chunkSize, [x]);
-  const zMax = useMemo(() => (z + 3) * config.chunkSize, [z]);
+  const chunkCoordsToLoad = useMemo(() => {
+    console.log(x, z);
+    const chunkCoords: LoadChunkMeshPayload[] = [];
+
+    // Naive approach for loading rings of chunks around the camera.
+    for (let r = 0; r <= config.chunksToLoadAroundCamera; r++) {
+      for (let i = x - r; i <= x + r; i++) {
+        for (let j = z - r; j <= z + r; j++) {
+          if (i == x - r || j == z - r || i == x + r || j == z + r) {
+            chunkCoords.push({
+              xMin: i * config.chunkSize,
+              zMin: j * config.chunkSize,
+              xMax: i * config.chunkSize + config.chunkSize,
+              zMax: j * config.chunkSize + config.chunkSize,
+            });
+          }
+        }
+      }
+    }
+    return chunkCoords;
+  }, [x, z]);
 
   const [terrainWorker] = useState<Worker>(
     new Worker(new URL("../../../engine/terrain.worker", import.meta.url))
@@ -80,28 +101,35 @@ export const Terrain = ({
           type: "depositMesh",
           payload: {
             // Change to specific chunk
-            chunk: { xMin, zMin, xMax, zMax },
-            x: 0,
+            chunk: {
+              xMin: 0 - config.chunkPadding,
+              zMin: 0 - config.chunkPadding,
+              xMax: config.chunkSize + config.chunkPadding,
+              zMax: config.chunkSize + config.chunkPadding,
+            },
+            x: 16,
             y: 0 + i,
-            z: 0,
+            z: 16,
           } as DepositMeshPayload,
         } as TerrainInputData);
       }
     })();
-  }, [terrainWorker, xMax, xMin, zMax, zMin]);
+  }, [terrainWorker]);
 
   return (
     <>
-      {/* TODO switch back to chunk map (with key generated from xmin/max/zmin/max) */}
-      {terrainWorkerInitialized && (
-        <Chunk
-          terrainWorker={terrainWorker}
-          xMin={xMin}
-          zMin={zMin}
-          xMax={xMax}
-          zMax={zMax}
-        />
-      )}
+      {terrainWorkerInitialized &&
+        chunkCoordsToLoad.map(({ xMin, zMin, xMax, zMax }) => (
+          <Chunk
+            key={`${xMin}-${xMax}-${zMin}-${zMax}`}
+            terrainWorker={terrainWorker}
+            xMin={xMin}
+            zMin={zMin}
+            xMax={xMax}
+            zMax={zMax}
+            padding={config.chunkPadding}
+          />
+        ))}
     </>
   );
 };

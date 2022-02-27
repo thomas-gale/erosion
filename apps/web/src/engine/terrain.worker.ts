@@ -20,7 +20,9 @@ export interface LoadChunkMeshPayload {
 
 export interface MeshResponse {
   verts: Float32Array;
+  vertsNum: number;
   cells: Uint32Array;
+  cellsNum: number;
 }
 
 export type LoadMeshResponse = MeshResponse;
@@ -93,7 +95,9 @@ const convertToMeshResponse = (mesh: Mesh): MeshResponse => {
 
   return {
     verts: vertsArray,
+    vertsNum: verts.length,
     cells: cellsArray,
+    cellsNum: cells.length,
   };
 };
 

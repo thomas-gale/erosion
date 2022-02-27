@@ -13,6 +13,7 @@ export interface ChunkProps {
   zMin: number;
   xMax: number;
   zMax: number;
+  padding: number;
 }
 
 // Each chunk has its own web worker - to make callback worker easier (TODO - check if this is a problem!)
@@ -22,6 +23,7 @@ export const Chunk = ({
   zMin,
   xMax,
   zMax,
+  padding,
 }: ChunkProps) => {
   const [verts, setVerts] = useState<Float32Array>();
   const [cells, setCells] = useState<Uint32Array>();
@@ -33,15 +35,15 @@ export const Chunk = ({
       await terrainWorker.postMessage({
         type: "loadMesh",
         payload: {
-          xMin,
-          zMin,
-          xMax,
-          zMax,
+          xMin: xMin - padding,
+          zMin: zMin - padding,
+          xMax: xMax + padding,
+          zMax: zMax + padding,
         },
       } as TerrainInputData);
       console.log(`Triggered web worker mesh for ${xMin}, ${zMin}!`);
     })();
-  }, [terrainWorker, xMax, xMin, zMax, zMin]);
+  }, [padding, terrainWorker, xMax, xMin, zMax, zMin]);
 
   // Configure the callback for loaded mesh
   useEffect(() => {
@@ -54,29 +56,27 @@ export const Chunk = ({
           event.data.type === "depositMesh"
         ) {
           const args = event.data.args as LoadChunkMeshPayload;
-          // **TODO only update if the event relates to this chunk
+          // Only update if the event relates to this chunk
           if (
-            args.xMin === xMin &&
-            args.zMin === zMin &&
-            args.xMax === xMax &&
-            args.zMax === zMax
+            args.xMin === xMin - padding &&
+            args.zMin === zMin - padding &&
+            args.xMax === xMax + padding &&
+            args.zMax === zMax + padding
           ) {
-            console.log("Updated mesh from this chunk!");
+            const resp = event.data.payload as MeshResponse;
+            console.log(
+              `Loading terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}...`
+            );
+            setVerts(resp.verts);
+            setCells(resp.cells);
+            console.log(
+              `Loaded terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}!`
+            );
           }
-
-          const resp = event.data.payload as MeshResponse;
-          console.log(
-            `Loading terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}...`
-          );
-          setVerts(resp.verts);
-          setCells(resp.cells);
-          console.log(
-            `Loaded terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}!`
-          );
         }
       }
     );
-  }, [terrainWorker, xMax, xMin, zMax, zMin]);
+  }, [padding, terrainWorker, xMax, xMin, zMax, zMin]);
 
   return (
     <ChunkGeometry
