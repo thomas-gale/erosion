@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react";
+import * as THREE from "three";
+import "./ChunkMaterial";
 
 export interface ChunkGeometryProps {
   verts: Float32Array;
@@ -16,6 +18,10 @@ export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
       geomRef.current.computeVertexNormals();
     }
   }, [verts, cells]);
+
+  useEffect(() => {
+    console.log("Re-rendering chunk geometry...");
+  }, []);
 
   return (
     <>
@@ -35,7 +41,8 @@ export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
               itemSize={3}
             />
           </bufferGeometry>
-          <meshStandardMaterial attach="material" wireframe color="green" />
+          <chunkMaterial attach="material" />
+          {/* <meshStandardMaterial attach="material" wireframe color="green" /> */}
         </mesh>
       )}
     </>

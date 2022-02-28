@@ -11,25 +11,64 @@ export interface InitPayload {
 
 export type InitResponse = boolean;
 
-export interface LoadMeshPayload {
+export interface LoadChunkMeshPayload {
   xMin: number;
   zMin: number;
   xMax: number;
   zMax: number;
 }
 
-export type LoadMeshResponse = Mesh;
+export interface MeshResponse {
+  verts: Float32Array;
+  vertsNum: number;
+  cells: Uint32Array;
+  cellsNum: number;
+}
+
+export type LoadMeshResponse = MeshResponse;
+
+export interface ErodeMeshPayload {
+  chunk: LoadChunkMeshPayload;
+  x: number;
+  y: number;
+  z: number;
+}
+
+export type ErodeMeshResponse = MeshResponse;
+
+export interface DepositMeshPayload {
+  chunk: LoadChunkMeshPayload;
+  x: number;
+  y: number;
+  z: number;
+}
+
+export type DepositMeshResponse = MeshResponse;
 
 export interface TerrainInputData {
-  type: "init" | "loadMesh";
-  payload: InitPayload | LoadMeshPayload;
+  type: "init" | "loadMesh" | "erodeMesh" | "depositMesh";
+  payload:
+    | InitPayload
+    | LoadChunkMeshPayload
+    | ErodeMeshPayload
+    | DepositMeshPayload;
 }
 
 export type ErrorResponse = string;
 
 export interface TerrainOutputData {
-  type: "init" | "loadMesh" | "error";
-  payload: InitResponse | LoadMeshResponse | ErrorResponse;
+  type: "init" | "loadMesh" | "erodeMesh" | "depositMesh" | "error";
+  args:
+    | InitPayload
+    | LoadChunkMeshPayload
+    | ErodeMeshPayload
+    | DepositMeshPayload;
+  payload:
+    | InitResponse
+    | LoadMeshResponse
+    | ErodeMeshResponse
+    | DepositMeshResponse
+    | ErrorResponse;
 }
 
 export class TerrainPostMessageEvent extends Event {
@@ -40,7 +79,28 @@ class TerrainListenerMessageEvent extends Event {
   data: TerrainInputData;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const upperPow2 = (x: number): number => {
+  return Math.pow(2, Math.ceil(Math.log(x) / Math.log(2)));
+};
+
+const convertToMeshResponse = (mesh: Mesh): MeshResponse => {
+  const verts = mesh.positions.flat();
+  const cells = mesh.cells.flat();
+
+  const vertsArray = new Float32Array(upperPow2(verts.length));
+  vertsArray.set(verts);
+
+  const cellsArray = new Uint32Array(upperPow2(cells.length));
+  cellsArray.set(cells);
+
+  return {
+    verts: vertsArray,
+    vertsNum: verts.length,
+    cells: cellsArray,
+    cellsNum: cells.length,
+  };
+};
+
 addEventListener("message", (event: TerrainListenerMessageEvent) => {
   console.log("(web worker) message received", event.data);
   if (event.data.type === "init") {
@@ -48,10 +108,12 @@ addEventListener("message", (event: TerrainListenerMessageEvent) => {
     terrain = new Terrain(seed);
     postMessage({
       type: "init",
+      args: event.data.payload as InitPayload,
       payload: true,
     } as TerrainOutputData);
   } else if (event.data.type === "loadMesh") {
-    const { xMin, zMin, xMax, zMax } = event.data.payload as LoadMeshPayload;
+    const { xMin, zMin, xMax, zMax } = event.data
+      .payload as LoadChunkMeshPayload;
     const chunk = terrain.loadMesh(
       xMin,
       config.minY,
@@ -62,7 +124,52 @@ addEventListener("message", (event: TerrainListenerMessageEvent) => {
     );
     postMessage({
       type: "loadMesh",
-      payload: chunk,
+      args: event.data.payload as LoadChunkMeshPayload,
+      payload: convertToMeshResponse(chunk),
+    } as TerrainOutputData);
+    postMessage(chunk);
+  } else if (event.data.type === "erodeMesh") {
+    const {
+      x,
+      y,
+      z,
+      chunk: { xMin, zMin, xMax, zMax },
+    } = event.data.payload as ErodeMeshPayload;
+    terrain.erode(x, y, z);
+    const chunk = terrain.loadMesh(
+      xMin,
+      config.minY,
+      zMin,
+      xMax,
+      config.maxY,
+      zMax
+    );
+    postMessage({
+      type: "erodeMesh",
+      args: { xMin, zMin, xMax, zMax } as LoadChunkMeshPayload,
+      payload: convertToMeshResponse(chunk),
+    } as TerrainOutputData);
+    postMessage(chunk);
+  } else if (event.data.type === "depositMesh") {
+    const {
+      x,
+      y,
+      z,
+      chunk: { xMin, zMin, xMax, zMax },
+    } = event.data.payload as DepositMeshPayload;
+    terrain.deposit(x, y, z);
+    const chunk = terrain.loadMesh(
+      xMin,
+      config.minY,
+      zMin,
+      xMax,
+      config.maxY,
+      zMax
+    );
+    postMessage({
+      type: "depositMesh",
+      args: { xMin, zMin, xMax, zMax } as LoadChunkMeshPayload,
+      payload: convertToMeshResponse(chunk),
     } as TerrainOutputData);
     postMessage(chunk);
   } else {

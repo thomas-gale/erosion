@@ -4,8 +4,8 @@ export const config = {
   testSeed: 42,
   chunkSize: 32,
   chunkPadding: 2,
-  chunksToLoadAroundCamera: 4,
+  chunksToLoadAroundCamera: 2,
   chunkCheckRateMs: 500,
-  minY: -128,
-  maxY: 128,
+  minY: -32,
+  maxY: 32,
 };
