@@ -4,11 +4,11 @@ import { extend } from "@react-three/fiber";
 import glsl from "glslify";
 
 const ChunkMaterial = shaderMaterial(
-  { lightVector: new THREE.Vector3(0, -1, 0) },
+  { sunPosition: new THREE.Vector3(0, -1, 0) },
   // vertex shader
   glsl`
     out float height;
-    out vec3 norm;
+    flat out vec3 norm;
     void main() {
       norm = normal;
       height = ((position.y + 32.) / 64.);
@@ -17,12 +17,12 @@ const ChunkMaterial = shaderMaterial(
   `,
   // fragment shader
   glsl`
-    uniform vec3 lightVector;
-    in vec3 norm;
+    uniform vec3 sunPosition;
+    flat in vec3 norm;
     in float height;
     void main() {
-      float shine = 1. - (.5 * dot(normalize(norm), normalize(lightVector)));
-      gl_FragColor = vec4(0.5, height, 0.5, 1.0) * shine;
+      float shadow = 1. - (.75 * dot(normalize(norm), normalize(sunPosition)));
+      gl_FragColor = vec4(0.5, height, 0.5, 1.0) * shadow;
     }
   `
 );
@@ -30,7 +30,7 @@ const ChunkMaterial = shaderMaterial(
 extend({ ChunkMaterial });
 
 type ChunkMaterialImpl = {
-  lightVector: THREE.Vector3;
+  sunPosition: THREE.Vector3;
 } & JSX.IntrinsicElements["shaderMaterial"];
 
 declare global {

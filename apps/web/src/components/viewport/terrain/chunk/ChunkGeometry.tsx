@@ -9,8 +9,9 @@ export interface ChunkGeometryProps {
 
 export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
   const geomRef = useRef<THREE.BufferGeometry>();
-  const [lightVector] = useState<THREE.Vector3>(
-    () => new THREE.Vector3(-1, -1, 0)
+  // TODO - share with the sunPosition on the Sky box component in the parent canvas component.
+  const [sunPosition] = useState<THREE.Vector3>(
+    () => new THREE.Vector3(0.5, 1, 0)
   );
 
   // Ensure that the geometry triggers a re-render if the verts of cells change.
@@ -44,7 +45,7 @@ export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
               itemSize={3}
             />
           </bufferGeometry>
-          <chunkMaterial attach="material" lightVector={lightVector} />
+          <chunkMaterial attach="material" sunPosition={sunPosition} />
         </mesh>
       )}
     </>
