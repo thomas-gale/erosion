@@ -9,20 +9,35 @@ const ChunkMaterial = shaderMaterial(
   glsl`
     out float height;
     flat out vec3 norm;
+
     void main() {
       norm = normal;
-      height = ((position.y + 32.) / 64.);
+      height = position.y;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
   // fragment shader
   glsl`
+    #define grass vec3(.2, .7, .1)
+    #define dirt vec3(.5, .5, .3)
+    #define rock vec3(.3, .3, .3)
+
     uniform vec3 sunPosition;
+
     flat in vec3 norm;
     in float height;
+
     void main() {
       float shadow = 1. - (.75 * dot(normalize(norm), normalize(sunPosition)));
-      gl_FragColor = vec4(0.5, height, 0.5, 1.0) * shadow;
+      if (normalize(norm).y > 0.9) {
+        if (height > 6.) {
+          gl_FragColor.rgba = vec4(rock, 1.) * shadow;
+        } else {
+          gl_FragColor.rgba = vec4(grass, 1.) * shadow;
+        }
+      } else {
+        gl_FragColor.rgba = vec4(dirt, 1.) * shadow;
+      }
     }
   `
 );
