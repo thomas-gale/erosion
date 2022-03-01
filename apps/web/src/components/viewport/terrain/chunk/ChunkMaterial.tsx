@@ -8,7 +8,7 @@ const ChunkMaterial = shaderMaterial(
   // vertex shader
   glsl`
     out float height;
-    flat out vec3 norm;
+    out vec3 norm;
 
     void main() {
       norm = normal;
@@ -24,13 +24,13 @@ const ChunkMaterial = shaderMaterial(
 
     uniform vec3 sunPosition;
 
-    flat in vec3 norm;
+    in vec3 norm;
     in float height;
 
     void main() {
       float shadow = 1. - (.75 * dot(normalize(norm), normalize(sunPosition)));
-      if (normalize(norm).y > 0.9) {
-        if (height > 6.) {
+      if (normalize(norm).y > 0.96) {
+        if (height > 4.) {
           gl_FragColor.rgba = vec4(rock, 1.) * shadow;
         } else {
           gl_FragColor.rgba = vec4(grass, 1.) * shadow;
