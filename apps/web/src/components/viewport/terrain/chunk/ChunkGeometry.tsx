@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import "./ChunkMaterial";
 
@@ -9,6 +9,9 @@ export interface ChunkGeometryProps {
 
 export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
   const geomRef = useRef<THREE.BufferGeometry>();
+  const [lightVector] = useState<THREE.Vector3>(
+    () => new THREE.Vector3(-1, -1, 0)
+  );
 
   // Ensure that the geometry triggers a re-render if the verts of cells change.
   useEffect(() => {
@@ -41,8 +44,7 @@ export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
               itemSize={3}
             />
           </bufferGeometry>
-          <chunkMaterial attach="material" />
-          {/* <meshStandardMaterial attach="material" wireframe color="green" /> */}
+          <chunkMaterial attach="material" lightVector={lightVector} />
         </mesh>
       )}
     </>

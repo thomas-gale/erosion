@@ -17,7 +17,7 @@ export const ErosionCanvas = () => {
   return (
     <Canvas>
       <ContextBridge>
-        <Sky />
+        <Sky sunPosition={[0.5, 1, 0]} />
         <directionalLight position={[20, 50, 20]} />
         <ambientLight intensity={0.75} />
         <PerspectiveControlledCamera mapControls={mapControls} />
