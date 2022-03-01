@@ -9,10 +9,12 @@ const ChunkMaterial = shaderMaterial(
   glsl`
     out float height;
     out vec3 norm;
+    out vec2 xz;
 
     void main() {
       norm = normal;
       height = position.y;
+      xz = position.xy;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
@@ -21,17 +23,23 @@ const ChunkMaterial = shaderMaterial(
     #define grass vec3(.2, .7, .1)
     #define dirt vec3(.5, .5, .3)
     #define rock vec3(.3, .3, .3)
+    // TODO - pass from uniform
+    #define chunkSize 32.
 
     uniform vec3 sunPosition;
 
-    in vec3 norm;
     in float height;
+    in vec3 norm;
+    in vec2 xz;
 
     void main() {
       float shadow = 1. - (.75 * dot(normalize(norm), normalize(sunPosition)));
+
+      // Replace with mix? if statements are slow
       if (normalize(norm).y > 0.96) {
         if (height > 4.) {
-          gl_FragColor.rgba = vec4(rock, 1.) * shadow;
+          // TODO - smoothstep(mod(xz, vec2(chunkSize))? etc.
+          gl_FragColor.rgba = vec4(rock, 1. ) * shadow;
         } else {
           gl_FragColor.rgba = vec4(grass, 1.) * shadow;
         }
