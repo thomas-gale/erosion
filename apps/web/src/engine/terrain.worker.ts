@@ -21,6 +21,9 @@ export interface LoadChunkMeshPayload {
 export interface MeshResponse {
   verts: Float32Array;
   vertsNum: number;
+  vertsMetadata: Float32Array;
+  vertsMetadataStride: number;
+  vertsMetadataNum: number;
   cells: Uint32Array;
   cellsNum: number;
 }
@@ -85,10 +88,14 @@ const upperPow2 = (x: number): number => {
 
 const convertToMeshResponse = (mesh: Mesh): MeshResponse => {
   const verts = mesh.positions.flat();
+  const vertsMetadata = mesh.metadata.flat();
   const cells = mesh.cells.flat();
 
   const vertsArray = new Float32Array(upperPow2(verts.length));
   vertsArray.set(verts);
+
+  const vertsMetadataArray = new Float32Array(upperPow2(vertsMetadata.length));
+  vertsMetadataArray.set(vertsMetadata);
 
   const cellsArray = new Uint32Array(upperPow2(cells.length));
   cellsArray.set(cells);
@@ -96,6 +103,9 @@ const convertToMeshResponse = (mesh: Mesh): MeshResponse => {
   return {
     verts: vertsArray,
     vertsNum: verts.length,
+    vertsMetadata: vertsMetadataArray,
+    vertsMetadataNum: vertsMetadata.length,
+    vertsMetadataStride: mesh.metadataStride,
     cells: cellsArray,
     cellsNum: cells.length,
   };

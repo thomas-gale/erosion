@@ -13,6 +13,8 @@
  *
  */
 
+import { Mesh } from "./mesh";
+
 export class IsosurfaceMesher {
   private cube_edges: Int32Array;
   private edge_table: Int32Array;
@@ -68,10 +70,7 @@ export class IsosurfaceMesher {
       z: number
     ) => { value: number; metadata: number[] },
     bounds: [number, number, number][]
-  ): {
-    positions: number[][];
-    cells: number[][];
-  } {
+  ): Mesh {
     if (!bounds) {
       bounds = [[0, 0, 0], dims];
     }
@@ -84,6 +83,7 @@ export class IsosurfaceMesher {
     }
 
     var vertices = [],
+      verticesMetadata = [],
       faces = [],
       n = 0,
       x = [0, 0, 0],
@@ -183,6 +183,9 @@ export class IsosurfaceMesher {
           this.buffer[m] = vertices.length;
           vertices.push(v);
 
+          // TEST - create some sample metadata (sin in the x,z plane)
+          verticesMetadata.push([Math.sin(v[0]), Math.sin(v[2])]);
+
           //Now we need to add faces together, to do this we just loop over 3 basis components
           for (var i = 0; i < 3; ++i) {
             //The first three entries of the edge_mask count the crossings along the edge
@@ -232,6 +235,11 @@ export class IsosurfaceMesher {
     }
 
     //All done!  Return the result
-    return { positions: vertices, cells: faces };
+    return {
+      positions: vertices,
+      metadata: verticesMetadata,
+      metadataStride: 2, // TODO - compute this from the function parameters - related to the potential function?
+      cells: faces,
+    };
   }
 }

@@ -26,6 +26,8 @@ export const Chunk = ({
   padding,
 }: ChunkProps) => {
   const [verts, setVerts] = useState<Float32Array>();
+  const [vertsMetadata, setVertsMetadata] = useState<Float32Array>();
+  const [vertsMetadataStride, setVertsMetadataStride] = useState<number>(0);
   const [cells, setCells] = useState<Uint32Array>();
 
   // Trigger load mesh when limits change
@@ -68,6 +70,8 @@ export const Chunk = ({
               `Loading terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}...`
             );
             setVerts(resp.verts);
+            setVertsMetadata(resp.vertsMetadata);
+            setVertsMetadataStride(resp.vertsMetadataStride);
             setCells(resp.cells);
             console.log(
               `Loaded terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}!`
@@ -80,9 +84,13 @@ export const Chunk = ({
 
   return (
     <ChunkGeometry
-      key={`${verts?.length ?? 0}-${cells?.length ?? 0}`} // Trigger a re-render if the verts/cells Array length change (buffer geometry requires this)
-      cells={cells}
+      key={`${verts?.length ?? 0}-${vertsMetadata?.length ?? 0}-${
+        cells?.length ?? 0
+      }`} // Trigger a re-render if the verts/cells Array length change (buffer geometry requires this)
       verts={verts}
+      vertsMetadata={vertsMetadata}
+      vertsMetadataStride={vertsMetadataStride}
+      cells={cells}
     />
   );
 };

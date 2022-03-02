@@ -4,10 +4,17 @@ import "./ChunkMaterial";
 
 export interface ChunkGeometryProps {
   verts: Float32Array;
+  vertsMetadata: Float32Array;
+  vertsMetadataStride: number;
   cells: Uint32Array;
 }
 
-export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
+export const ChunkGeometry = ({
+  verts,
+  vertsMetadata,
+  vertsMetadataStride,
+  cells,
+}: ChunkGeometryProps) => {
   const geomRef = useRef<THREE.BufferGeometry>();
   // TODO - share with the sunPosition on the Sky box component in the parent canvas component.
   const [sunPosition] = useState<THREE.Vector3>(
@@ -19,6 +26,7 @@ export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
     if (geomRef.current) {
       geomRef.current.index.needsUpdate = true;
       geomRef.current.attributes.position.needsUpdate = true;
+      geomRef.current.attributes.metadata.needsUpdate = true;
       geomRef.current.computeVertexNormals();
     }
   }, [verts, cells]);
@@ -43,6 +51,12 @@ export const ChunkGeometry = ({ verts, cells }: ChunkGeometryProps) => {
               array={verts}
               count={verts.length / 3}
               itemSize={3}
+            />
+            <bufferAttribute
+              attachObject={["attributes", "metadata"]}
+              array={vertsMetadata}
+              count={vertsMetadata.length / vertsMetadataStride}
+              itemSize={vertsMetadataStride}
             />
           </bufferGeometry>
           <chunkMaterial attach="material" sunPosition={sunPosition} />
