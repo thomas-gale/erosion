@@ -15,7 +15,7 @@ test("create sphere mesh", () => {
 
 test("load chunk mesh", () => {
   const terrainSampler = new Terrain(TEST_SEED);
-  const testMesh = terrainSampler.loadMesh(0, 0, 0, 32, 32, 32);
+  const testMesh = terrainSampler.loadMesh(-16, -16, -16, 16, 16, 16);
   expect(testMesh).toBeDefined();
 });
 

@@ -85,7 +85,10 @@ export class IsosurfaceMesher {
       n = 0,
       x = [0, 0, 0],
       R = [1, dims[0] + 1, (dims[0] + 1) * (dims[1] + 1)],
-      grid = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      grid = Array(8).fill(0.0) as number[],
+      gridMeta = Array(8).fill(
+        Array(potentialMetadataChannels).fill(0.0)
+      ) as number[][],
       buf_no = 1;
 
     //Resize buffer if necessary
@@ -117,13 +120,13 @@ export class IsosurfaceMesher {
           for (var k = 0; k < 2; ++k)
             for (var j = 0; j < 2; ++j)
               for (var i = 0; i < 2; ++i, ++g) {
-                var p =
-                  -1 *
-                  potential(
-                    scale[0] * (x[0] + i) + shift[0],
-                    scale[1] * (x[1] + j) + shift[1],
-                    scale[2] * (x[2] + k) + shift[2]
-                  ).reduce((a, b) => a + b);
+                var pot = potential(
+                  scale[0] * (x[0] + i) + shift[0],
+                  scale[1] * (x[1] + j) + shift[1],
+                  scale[2] * (x[2] + k) + shift[2]
+                );
+                gridMeta[g] = pot;
+                let p = -1 * pot.reduce((a, b) => a + b);
                 grid[g] = p;
                 mask |= p < 0 ? 1 << g : 0;
               }
@@ -136,6 +139,7 @@ export class IsosurfaceMesher {
           //Sum up edge intersections
           var edge_mask = this.edge_table[mask],
             v = [0.0, 0.0, 0.0],
+            vMeta = Array(potentialMetadataChannels).fill(0.0),
             e_count = 0;
 
           //For every edge of the cube...
@@ -174,13 +178,23 @@ export class IsosurfaceMesher {
 
           //Now we just average the edge intersections and add them to coordinate
           var s = 1.0 / e_count;
+
+          // Scale the vertex by the number of edge intersections
           for (var i = 0; i < 3; ++i) {
-            v[i] = scale[i] * (x[i] + s * v[i]) + shift[i];
+            v[i] *= s;
+          }
+
+          // Add to the base coordinate, scale then shift
+          for (var i = 0; i < 3; ++i) {
+            // v[i] = scale[i] * (x[i] + s * v[i]) + shift[i];
+            v[i] = scale[i] * (x[i] + v[i]) + shift[i];
           }
 
           //Add vertex to buffer, store pointer to vertex index in buffer
           this.buffer[m] = vertices.length;
           vertices.push(v);
+
+          // Interpolate the vertex position against the metadata cube.
 
           // TEST - create some sample metadata (sin in the x,z plane)
           verticesMetadata.push([Math.sin(v[0]), Math.sin(v[2])]);
@@ -237,7 +251,7 @@ export class IsosurfaceMesher {
     return {
       positions: vertices,
       metadata: verticesMetadata,
-      metadataStride: potentialMetadataChannels, // TODO - compute this from the function parameters - related to the potential function?
+      metadataStride: potentialMetadataChannels,
       cells: faces,
     };
   }
