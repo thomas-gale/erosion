@@ -139,7 +139,7 @@ export class IsosurfaceMesher {
           //Sum up edge intersections
           var edge_mask = this.edge_table[mask],
             v = [0.0, 0.0, 0.0],
-            vMeta = Array(potentialMetadataChannels).fill(0.0),
+            vMeta = Array(potentialMetadataChannels).fill(0.0) as number[],
             e_count = 0;
 
           //For every edge of the cube...
@@ -184,22 +184,29 @@ export class IsosurfaceMesher {
             v[i] *= s;
           }
 
-          // **TODO - Trilinear interpolation the vertex position against the metadata cubes corner values.
+          // Find the contributing metadata vertices to form the approximate material constitution
           for (let i = 0; i < potentialMetadataChannels; ++i) {
-            let c00 = gridMeta[0][i] * (1 - v[0]) + gridMeta[1][i] * v[0];
-            let c01 = gridMeta[4][i] * (1 - v[0]) + gridMeta[5][i] * v[0];
-            let c10 = gridMeta[2][i] * (1 - v[0]) + gridMeta[3][i] * v[0];
-            let c11 = gridMeta[6][i] * (1 - v[0]) + gridMeta[7][i] * v[0];
-
-            let c0 = c00 * (1 - v[1]) + c10 * v[1];
-            let c1 = c01 * (1 - v[1]) + c11 * v[1];
-
-            vMeta[i] = c0 * (1 - v[2]) + c1 * v[2];
+            let c = 0;
+            for (let j = 0; j < 8; ++j) {
+              if (gridMeta[j][i] > 0) {
+                vMeta[i] += gridMeta[j][i];
+                c += 1;
+              }
+            }
+            if (c > 0) {
+              vMeta[i] /= c;
+            }
+          }
+          // Correct the material ratio
+          let metaSum = vMeta.reduce((a, b) => a + b);
+          if (metaSum > 0) {
+            for (let i = 0; i < potentialMetadataChannels; ++i) {
+              vMeta[i] /= metaSum;
+            }
           }
 
           // Add to the base coordinate, scale then shift
           for (var i = 0; i < 3; ++i) {
-            // v[i] = scale[i] * (x[i] + s * v[i]) + shift[i];
             v[i] = scale[i] * (x[i] + v[i]) + shift[i];
           }
 

@@ -92,11 +92,19 @@ export class Terrain {
         // Rescale
         elevation = elevation * 16;
 
-        return [
-          0.0, // rock
-          0.0, // soil
-          elevation - y, // grass
-        ];
+        if (elevation > 4) {
+          return [
+            elevation - y, // rock
+            0.0, // soil
+            0.0, // grass (REMOVE)
+          ];
+        } else {
+          return [
+            0.0, // rock
+            0.0, // soil
+            elevation - y, // grass (REMOVE)
+          ];
+        }
       },
       [
         [xMin, yMin, zMin],
