@@ -13,10 +13,10 @@
  *
  */
 
-export class Isosurface {
-  cube_edges: Int32Array;
-  edge_table: Int32Array;
-  buffer: number[];
+export class IsosurfaceMesher {
+  private cube_edges: Int32Array;
+  private edge_table: Int32Array;
+  private buffer: number[];
 
   constructor() {
     //Precompute edge table, like Paul Bourke does.
@@ -57,7 +57,8 @@ export class Isosurface {
     }
   }
 
-  surfaceNets(
+  // Compute the isosurface mesh
+  generate(
     dims: [number, number, number],
     potential: (x: number, y: number, z: number) => number,
     bounds: [number, number, number][]

@@ -1,8 +1,8 @@
-import isosurface from "isosurface";
 import SimplexNoise from "simplex-noise";
 import * as d3 from "d3-octree";
 import { Mesh } from "./mesh";
 import { State } from "./state";
+import { IsosurfaceMesher } from "./isosurfacemesher";
 
 export class Terrain {
   // Base noise function for terrain
@@ -16,15 +16,19 @@ export class Terrain {
   private deltaOctree: any; // TODO
   private deltaMap: Map<string, State>;
 
+  // Utility to compute the isosurface mesh from a given potential function and 3D bounds
+  private isosurfaceMesher: IsosurfaceMesher;
+
   constructor(seed?: number, leafSize = 1) {
     this.noise = new SimplexNoise(seed);
     this.leafSize = leafSize;
     this.deltaOctree = d3.octree();
     this.deltaMap = new Map<string, State>();
+    this.isosurfaceMesher = new IsosurfaceMesher();
   }
 
   generateSphereMesh(): Mesh {
-    return isosurface.surfaceNets(
+    return this.isosurfaceMesher.generate(
       [64, 64, 64],
       function (x: number, y: number, z: number) {
         return x * x + y * y + z * z - 100;
@@ -44,7 +48,7 @@ export class Terrain {
     yMax: number,
     zMax: number
   ): Mesh {
-    return isosurface.surfaceNets(
+    return this.isosurfaceMesher.generate(
       [
         (xMax - xMin) / this.leafSize,
         (yMax - yMin) / this.leafSize,
