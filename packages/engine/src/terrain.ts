@@ -30,12 +30,12 @@ export class Terrain {
   generateSphereMesh(): Mesh {
     return this.isosurfaceMesher.generate(
       [64, 64, 64],
-      3, // [rock, soil, grass]
+      3, // [rock, soil, ...]
       function (x: number, y: number, z: number) {
         return [
           1.0, // rock
           0.0, // soil
-          0.0, // grass
+          0.0, // TODO
         ];
       },
       [
@@ -45,7 +45,7 @@ export class Terrain {
     );
   }
 
-  // Load mesh, current metadata [rock, soil, grass] (volume fractions of leafsize * m^3)
+  // Load mesh, current metadata [rock, soil ...] (volume fractions of leafsize * m^3)
   loadMesh(
     xMin: number,
     yMin: number,
@@ -60,15 +60,15 @@ export class Terrain {
         (yMax - yMin) / this.leafSize,
         (zMax - zMin) / this.leafSize,
       ],
-      3, // [rock, soil, grass]
+      3, // [rock, soil ...]
       (x: number, y: number, z: number) => {
         // Read state from the delta map
         const state = this.deltaMap.get(`${x}-${y}-${z}`);
         if (state) {
           return [
-            0.0, // rock
+            state.rock, // rock
             state.soil, // soil
-            0.0, // grass
+            state.ironOre, // TODO...!
           ];
         }
 
@@ -96,13 +96,13 @@ export class Terrain {
           return [
             elevation - y, // rock
             0.0, // soil
-            0.0, // grass (REMOVE)
+            0.0, // TODO
           ];
         } else {
           return [
             0.0, // rock
-            0.0, // soil
-            elevation - y, // grass (REMOVE)
+            elevation - y, // soil
+            0.0, // TODO
           ];
         }
       },
@@ -116,12 +116,22 @@ export class Terrain {
   erode(x: number, y: number, z: number): void {
     // TODO - erode a radius
     this.deltaOctree.add([x, y, z]);
-    this.deltaMap.set(`${x}-${y}-${z}`, { soil: -1 });
+    this.deltaMap.set(`${x}-${y}-${z}`, {
+      soil: 0,
+      rock: 0,
+      ironOre: 0,
+      age: 0,
+    });
   }
 
   deposit(x: number, y: number, z: number): void {
     // TODO - deposit a radius
     this.deltaOctree.add([x, y, z]);
-    this.deltaMap.set(`${x}-${y}-${z}`, { soil: 1 });
+    this.deltaMap.set(`${x}-${y}-${z}`, {
+      soil: 1,
+      rock: 0,
+      ironOre: 0,
+      age: 0,
+    });
   }
 }

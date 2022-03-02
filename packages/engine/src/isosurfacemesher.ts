@@ -62,6 +62,7 @@ export class IsosurfaceMesher {
   // Compute the isosurface mesh
   // dim (dimensions/number of samples in the grid)
   // potential (the isosurface function returns an array of potential value volume fractions (e.g [rock, soil, ironOre]))
+  // TODO - add some other metadata to the potential function again (that isn't volume fractions (such as modification time/age))
   generate(
     dims: [number, number, number],
     potentialMetadataChannels: number,

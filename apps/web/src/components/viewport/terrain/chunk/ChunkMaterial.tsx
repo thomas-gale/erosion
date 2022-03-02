@@ -40,19 +40,13 @@ const ChunkMaterial = shaderMaterial(
     void main() {
       float shadow = 1. - (.75 * dot(normalize(norm), normalize(sunPosition)));
 
-      // Replace with mix? if statements are slow
-      // if (normalize(norm).y > 0.96) {
-      //   if (height > 4.) {
-      //     // TODO - smoothstep(mod(xz, vec2(chunkSize))? etc.
-      //     gl_FragColor.rgba = vec4(rock, 1. ) * shadow;
-      //   } else {
-      //     gl_FragColor.rgba = vec4(grass * ((md.x + 2.)/3.), 1.) * shadow;
-      //   }
-      // } else {
-      //   gl_FragColor.rgba = vec4(soil * ((md.y + 2.)/3.), 1.) * shadow;
-      // }
+      // TODO - override grassy if the metadata indicates it's a freshly modified region (to just soil)
+      float grassy = smoothstep(.9, 1., normalize(norm).y);
+      vec3 soilGrass = mix(soil, grass, grassy);
+      vec3 color = vec3(md.x * rock + md.y * soilGrass);
 
-      gl_FragColor.rgba = vec4(md.x * rock + md.y * soil + md.z * grass, 1.) * shadow;
+      gl_FragColor.rgba = vec4(color, 1.) * shadow;
+
     }
   `
 );
