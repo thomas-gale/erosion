@@ -7,6 +7,7 @@ export interface ChunkGeometryProps {
   vertsMetadata: Float32Array;
   vertsMetadataStride: number;
   cells: Uint32Array;
+  sunPosition: THREE.Vector3;
 }
 
 export const ChunkGeometry = ({
@@ -14,12 +15,9 @@ export const ChunkGeometry = ({
   vertsMetadata,
   vertsMetadataStride,
   cells,
+  sunPosition,
 }: ChunkGeometryProps) => {
   const geomRef = useRef<THREE.BufferGeometry>();
-  // TODO - share with the sunPosition on the Sky box component in the parent canvas component.
-  const [sunPosition] = useState<THREE.Vector3>(
-    () => new THREE.Vector3(0.5, 1, 0)
-  );
 
   // Ensure that the geometry triggers a re-render if the verts of cells change.
   useEffect(() => {
@@ -29,7 +27,7 @@ export const ChunkGeometry = ({
       geomRef.current.attributes.metadata.needsUpdate = true;
       geomRef.current.computeVertexNormals();
     }
-  }, [verts, cells]);
+  }, [verts, cells, vertsMetadata]);
 
   useEffect(() => {
     console.log("Re-rendering chunk geometry...");
@@ -37,7 +35,7 @@ export const ChunkGeometry = ({
 
   return (
     <>
-      {verts && cells && (
+      {verts?.length > 0 && vertsMetadata?.length > 0 && cells?.length > 0 && (
         <mesh>
           <bufferGeometry attach="geometry" ref={geomRef}>
             <bufferAttribute

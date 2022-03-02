@@ -14,6 +14,7 @@ export interface ChunkProps {
   xMax: number;
   zMax: number;
   padding: number;
+  sunPosition: THREE.Vector3;
 }
 
 // Each chunk has its own web worker - to make callback worker easier (TODO - check if this is a problem!)
@@ -24,6 +25,7 @@ export const Chunk = ({
   xMax,
   zMax,
   padding,
+  sunPosition,
 }: ChunkProps) => {
   const [verts, setVerts] = useState<Float32Array>();
   const [vertsMetadata, setVertsMetadata] = useState<Float32Array>();
@@ -59,6 +61,7 @@ export const Chunk = ({
         ) {
           const args = event.data.args as LoadChunkMeshPayload;
           // Only update if the event relates to this chunk
+          // TODO - refactor this nasty padding based check
           if (
             args.xMin === xMin - padding &&
             args.zMin === zMin - padding &&
@@ -86,11 +89,12 @@ export const Chunk = ({
     <ChunkGeometry
       key={`${verts?.length ?? 0}-${vertsMetadata?.length ?? 0}-${
         cells?.length ?? 0
-      }`} // Trigger a re-render if the verts/cells Array length change (buffer geometry requires this)
+      }`} // Trigger a re-render if the verts/vertsmetadata/cells Array length change (buffer geometry requires this)
       verts={verts}
       vertsMetadata={vertsMetadata}
       vertsMetadataStride={vertsMetadataStride}
       cells={cells}
+      sunPosition={sunPosition}
     />
   );
 };
