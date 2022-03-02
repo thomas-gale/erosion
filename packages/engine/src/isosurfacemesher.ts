@@ -64,11 +64,7 @@ export class IsosurfaceMesher {
   // potential (the isosurface function TODO - first value will be the total material density (to determine the surface), remaining values are constituent meta data values to attach to each vertex)
   generate(
     dims: [number, number, number],
-    potential: (
-      x: number,
-      y: number,
-      z: number
-    ) => { value: number; metadata: number[] },
+    potential: (x: number, y: number, z: number) => number[],
     bounds: [number, number, number][]
   ): Mesh {
     if (!bounds) {
@@ -120,11 +116,13 @@ export class IsosurfaceMesher {
           for (var k = 0; k < 2; ++k)
             for (var j = 0; j < 2; ++j)
               for (var i = 0; i < 2; ++i, ++g) {
-                var p = potential(
-                  scale[0] * (x[0] + i) + shift[0],
-                  scale[1] * (x[1] + j) + shift[1],
-                  scale[2] * (x[2] + k) + shift[2]
-                ).value;
+                var p =
+                  -1 *
+                  potential(
+                    scale[0] * (x[0] + i) + shift[0],
+                    scale[1] * (x[1] + j) + shift[1],
+                    scale[2] * (x[2] + k) + shift[2]
+                  ).reduce((a, b) => a + b);
                 grid[g] = p;
                 mask |= p < 0 ? 1 << g : 0;
               }
