@@ -30,10 +30,11 @@ export class Terrain {
   generateSphereMesh(): Mesh {
     return this.isosurfaceMesher.generate(
       [64, 64, 64],
+      3, // [rock, soil, grass]
       function (x: number, y: number, z: number) {
         return [
           1.0, // rock
-          0.0, // dirt
+          0.0, // soil
           0.0, // grass
         ];
       },
@@ -44,7 +45,7 @@ export class Terrain {
     );
   }
 
-  // Load mesh, current metadata [rock, dirt, grass] (volume fractions of leafsize * m^3)
+  // Load mesh, current metadata [rock, soil, grass] (volume fractions of leafsize * m^3)
   loadMesh(
     xMin: number,
     yMin: number,
@@ -59,6 +60,7 @@ export class Terrain {
         (yMax - yMin) / this.leafSize,
         (zMax - zMin) / this.leafSize,
       ],
+      2, // TODO Switch to [rock, soil, grass]
       (x: number, y: number, z: number) => {
         // Read state from the delta map
         const state = this.deltaMap.get(`${x}-${y}-${z}`);

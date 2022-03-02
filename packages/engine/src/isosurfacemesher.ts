@@ -64,6 +64,7 @@ export class IsosurfaceMesher {
   // potential (the isosurface function TODO - first value will be the total material density (to determine the surface), remaining values are constituent meta data values to attach to each vertex)
   generate(
     dims: [number, number, number],
+    potentialMetadataChannels: number,
     potential: (x: number, y: number, z: number) => number[],
     bounds: [number, number, number][]
   ): Mesh {
@@ -236,7 +237,7 @@ export class IsosurfaceMesher {
     return {
       positions: vertices,
       metadata: verticesMetadata,
-      metadataStride: 2, // TODO - compute this from the function parameters - related to the potential function?
+      metadataStride: potentialMetadataChannels, // TODO - compute this from the function parameters - related to the potential function?
       cells: faces,
     };
   }
