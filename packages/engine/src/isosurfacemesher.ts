@@ -61,7 +61,7 @@ export class IsosurfaceMesher {
 
   // Compute the isosurface mesh
   // dim (dimensions/number of samples in the grid)
-  // potential (the isosurface function TODO - first value will be the total material density (to determine the surface), remaining values are constituent meta data values to attach to each vertex)
+  // potential (the isosurface function returns an array of potential value volume fractions (e.g [rock, soil, ironOre]))
   generate(
     dims: [number, number, number],
     potentialMetadataChannels: number,
