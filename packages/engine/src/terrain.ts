@@ -60,7 +60,7 @@ export class Terrain {
         (yMax - yMin) / this.leafSize,
         (zMax - zMin) / this.leafSize,
       ],
-      2, // TODO Switch to [rock, soil, grass]
+      3, // [rock, soil, grass]
       (x: number, y: number, z: number) => {
         // Read state from the delta map
         const state = this.deltaMap.get(`${x}-${y}-${z}`);

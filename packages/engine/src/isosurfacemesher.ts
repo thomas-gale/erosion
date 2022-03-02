@@ -184,6 +184,19 @@ export class IsosurfaceMesher {
             v[i] *= s;
           }
 
+          // **TODO - Trilinear interpolation the vertex position against the metadata cubes corner values.
+          for (let i = 0; i < potentialMetadataChannels; ++i) {
+            let c00 = gridMeta[0][i] * (1 - v[0]) + gridMeta[1][i] * v[0];
+            let c01 = gridMeta[4][i] * (1 - v[0]) + gridMeta[5][i] * v[0];
+            let c10 = gridMeta[2][i] * (1 - v[0]) + gridMeta[3][i] * v[0];
+            let c11 = gridMeta[6][i] * (1 - v[0]) + gridMeta[7][i] * v[0];
+
+            let c0 = c00 * (1 - v[1]) + c10 * v[1];
+            let c1 = c01 * (1 - v[1]) + c11 * v[1];
+
+            vMeta[i] = c0 * (1 - v[2]) + c1 * v[2];
+          }
+
           // Add to the base coordinate, scale then shift
           for (var i = 0; i < 3; ++i) {
             // v[i] = scale[i] * (x[i] + s * v[i]) + shift[i];
@@ -194,10 +207,9 @@ export class IsosurfaceMesher {
           this.buffer[m] = vertices.length;
           vertices.push(v);
 
-          // Interpolate the vertex position against the metadata cube.
-
-          // TEST - create some sample metadata (sin in the x,z plane)
-          verticesMetadata.push([Math.sin(v[0]), Math.sin(v[2])]);
+          // **TEST - create some sample metadata (sin in the x,z plane)
+          // verticesMetadata.push([Math.sin(v[0]), Math.sin(v[2])]);
+          verticesMetadata.push(vMeta);
 
           //Now we need to add faces together, to do this we just loop over 3 basis components
           for (var i = 0; i < 3; ++i) {

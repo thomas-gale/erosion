@@ -7,12 +7,12 @@ const ChunkMaterial = shaderMaterial(
   { sunPosition: new THREE.Vector3(0, -1, 0) },
   // vertex shader
   glsl`
-    attribute vec2 metadata;
+    attribute vec3 metadata;
 
     out vec3 norm;
     out float height;
     out vec2 xz;
-    out vec2 md;
+    out vec3 md;
 
     void main() {
       norm = normal;
@@ -25,7 +25,7 @@ const ChunkMaterial = shaderMaterial(
   // fragment shader
   glsl`
     #define grass vec3(.2, .7, .1)
-    #define dirt vec3(.5, .5, .3)
+    #define soil vec3(.5, .5, .3)
     #define rock vec3(.3, .3, .3)
     // TODO - pass from uniform
     #define chunkSize 32.
@@ -35,22 +35,24 @@ const ChunkMaterial = shaderMaterial(
     in vec3 norm;
     in float height;
     in vec2 xz;
-    in vec2 md;
+    in vec3 md;
 
     void main() {
       float shadow = 1. - (.75 * dot(normalize(norm), normalize(sunPosition)));
 
       // Replace with mix? if statements are slow
-      if (normalize(norm).y > 0.96) {
-        if (height > 4.) {
-          // TODO - smoothstep(mod(xz, vec2(chunkSize))? etc.
-          gl_FragColor.rgba = vec4(rock, 1. ) * shadow;
-        } else {
-          gl_FragColor.rgba = vec4(grass * ((md.x + 2.)/3.), 1.) * shadow;
-        }
-      } else {
-        gl_FragColor.rgba = vec4(dirt * ((md.y + 2.)/3.), 1.) * shadow;
-      }
+      // if (normalize(norm).y > 0.96) {
+      //   if (height > 4.) {
+      //     // TODO - smoothstep(mod(xz, vec2(chunkSize))? etc.
+      //     gl_FragColor.rgba = vec4(rock, 1. ) * shadow;
+      //   } else {
+      //     gl_FragColor.rgba = vec4(grass * ((md.x + 2.)/3.), 1.) * shadow;
+      //   }
+      // } else {
+      //   gl_FragColor.rgba = vec4(soil * ((md.y + 2.)/3.), 1.) * shadow;
+      // }
+
+      gl_FragColor.rgba = vec4(md.x * rock + md.y * soil + md.z * grass, 1.) * shadow;
     }
   `
 );
