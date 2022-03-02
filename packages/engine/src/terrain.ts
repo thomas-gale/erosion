@@ -31,7 +31,14 @@ export class Terrain {
     return this.isosurfaceMesher.generate(
       [64, 64, 64],
       function (x: number, y: number, z: number) {
-        return x * x + y * y + z * z - 100;
+        return {
+          value: x * x + y * y + z * z - 100,
+          metadata: [
+            1.0, // rock
+            0.0, // dirt
+            0.0, // grass         ]
+          ],
+        };
       },
       [
         [-11, -11, -11],
@@ -58,7 +65,14 @@ export class Terrain {
         // Read state from the delta map
         const state = this.deltaMap.get(`${x}-${y}-${z}`);
         if (state) {
-          return -state.soil; // Isosurface renders positive side of the surface
+          return {
+            value: -state.soil, // Isosurface renders positive side of the surface
+            metadata: [
+              0.0, // rock
+              1.0, // dirt
+              0.0, // grass
+            ],
+          };
         }
 
         // Else use base procedural noise
@@ -81,7 +95,14 @@ export class Terrain {
         // Rescale
         elevation = elevation * 16;
 
-        return y - elevation; // Isosurface renders positive side of the surface
+        return {
+          value: y - elevation, // Isosurface renders positive side of the surface
+          metadata: [
+            0.0, // rock
+            0.0, // dirt
+            1.0, // grass
+          ],
+        };
       },
       [
         [xMin, yMin, zMin],

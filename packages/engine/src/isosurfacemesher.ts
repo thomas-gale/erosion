@@ -58,13 +58,19 @@ export class IsosurfaceMesher {
   }
 
   // Compute the isosurface mesh
+  // dim (dimensions/number of samples in the grid)
+  // potential (the isosurface function TODO - first value will be the total material density (to determine the surface), remaining values are constituent meta data values to attach to each vertex)
   generate(
     dims: [number, number, number],
-    potential: (x: number, y: number, z: number) => number,
+    potential: (
+      x: number,
+      y: number,
+      z: number
+    ) => { value: number; metadata: number[] },
     bounds: [number, number, number][]
   ): {
     positions: number[][];
-    cells: any[][];
+    cells: number[][];
   } {
     if (!bounds) {
       bounds = [[0, 0, 0], dims];
@@ -118,7 +124,7 @@ export class IsosurfaceMesher {
                   scale[0] * (x[0] + i) + shift[0],
                   scale[1] * (x[1] + j) + shift[1],
                   scale[2] * (x[2] + k) + shift[2]
-                );
+                ).value;
                 grid[g] = p;
                 mask |= p < 0 ? 1 << g : 0;
               }
