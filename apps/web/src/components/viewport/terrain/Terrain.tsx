@@ -14,10 +14,12 @@ export interface TerrainProps {
     x: number;
     z: number;
   };
+  sunPosition: THREE.Vector3;
 }
 
 export const Terrain = ({
   nearestChunk: { x, z },
+  sunPosition,
 }: TerrainProps): JSX.Element => {
   const chunkCoordsToLoad = useMemo(() => {
     console.log(x, z);
@@ -138,6 +140,7 @@ export const Terrain = ({
             xMax={xMax}
             zMax={zMax}
             padding={config.chunkPadding}
+            sunPosition={sunPosition}
           />
         ))}
     </>
