@@ -691,10 +691,10 @@
   resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.4.3.tgz#8926d7a09812374127b1f8a904a755c7579124e6"
   integrity sha512-dzJrPvUc42K2un9y6D1IsrPQO5tKsbWwUo+wsATnXjG3ePWyuDBIOMJuPe605NhIXUmPH+Vik2wMoZz06hD1uA==
 
-"@react-three/drei@8.15.1":
-  version "8.15.1"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-8.15.1.tgz#e008cf1fd5328338b759840adcc4bd87f0ea6b97"
-  integrity sha512-k9oUrc4rKiQ3KluFyJRJDOB9xVWZEn7EUBFWWKZFrQ3PDw+F5D5U+EFrU2AQp4sl7EHqrxseoJe0VqewagcTsw==
+"@react-three/drei@8.16.0":
+  version "8.16.0"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-8.16.0.tgz#21a4111cf7b63c47598691f3fc2c3b16440a7abf"
+  integrity sha512-PvjNwPrIltVPHfkoG38+FvSd2v0EmxQaEsC69cQQ7T7/mMFWSNdfXrkBmBggEvxmZDNmGRIbcVNu8+VogQUQcA==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "^9.3.1"
@@ -709,7 +709,7 @@
     suspend-react "^0.0.8"
     three-mesh-bvh "^0.5.4"
     three-stdlib "^2.8.7"
-    troika-three-text "^0.46.1"
+    troika-three-text "^0.46.2"
     utility-types "^3.10.0"
     zustand "^3.5.13"
 
@@ -4729,10 +4729,10 @@ tr46@^2.1.0:
   dependencies:
     punycode "^2.1.1"
 
-troika-three-text@^0.46.1:
-  version "0.46.1"
-  resolved "https://registry.yarnpkg.com/troika-three-text/-/troika-three-text-0.46.1.tgz#44c5bda31279c8b885ab2523ab8e54c584ea4564"
-  integrity sha512-j4smxjq4+NMJeshdoGYNqCjnvibH74pPm5kxaKZlGZl8mh9kDviAf/gsafwn6ylxsmnp2RqLWJlqzZrs9ARxiQ==
+troika-three-text@^0.46.2:
+  version "0.46.2"
+  resolved "https://registry.yarnpkg.com/troika-three-text/-/troika-three-text-0.46.2.tgz#8d860e79ad9abd31e9a3addf59c7e90fca0b15e5"
+  integrity sha512-x7GKVFshQ0YTXdb4iQKA6hoNKC5XT8AdcZW9T6QZEHJX69TXE5o5et39c8jZZeZzCqCZrk8ouOQBi6Aa0E2Atg==
   dependencies:
     bidi-js "^1.0.2"
     troika-three-utils "^0.46.0"
