@@ -6,6 +6,7 @@ import { PerspectiveControlledCamera } from "./camera/PerspectiveControlledCamer
 import { MapControls as MapControlsImpl } from "three-stdlib";
 import { Gizmo } from "./debug/Gizmo";
 import { useRef, useState } from "react";
+import Digger from "./player/Digger_v1_static";
 import { Terrain } from "./terrain/Terrain";
 import { useGetClosestChunk } from "../../hooks/terrain/useGetClosestChunk";
 
@@ -26,6 +27,7 @@ export const ErosionCanvas = () => {
         <directionalLight position={sunPosition} />
         <ambientLight intensity={0.75} />
         <PerspectiveControlledCamera mapControls={mapControls} />
+        <Digger position={[0, 10, 0]} />
         <Terrain nearestChunk={nearestChunk} sunPosition={sunPosition} />
         <Gizmo />
       </ContextBridge>
