@@ -6,7 +6,7 @@ import { PerspectiveControlledCamera } from "./camera/PerspectiveControlledCamer
 import { MapControls as MapControlsImpl } from "three-stdlib";
 import { Gizmo } from "./debug/Gizmo";
 import { useRef, useState } from "react";
-import Digger from "./player/Digger_v1";
+import Digger from "./player/Digger_v1_static";
 import { Terrain } from "./terrain/Terrain";
 import { useGetClosestChunk } from "../../hooks/terrain/useGetClosestChunk";
 
