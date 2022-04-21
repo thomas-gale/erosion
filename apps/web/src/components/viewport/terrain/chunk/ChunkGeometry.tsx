@@ -45,13 +45,13 @@ export const ChunkGeometry = ({
               itemSize={1}
             />
             <bufferAttribute
-              attachObject={["attributes", "position"]}
+              attach="attributes-position"
               array={verts}
               count={verts.length / 3}
               itemSize={3}
             />
             <bufferAttribute
-              attachObject={["attributes", "metadata"]}
+              attach="attributes-metadata"
               array={vertsMetadata}
               count={vertsMetadata.length / vertsMetadataStride}
               itemSize={vertsMetadataStride}

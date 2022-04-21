@@ -27,7 +27,7 @@ export const TestSphere = () => {
               itemSize={1}
             />
             <bufferAttribute
-              attachObject={["attributes", "position"]}
+              attach="attributes-position"
               count={verts.current.length / 3}
               array={verts.current}
               itemSize={3}
