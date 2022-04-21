@@ -11,13 +11,13 @@ const ChunkMaterial = shaderMaterial(
 
     out vec3 norm;
     out float height;
-    out vec2 xz;
+    out vec2 pos2;
     out vec3 md;
 
     void main() {
       norm = normal;
       height = position.y;
-      xz = position.xy;
+      pos2 = position.xz;
       md = metadata;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
@@ -34,7 +34,7 @@ const ChunkMaterial = shaderMaterial(
 
     in vec3 norm;
     in float height;
-    in vec2 xz;
+    in vec2 pos2;
     in vec3 md;
 
     void main() {
@@ -44,6 +44,9 @@ const ChunkMaterial = shaderMaterial(
       float grassy = smoothstep(.9, 1., normalize(norm).y);
       vec3 soilGrass = mix(soil, grass, grassy);
       vec3 color = vec3(md.x * rock + md.y * soilGrass);
+
+      // Blend edges of chunk (make x/y positions near 0-1 ramp from transparent to opaque)
+      // float edge = smoothstep(0., 1., 0.5 * min(mod(pos2.x, chunkSize), mod(pos2.y, chunkSize)));
 
       gl_FragColor.rgba = vec4(color, 1.) * shadow;
 
