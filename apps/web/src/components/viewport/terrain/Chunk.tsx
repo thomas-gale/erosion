@@ -28,9 +28,12 @@ export const Chunk = ({
   sunPosition,
 }: ChunkProps) => {
   const [verts, setVerts] = useState<Float32Array>();
+  const [vertsNum, setVertsNum] = useState(0);
   const [vertsMetadata, setVertsMetadata] = useState<Float32Array>();
   const [vertsMetadataStride, setVertsMetadataStride] = useState<number>(0);
+  const [vertsMetadataNum, setVertsMetadataNum] = useState(0);
   const [cells, setCells] = useState<Uint32Array>();
+  const [cellsNum, setCellsNum] = useState(0);
 
   // Trigger load mesh when limits change
   useEffect(() => {
@@ -73,9 +76,12 @@ export const Chunk = ({
               `Loading terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}...`
             );
             setVerts(resp.verts);
+            setVertsNum(resp.vertsNum);
             setVertsMetadata(resp.vertsMetadata);
             setVertsMetadataStride(resp.vertsMetadataStride);
+            setVertsMetadataNum(resp.vertsMetadataNum);
             setCells(resp.cells);
+            setCellsNum(resp.cellsNum);
             console.log(
               `Loaded terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}!`
             );
@@ -91,9 +97,12 @@ export const Chunk = ({
         cells?.length ?? 0
       }`} // Trigger a re-render if the verts/vertsmetadata/cells Array length change (buffer geometry requires this)
       verts={verts}
+      vertsNum={vertsNum}
       vertsMetadata={vertsMetadata}
       vertsMetadataStride={vertsMetadataStride}
+      vertsMetadataNum={vertsMetadataNum}
       cells={cells}
+      cellsNum={cellsNum}
       sunPosition={sunPosition}
     />
   );
