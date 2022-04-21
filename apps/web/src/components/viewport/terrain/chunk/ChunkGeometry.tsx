@@ -39,37 +39,43 @@ export const ChunkGeometry = ({
     console.log("Re-rendering chunk geometry...");
     console.log(cells?.length);
     console.log(cellsNum);
+    console.log(vertsMetadata?.length);
+    console.log(vertsMetadataNum);
     console.log(verts?.length);
     console.log(vertsNum);
-  }, [cells, cellsNum, verts, vertsNum]);
+  }, [cells, cellsNum, verts, vertsMetadata, vertsMetadataNum, vertsNum]);
 
   return (
     <>
-      {verts?.length > 0 && vertsMetadata?.length > 0 && cells?.length > 0 && (
-        <mesh>
-          <bufferGeometry attach="geometry" ref={geomRef}>
-            <bufferAttribute
-              attach="index"
-              array={cells}
-              count={cellsNum}
-              itemSize={1}
-            />
-            <bufferAttribute
-              attach="attributes-position"
-              array={verts}
-              count={vertsNum / 3}
-              itemSize={3}
-            />
-            <bufferAttribute
-              attach="attributes-metadata"
-              array={vertsMetadata}
-              count={vertsMetadataNum / vertsMetadataStride}
-              itemSize={vertsMetadataStride}
-            />
-          </bufferGeometry>
-          <chunkMaterial attach="material" sunPosition={sunPosition} />
-        </mesh>
-      )}
+      {cells?.length > 0 &&
+        cellsNum > 0 &&
+        vertsMetadata?.length > 0 &&
+        vertsMetadataNum > 0 &&
+        verts?.length > 0 && (
+          <mesh>
+            <bufferGeometry attach="geometry" ref={geomRef}>
+              <bufferAttribute
+                attach="index"
+                array={cells}
+                count={cellsNum}
+                itemSize={1}
+              />
+              <bufferAttribute
+                attach="attributes-position"
+                array={verts}
+                count={verts.length / 3}
+                itemSize={3}
+              />
+              <bufferAttribute
+                attach="attributes-metadata"
+                array={vertsMetadata}
+                count={vertsMetadataNum / vertsMetadataStride}
+                itemSize={vertsMetadataStride}
+              />
+            </bufferGeometry>
+            <chunkMaterial attach="material" sunPosition={sunPosition} />
+          </mesh>
+        )}
     </>
   );
 };
