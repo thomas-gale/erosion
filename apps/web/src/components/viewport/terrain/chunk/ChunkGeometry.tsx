@@ -4,17 +4,23 @@ import "./ChunkMaterial";
 
 export interface ChunkGeometryProps {
   verts: Float32Array;
+  vertsNum: number;
   vertsMetadata: Float32Array;
   vertsMetadataStride: number;
+  vertsMetadataNum: number;
   cells: Uint32Array;
+  cellsNum: number;
   sunPosition: THREE.Vector3;
 }
 
 export const ChunkGeometry = ({
   verts,
+  vertsNum,
   vertsMetadata,
   vertsMetadataStride,
+  vertsMetadataNum,
   cells,
+  cellsNum,
   sunPosition,
 }: ChunkGeometryProps) => {
   const geomRef = useRef<THREE.BufferGeometry>();
@@ -31,7 +37,11 @@ export const ChunkGeometry = ({
 
   useEffect(() => {
     console.log("Re-rendering chunk geometry...");
-  }, []);
+    console.log(cells?.length);
+    console.log(cellsNum);
+    console.log(verts?.length);
+    console.log(vertsNum);
+  }, [cells, cellsNum, verts, vertsNum]);
 
   return (
     <>
@@ -41,19 +51,19 @@ export const ChunkGeometry = ({
             <bufferAttribute
               attach="index"
               array={cells}
-              count={cells.length}
+              count={cellsNum}
               itemSize={1}
             />
             <bufferAttribute
               attach="attributes-position"
               array={verts}
-              count={verts.length / 3}
+              count={vertsNum / 3}
               itemSize={3}
             />
             <bufferAttribute
               attach="attributes-metadata"
               array={vertsMetadata}
-              count={vertsMetadata.length / vertsMetadataStride}
+              count={vertsMetadataNum / vertsMetadataStride}
               itemSize={vertsMetadataStride}
             />
           </bufferGeometry>
