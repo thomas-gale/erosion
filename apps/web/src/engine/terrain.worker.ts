@@ -1,6 +1,5 @@
 // This is a module worker, so we can use imports (in the browser too!)
 import { Terrain, Mesh } from "engine";
-import { initScriptLoader } from "next/script";
 import { config } from "../env/config";
 
 let terrain: Terrain;
