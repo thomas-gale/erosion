@@ -1,5 +1,7 @@
+import { useTrimesh } from "@react-three/cannon";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { Mesh } from "three";
 import "./ChunkMaterial";
 
 export interface ChunkGeometryProps {
@@ -35,6 +37,14 @@ export const ChunkGeometry = ({
     }
   }, [verts, cells, vertsMetadata]);
 
+  // Add contact surface for physics
+  const [ref] = useTrimesh(
+    () => ({
+      args: [verts?.length > 0 ? verts : [], cells?.length > 0 ? cells : []],
+    }),
+    useRef<Mesh>(null)
+  );
+
   // Debug
   // useEffect(() => {
   //   console.log("Re-rendering chunk geometry...");
@@ -54,7 +64,7 @@ export const ChunkGeometry = ({
         vertsMetadataNum > 0 &&
         verts?.length > 0 &&
         vertsNum > 0 && (
-          <mesh>
+          <mesh ref={ref}>
             <bufferGeometry attach="geometry" ref={geomRef}>
               <bufferAttribute
                 attach="index"
