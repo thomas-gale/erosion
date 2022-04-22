@@ -9,7 +9,7 @@ import { PerspectiveControlledCamera } from "./camera/PerspectiveControlledCamer
 import { MapControls as MapControlsImpl } from "three-stdlib";
 import { Gizmo } from "./debug/Gizmo";
 import { Terrain } from "./terrain/Terrain";
-import Digger from "./player/Digger_v1_static";
+import { Digger } from "./player/Digger";
 
 export const ErosionCanvas = () => {
   const ContextBridge = useContextBridge(ReactReduxContext);
