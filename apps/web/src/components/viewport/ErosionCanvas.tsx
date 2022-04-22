@@ -32,7 +32,7 @@ export const ErosionCanvas = () => {
             <directionalLight position={sunPosition} />
             <ambientLight intensity={0.75} />
             <PerspectiveControlledCamera mapControls={mapControls} />
-            {/* <Terrain nearestChunk={nearestChunk} sunPosition={sunPosition} /> */}
+            <Terrain nearestChunk={nearestChunk} sunPosition={sunPosition} />
             <PhyPlane position={[0, 2, 0]} />
             <PhySphere position={[11, 10, 10]} />
             <Digger position={[10, 15, 10]} />

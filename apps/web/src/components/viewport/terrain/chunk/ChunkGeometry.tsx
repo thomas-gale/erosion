@@ -1,4 +1,4 @@
-import { useTrimesh } from "@react-three/cannon";
+import { useHeightfield, useTrimesh } from "@react-three/cannon";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { Mesh } from "three";
@@ -38,12 +38,25 @@ export const ChunkGeometry = ({
   }, [verts, cells, vertsMetadata]);
 
   // Add contact surface for physics
-  const [ref] = useTrimesh(
-    () => ({
-      args: [verts?.length > 0 ? verts : [], cells?.length > 0 ? cells : []],
-    }),
-    useRef<Mesh>(null)
-  );
+  // Use a heightfield to create a surface for the physics engine
+
+  // useHeightfield(() => ({ args: []}));
+  // const [ref] = useTrimesh(
+  //   () => {
+  //     if (verts?.length > 0 && cells?.length > 0) {
+  //       return {
+  //         args: [verts, cells],
+  //         position: [0, 0, 0],
+  //       };
+  //     }
+  //     return {
+  //       args: [[], []],
+  //       position: [0, 0, 0],
+  //     };
+  //   },
+  //   useRef<Mesh>(null),
+  //   [verts, cells]
+  // );
 
   // Debug
   // useEffect(() => {
@@ -64,7 +77,7 @@ export const ChunkGeometry = ({
         vertsMetadataNum > 0 &&
         verts?.length > 0 &&
         vertsNum > 0 && (
-          <mesh ref={ref}>
+          <mesh>
             <bufferGeometry attach="geometry" ref={geomRef}>
               <bufferAttribute
                 attach="index"
