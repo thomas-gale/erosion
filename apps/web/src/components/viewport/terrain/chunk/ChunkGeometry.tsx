@@ -1,5 +1,5 @@
-import { useHeightfield, useTrimesh } from "@react-three/cannon";
-import { useEffect, useRef } from "react";
+import { TrimeshProps, useHeightfield, useTrimesh } from "@react-three/cannon";
+import { useCallback, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { Mesh } from "three";
 import "./ChunkMaterial";
@@ -36,27 +36,57 @@ export const ChunkGeometry = ({
       geomRef.current.computeVertexNormals();
     }
   }, [verts, cells, vertsMetadata]);
-
   // Add contact surface for physics
-  // Use a heightfield to create a surface for the physics engine
 
-  // useHeightfield(() => ({ args: []}));
-  // const [ref] = useTrimesh(
-  //   () => {
-  //     if (verts?.length > 0 && cells?.length > 0) {
-  //       return {
-  //         args: [verts, cells],
-  //         position: [0, 0, 0],
-  //       };
-  //     }
+  // NOT WORKING
+
+  // Heightfield probably isn't what we want. rather a generic mesh collider.
+  // Check that the problem isn't to empty triangles from the oversize pow2 array buffers for verts and cells.
+
+  // const triMeshCtr = useCallback(() => {
+  //   if (verts?.length > 0 && cells?.length > 0) {
   //     return {
-  //       args: [[], []],
+  //       args: [
+  //         verts.subarray(0, vertsNum - 1),
+  //         cells.subarray(0, cellsNum - 1),
+  //       ],
   //       position: [0, 0, 0],
   //     };
-  //   },
-  //   useRef<Mesh>(null),
-  //   [verts, cells]
-  // );
+  //   }
+  //   return {
+  //     args: [
+  //       [0, 0, 0, 1.5, 0, 0, 0, 1, 0],
+  //       [0, 1, 2],
+  //     ],
+  //     position: [0, 20, 0],
+  //   };
+  // }, [verts, vertsNum, cells, cellsNum]);
+
+  const triMesh = useCallback<(index: number) => TrimeshProps>(
+    () => (index: number) => {
+      // if (verts?.length > 0 && cells?.length > 0) {
+      //   return {
+      //     args: [
+      //       verts.subarray(0, vertsNum - 1),
+      //       cells.subarray(0, cellsNum - 1),
+      //     ],
+      //     position: [0, 0, 0],
+      //   };
+      // }
+      console.log("Default trimesh used");
+      return {
+        args: [
+          [0, 0, 0, 1.5, 0, 0, 0, 1, 0], // San check
+          [0, 1, 2],
+        ],
+        position: [0, 20, 0],
+      };
+    },
+    []
+  );
+  // }, [verts, vertsNum, cells, cellsNum]);
+
+  const [ref] = useTrimesh(triMesh, useRef<Mesh>(null), []);
 
   // Debug
   // useEffect(() => {
@@ -77,7 +107,7 @@ export const ChunkGeometry = ({
         vertsMetadataNum > 0 &&
         verts?.length > 0 &&
         vertsNum > 0 && (
-          <mesh>
+          <mesh ref={ref}>
             <bufferGeometry attach="geometry" ref={geomRef}>
               <bufferAttribute
                 attach="index"
