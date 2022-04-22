@@ -38,7 +38,7 @@ export const Chunk = ({
   // Trigger load mesh when limits change
   useEffect(() => {
     (async () => {
-      console.log(`Triggering web worker mesh for ${xMin}, ${zMin}...`);
+      // console.log(`Triggering web worker mesh for ${xMin}, ${zMin}...`);
       await terrainWorker.postMessage({
         type: "loadMesh",
         payload: {
@@ -48,7 +48,7 @@ export const Chunk = ({
           zMax: zMax + padding,
         },
       } as TerrainInputData);
-      console.log(`Triggered web worker mesh for ${xMin}, ${zMin}!`);
+      // console.log(`Triggered web worker mesh for ${xMin}, ${zMin}!`);
     })();
   }, [padding, terrainWorker, xMax, xMin, zMax, zMin]);
 
@@ -72,9 +72,9 @@ export const Chunk = ({
             args.zMax === zMax + padding
           ) {
             const resp = event.data.payload as MeshResponse;
-            console.log(
-              `Loading terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}...`
-            );
+            // console.log(
+            //   `Loading terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}...`
+            // );
             setVerts(resp.verts);
             setVertsNum(resp.vertsNum);
             setVertsMetadata(resp.vertsMetadata);
@@ -82,9 +82,9 @@ export const Chunk = ({
             setVertsMetadataNum(resp.vertsMetadataNum);
             setCells(resp.cells);
             setCellsNum(resp.cellsNum);
-            console.log(
-              `Loaded terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}!`
-            );
+            // console.log(
+            //   `Loaded terrain mesh for x${xMin}:${xMax}, z${zMin}:${zMax}!`
+            // );
           }
         }
       }

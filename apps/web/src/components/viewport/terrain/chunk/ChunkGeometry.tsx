@@ -35,15 +35,16 @@ export const ChunkGeometry = ({
     }
   }, [verts, cells, vertsMetadata]);
 
-  useEffect(() => {
-    console.log("Re-rendering chunk geometry...");
-    console.log(cells?.length);
-    console.log(cellsNum);
-    console.log(vertsMetadata?.length);
-    console.log(vertsMetadataNum);
-    console.log(verts?.length);
-    console.log(vertsNum);
-  }, [cells, cellsNum, verts, vertsMetadata, vertsMetadataNum, vertsNum]);
+  // Debug
+  // useEffect(() => {
+  //   console.log("Re-rendering chunk geometry...");
+  //   console.log(cells?.length);
+  //   console.log(cellsNum);
+  //   console.log(vertsMetadata?.length);
+  //   console.log(vertsMetadataNum);
+  //   console.log(verts?.length);
+  //   console.log(vertsNum);
+  // }, [cells, cellsNum, verts, vertsMetadata, vertsMetadataNum, vertsNum]);
 
   return (
     <>

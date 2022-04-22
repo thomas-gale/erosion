@@ -22,7 +22,7 @@ export const Terrain = ({
   sunPosition,
 }: TerrainProps): JSX.Element => {
   const chunkCoordsToLoad = useMemo(() => {
-    console.log(x, z);
+    // console.log(x, z);
     const chunkCoords: LoadChunkMeshPayload[] = [];
 
     // Naive approach for loading rings of chunks around the camera.
@@ -59,7 +59,7 @@ export const Terrain = ({
             const resp = event.data.payload as InitResponse;
             // Now trigger the loadMesh
             if (resp) {
-              console.log(`Terrain worker initialized!`);
+              // console.log(`Terrain worker initialized!`);
               setTerrainWorkerInitialized(true);
             } else {
               console.warn("Error web worker init response:", resp);
@@ -69,12 +69,12 @@ export const Terrain = ({
       );
 
       (async () => {
-        console.log(`Triggering web worker init...`);
+        // console.log(`Triggering web worker init...`);
         await terrainWorker.postMessage({
           type: "init",
           payload: { seed: config.testSeed },
         } as TerrainInputData);
-        console.log(`Triggered web worker init!`);
+        // console.log(`Triggered web worker init!`);
       })();
     }
   }, [terrainWorker, terrainWorkerInitialized]);
@@ -82,7 +82,7 @@ export const Terrain = ({
   // On unmount, terminate the worker
   useEffect(() => {
     return () => {
-      console.log(`Terminating terrain web worker...`);
+      // console.log(`Terminating terrain web worker...`);
       setTerrainWorkerInitialized(false);
       terrainWorker.terminate();
     };

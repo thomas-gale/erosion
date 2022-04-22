@@ -111,7 +111,7 @@ const convertToMeshResponse = (mesh: Mesh): MeshResponse => {
 };
 
 addEventListener("message", (event: TerrainListenerMessageEvent) => {
-  console.log("(web worker) message received", event.data);
+  // console.log("(web worker) message received", event.data);
   if (event.data.type === "init") {
     const { seed } = event.data.payload as InitPayload;
     terrain = new Terrain(seed);
