@@ -52,7 +52,8 @@ export const ChunkGeometry = ({
         cellsNum > 0 &&
         vertsMetadata?.length > 0 &&
         vertsMetadataNum > 0 &&
-        verts?.length > 0 && (
+        verts?.length > 0 &&
+        vertsNum > 0 && (
           <mesh>
             <bufferGeometry attach="geometry" ref={geomRef}>
               <bufferAttribute
@@ -64,7 +65,7 @@ export const ChunkGeometry = ({
               <bufferAttribute
                 attach="attributes-position"
                 array={verts}
-                count={verts.length / 3}
+                count={vertsNum / 3}
                 itemSize={3}
               />
               <bufferAttribute
