@@ -22,7 +22,7 @@
     "react-redux": "8.0.1",
     "sparse-octree": "7.1.5",
     "threads": "1.7.0",
-    "three": "0.140.0",
+    "three": "0.140.1",
     "tiny-worker": "2.3.0"
   },
   "devDependencies": {
