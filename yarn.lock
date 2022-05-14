@@ -743,13 +743,13 @@
     utility-types "^3.10.0"
     zustand "^3.5.13"
 
-"@react-three/fiber@8.0.15":
-  version "8.0.15"
-  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-8.0.15.tgz#c4fa191501a9f6254d47af5142eb6031163842b5"
-  integrity sha512-4skpTBbCRCK+I6GkFUlutawIQJCv+ny5zUvUHZsGsLoOEYYvtE3LwcNAe9AjfQP7KgdCo8xNV8BzTo7Y6GnG/A==
+"@react-three/fiber@8.0.16":
+  version "8.0.16"
+  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-8.0.16.tgz#1e325c01718ce2c5f8c9caf0ae1a4217013c5025"
+  integrity sha512-c0BqDVNTKHJ0yvnxdaJgficoz173gBTd72ks6rI/Gn4NJew2PA8UpgOYnZMMrcK6oLkOwdxvu3KDSEFx9FmQMw==
   dependencies:
     "@babel/runtime" "^7.17.8"
-    "@types/react-reconciler" "^0.26.6"
+    "@types/react-reconciler" "^0.26.7"
     react-merge-refs "^1.1.0"
     react-reconciler "^0.27.0"
     react-use-measure "^2.1.1"
@@ -896,10 +896,10 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
   integrity sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==
 
-"@types/react-reconciler@^0.26.6":
-  version "0.26.6"
-  resolved "https://registry.yarnpkg.com/@types/react-reconciler/-/react-reconciler-0.26.6.tgz#271b850616413b5c197ec485403961a11cedd4ef"
-  integrity sha512-N8MpyC6PJksD+CbMaZ1GW1t940+L4K+f7soiNKcKfgOgof3xWLvs5nPRQ/Q0P6QwDX0GH1PT1MsiQh2FtUY6aw==
+"@types/react-reconciler@^0.26.7":
+  version "0.26.7"
+  resolved "https://registry.yarnpkg.com/@types/react-reconciler/-/react-reconciler-0.26.7.tgz#0c4643f30821ae057e401b0d9037e03e8e9b2a36"
+  integrity sha512-mBDYl8x+oyPX/VBb3E638N0B7xG+SPk/EAMcVPeexqus/5aTpTphQi0curhhshOqRrc9t6OPoJfEUkbymse/lQ==
   dependencies:
     "@types/react" "*"
 
