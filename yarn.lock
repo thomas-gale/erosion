@@ -743,14 +743,13 @@
     utility-types "^3.10.0"
     zustand "^3.5.13"
 
-"@react-three/fiber@8.0.16":
-  version "8.0.16"
-  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-8.0.16.tgz#1e325c01718ce2c5f8c9caf0ae1a4217013c5025"
-  integrity sha512-c0BqDVNTKHJ0yvnxdaJgficoz173gBTd72ks6rI/Gn4NJew2PA8UpgOYnZMMrcK6oLkOwdxvu3KDSEFx9FmQMw==
+"@react-three/fiber@8.0.17":
+  version "8.0.17"
+  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-8.0.17.tgz#c7430888cb1ee08dc6fd50d9de5c0796d86bc2f2"
+  integrity sha512-F8Oy4rDzEYqD55dzkU1bs8k9WWT/KCtvMNA43gd1l2zSOcszyqC5GCk3t/6KfVPv1N88zXMutiFDnQ27JeZyZg==
   dependencies:
     "@babel/runtime" "^7.17.8"
     "@types/react-reconciler" "^0.26.7"
-    react-merge-refs "^1.1.0"
     react-reconciler "^0.27.0"
     react-use-measure "^2.1.1"
     scheduler "^0.21.0"
