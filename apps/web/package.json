@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@react-three/drei": "9.17.3",
-    "@react-three/fiber": "8.2.0",
+    "@react-three/fiber": "8.2.1",
     "@reduxjs/toolkit": "1.8.3",
     "engine": "*",
     "glslify": "7.1.1",
