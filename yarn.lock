@@ -730,10 +730,10 @@
   resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.4.3.tgz#8926d7a09812374127b1f8a904a755c7579124e6"
   integrity sha512-dzJrPvUc42K2un9y6D1IsrPQO5tKsbWwUo+wsATnXjG3ePWyuDBIOMJuPe605NhIXUmPH+Vik2wMoZz06hD1uA==
 
-"@react-three/drei@9.23.4":
-  version "9.23.4"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.23.4.tgz#be5b55abc1baa5868853a7d6fa690d728199c146"
-  integrity sha512-rD6DXkpFH52F6ThgBra39hYpfSLYFS6SoyLyMf84J5X8wwoIn6J66H3p8xhx4WyjsZ6VvUunfhXnt+C0nhx4oQ==
+"@react-three/drei@9.23.5":
+  version "9.23.5"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.23.5.tgz#cebdb123b37a022fdb842299b20de7703d78cd21"
+  integrity sha512-S5bRewh75KNii4MLGrpxEl2yn4eF68pMc2qmZL9jOAGFXMqWoI5ZYjsR3Xc2hWufRVm4JsT2Dg6yt6HOxj99AA==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "^9.3.1"
@@ -748,7 +748,7 @@
     stats.js "^0.17.0"
     suspend-react "^0.0.8"
     three-mesh-bvh "^0.5.15"
-    three-stdlib "^2.14.1"
+    three-stdlib "^2.14.2"
     troika-three-text "^0.46.4"
     utility-types "^3.10.0"
     zustand "^3.5.13"
@@ -4831,10 +4831,10 @@ three-mesh-bvh@^0.5.15:
   resolved "https://registry.yarnpkg.com/three-mesh-bvh/-/three-mesh-bvh-0.5.15.tgz#bcf681d784d8988618344a5e11e7ded7e76ee86a"
   integrity sha512-jxE5iGjcoEMiyxUs7hMeZL6jBXBz9973ilqhXPhKlA1f7eitjIxRTtu7UWVQy+PhxXTsknmPzWmN5c+uAa/anA==
 
-three-stdlib@^2.14.1:
-  version "2.14.1"
-  resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.14.1.tgz#41efc59ac4586d14463f89bc85e60e80beb1301e"
-  integrity sha512-JdwqpZU6boRty9rek+5RIyXE8/OfGh5aMdX67oqhGBoVdM7FH6BHz8U3Yk1tqXcA2/s9nNPxkv/ci6LSW5hBcQ==
+three-stdlib@^2.14.2:
+  version "2.14.2"
+  resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.14.2.tgz#a7d71bc8e5e5e4c1c19b2861fa51538fd13da72b"
+  integrity sha512-b/NzE1AiUvsgyoCRS5plIunaRfGKIYqqj24t//6Va1vSi50mSB45THZjAJl2b1vTjNM7vWV1FDNz9TKGaf6p6Q==
   dependencies:
     "@babel/runtime" "^7.16.7"
     "@webgpu/glslang" "^0.0.15"
