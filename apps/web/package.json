@@ -11,7 +11,7 @@
     "lint:fix": "next lint --fix"
   },
   "dependencies": {
-    "@react-three/drei": "9.24.4",
+    "@react-three/drei": "9.25.1",
     "@react-three/fiber": "8.6.0",
     "@reduxjs/toolkit": "1.8.5",
     "engine": "*",
