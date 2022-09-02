@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/node": "17.0.25",
-    "@types/three": "0.143.2",
+    "@types/three": "0.144.0",
     "@typescript-eslint/eslint-plugin": "5.36.1",
     "@typescript-eslint/parser": "5.36.1",
     "autoprefixer": "10.4.8",
