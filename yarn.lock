@@ -957,6 +957,16 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"
   integrity sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==
 
+"@types/strip-bom@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/strip-bom/-/strip-bom-3.0.0.tgz#14a8ec3956c2e81edb7520790aecf21c290aebd2"
+  integrity sha512-xevGOReSYGM7g/kUBZzPqCrR/KYAo+F0yiPc85WFTJa0MSLtyFTVTU6cJu/aV4mid7IffDIWqo69THF2o4JiEQ==
+
+"@types/strip-json-comments@0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@types/strip-json-comments/-/strip-json-comments-0.0.30.tgz#9aa30c04db212a9a0649d6ae6fd50accc40748a1"
+  integrity sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==
+
 "@types/three@0.144.0":
   version "0.144.0"
   resolved "https://registry.yarnpkg.com/@types/three/-/three-0.144.0.tgz#a154f40122dbc3668c5424a5373f3965c6564557"
@@ -1303,6 +1313,18 @@ array.prototype.flatmap@^1.3.0:
     es-abstract "^1.19.2"
     es-shim-unscopables "^1.0.0"
 
+assign-deep@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/assign-deep/-/assign-deep-1.0.1.tgz#b6d21d74e2f28bf6592e4c0c541bed6ab59c5f27"
+  integrity sha512-CSXAX79mibneEYfqLT5FEmkqR5WXF+xDRjgQQuVf6wSCXCYU8/vHttPidNar7wJ5BFmKAo8Wei0rCtzb+M/yeA==
+  dependencies:
+    assign-symbols "^2.0.2"
+
+assign-symbols@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-2.0.2.tgz#0fb9191dd9d617042746ecfc354f3a3d768a0c98"
+  integrity sha512-9sBQUQZMKFKcO/C3Bo6Rx4CQany0R0UeVcefNGRRdW2vbmaMOhV1sbmlXcQLcD56juLXbSGTBm0GGuvmrAF8pA==
+
 ast-types-flow@^0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/ast-types-flow/-/ast-types-flow-0.0.7.tgz#f70b735c6bca1a5c9c22d982c3e39e7feba3bdad"
@@ -1648,7 +1670,7 @@ concat-stream@^1.5.2:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-config@*:
+config@3.3.7:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/config/-/config-3.3.7.tgz#4310410dc2bf4e0effdca21a12a4035860a24ee4"
   integrity sha512-mX/n7GKDYZMqvvkY6e6oBY49W8wxdmQt+ho/5lhwFDXqQW9gI+Ahp8EKp8VAbISPnmf2+Bv5uZK7lKXZ6pf1aA==
@@ -1915,6 +1937,13 @@ end-of-stream@^1.0.0:
   integrity sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==
   dependencies:
     once "^1.4.0"
+
+engine@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/engine/-/engine-1.0.0.tgz#9da8e04c83944c126ee485630e2549aa92b2881a"
+  integrity sha512-Rv6w3o7jiqPb5h/5Mar4yPzbWoow0CsSW8otutaYpHbVonMQwHCB8EyUwQfhiKo3luQe99Nqj1JhRZ7N3BCZ3g==
+  dependencies:
+    assign-deep "^1.0.0"
 
 enhanced-resolve@^5.10.0:
   version "5.10.0"
@@ -4856,6 +4885,11 @@ strip-final-newline@^2.0.0:
   resolved "https://registry.yarnpkg.com/strip-final-newline/-/strip-final-newline-2.0.0.tgz#89b852fb2fcbe936f6f4b3187afb0a12c1ab58ad"
   integrity sha512-BrpvfNAE3dcvq7ll3xVumzjKjZQ5tI1sEUIKr3Uoks0XUl45St3FlatVqef9prk4jRDzhW6WZg+3bk93y6pLjA==
 
+strip-json-comments@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
+  integrity sha512-4gB8na07fecVVkOI6Rs4e7T6NOTki5EmL7TUduTs6bu3EdnSycntVJ4re8kgZA+wx9IueI2Y11bfbgwtzuE0KQ==
+
 strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
@@ -5113,6 +5147,16 @@ tsconfig-paths@^3.14.1:
     json5 "^1.0.1"
     minimist "^1.2.6"
     strip-bom "^3.0.0"
+
+tsconfig@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/tsconfig/-/tsconfig-7.0.0.tgz#84538875a4dc216e5c4a5432b3a4dec3d54e91b7"
+  integrity sha512-vZXmzPrL+EmC4T/4rVlT2jNVMWCi/O4DIiSj3UHg1OE5kCKbk4mfrXc6dZksLgRM/TZlKnousKH9bbTazUWRRw==
+  dependencies:
+    "@types/strip-bom" "^3.0.0"
+    "@types/strip-json-comments" "0.0.30"
+    strip-bom "^3.0.0"
+    strip-json-comments "^2.0.0"
 
 tslib@^1.8.1:
   version "1.14.1"
