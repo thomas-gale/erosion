@@ -33,7 +33,7 @@
     "autoprefixer": "10.4.13",
     "eslint": "8.31.0",
     "eslint-config-next": "12.3.4",
-    "eslint-config-prettier": "8.5.0",
+    "eslint-config-prettier": "8.6.0",
     "eslint-plugin-prettier": "4.2.1",
     "next-transpile-modules": "9.1.0",
     "postcss": "8.4.20",
