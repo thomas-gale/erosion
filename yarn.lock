@@ -730,10 +730,10 @@
   resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.4.3.tgz#8926d7a09812374127b1f8a904a755c7579124e6"
   integrity sha512-dzJrPvUc42K2un9y6D1IsrPQO5tKsbWwUo+wsATnXjG3ePWyuDBIOMJuPe605NhIXUmPH+Vik2wMoZz06hD1uA==
 
-"@react-three/drei@9.51.15":
-  version "9.51.15"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.51.15.tgz#8cf1f4d586d738b00344c4f42a47034f32678218"
-  integrity sha512-PGeJudHY2P9FFsqzhbILXntWo6OmMi9r/+A4AfguYnekWZndqjyWROyurUdXKB95CYPg6R4i8y13osVbRnII9Q==
+"@react-three/drei@9.51.20":
+  version "9.51.20"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.51.20.tgz#6e3622718e1d9d63679dc95da7b5b15efbb1be6c"
+  integrity sha512-jJ7544QzicOgIJ3BA1qjrQCLRLQJjIWbCSjb5mwRk1Dr4XhQllzFhOB5mTPLfLRAlivRF6nAWpf2QYRW9BZFMQ==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "^9.3.1"
@@ -743,6 +743,7 @@
     lodash.clamp "^4.0.3"
     lodash.omit "^4.5.0"
     lodash.pick "^4.4.0"
+    maath "^0.5.1"
     meshline "^3.1.6"
     react-composer "^5.0.3"
     react-merge-refs "^1.1.0"
@@ -3798,6 +3799,11 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
+
+maath@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/maath/-/maath-0.5.1.tgz#7e190ee69053d4e04125f399f73d4e63f1b94e05"
+  integrity sha512-qSyiavNFnB957lGQiGvHr+fEgG3ZXrk2upniCAAMsZb54NaZfMLMFakHqp+22OKlix5UNwYqJ8vFeO4hAq0U1Q==
 
 make-dir@^3.0.0:
   version "3.1.0"
