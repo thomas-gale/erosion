@@ -730,14 +730,15 @@
   resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.4.3.tgz#8926d7a09812374127b1f8a904a755c7579124e6"
   integrity sha512-dzJrPvUc42K2un9y6D1IsrPQO5tKsbWwUo+wsATnXjG3ePWyuDBIOMJuPe605NhIXUmPH+Vik2wMoZz06hD1uA==
 
-"@react-three/drei@9.53.3":
-  version "9.53.3"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.53.3.tgz#d8456d34efaa478cb50aff64db5fefd83c8153ca"
-  integrity sha512-CjzyoLwAU291PO0AzHqz8ccNjV7EbNN6uK4fToGs1Lmtdvt4tng+EDpDD8LpNMvkC1AG0n8RnIerpfMTxfv5BQ==
+"@react-three/drei@9.54.0":
+  version "9.54.0"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.54.0.tgz#194f40e47c1c8146a56c8e6bcf9ae34912f5c4f4"
+  integrity sha512-lEy3M5vySNErWBNk6hpaFjgUJfKIohb9+13cHAfgKcba6UWCkn+eNb1I/9GEKkKQAv1xZCGDhi2t4jOLTaddjg==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "^9.3.1"
     "@use-gesture/react" "^10.2.0"
+    camera-controls "^1.37.6"
     detect-gpu "^5.0.5"
     glsl-noise "^0.0.0"
     lodash.clamp "^4.0.3"
@@ -1532,6 +1533,11 @@ camelcase@^6.2.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.3.0.tgz#5685b95eb209ac9c0c177467778c9c84df58ba9a"
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
+
+camera-controls@^1.37.6:
+  version "1.37.6"
+  resolved "https://registry.yarnpkg.com/camera-controls/-/camera-controls-1.37.6.tgz#d632f58e3b118921609908b53fbc328844d0e904"
+  integrity sha512-Fpppn3RwHgmGPfnjRVtK9AlpjcPdYo/6lFTqsSJ+gk9jRi48VmLFEBZ6uLLmTQiKiKjrs906ZMaAJW3fXIChdA==
 
 caniuse-lite@^1.0.30001286:
   version "1.0.30001312"
