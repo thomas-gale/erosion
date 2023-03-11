@@ -44,7 +44,7 @@ jobs:
 
       - name: deploy github pages
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: crazy-max/ghaction-github-pages@v2.7.0
+        uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
           build_dir: ${{ env.BUILD_DIR }}
         env:
