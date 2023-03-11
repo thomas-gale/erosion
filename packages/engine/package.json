@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "d3-octree": "0.2.2",
-    "simplex-noise": "3.0.1"
+    "simplex-noise": "4.0.1"
   }
 }
